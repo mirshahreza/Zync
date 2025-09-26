@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2024-08-07
--- Description:	Table to hold additional attributes for users 
+-- Description:	Stores custom attributes for individual users, enabling detailed and flexible user profiles beyond the standard fields.
 -- =============================================
 CREATE TABLE [dbo].[AAA_Users_Attributes](
 	[Id] [int] IDENTITY(1,1) NOT NULL,

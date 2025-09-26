@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-02
--- Description:	Drop a table from a database
+-- Description:	Safely drops a table if it exists in the database, preventing errors that would occur if the table is not found.
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzDropTable]
 	@TableName VARCHAR(128)

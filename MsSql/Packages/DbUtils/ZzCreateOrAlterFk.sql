@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-02
--- Description:	Creates or Alters a Fk
+-- Description:	Creates or alters a foreign key constraint between two tables, with an option to enforce cascading updates and deletes.
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzCreateOrAlterFk]
 	@FkName VARCHAR(128),

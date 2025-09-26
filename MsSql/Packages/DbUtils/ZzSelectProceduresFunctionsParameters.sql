@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-14
--- Description:	Select all parameters for Procedures and Functions
+-- Description:	Retrieves metadata for all parameters of stored procedures and functions, including their name, data type, size, and direction (input/output).
 -- =============================================
 CREATE OR ALTER VIEW [DBO].[ZzSelectProceduresFunctionsParameters]
 AS

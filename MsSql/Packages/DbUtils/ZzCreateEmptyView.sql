@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-21
--- Description:	Creates a new view
+-- Description:	Creates a new, empty placeholder view with a single dummy column, which can be altered later.
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzCreateEmptyView]
 	@ViewName VARCHAR(128)

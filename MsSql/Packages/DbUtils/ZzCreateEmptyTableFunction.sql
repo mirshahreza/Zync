@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-21
--- Description:	Creates a new table function
+-- Description:	Creates a new, empty placeholder table-valued function with two dummy parameters and a single-row result set.
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzCreateEmptyTableFunction]
 	@TableFunctionName VARCHAR(128)

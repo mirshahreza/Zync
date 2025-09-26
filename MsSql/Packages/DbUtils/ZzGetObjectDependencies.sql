@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-07-12
--- Description:	To retrive objects are depends on on a table
+-- Description:	Finds and lists all database objects that have a dependency on a specified object.
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzGetObjectDependencies]
 	@TableName VARCHAR(128), @ColumnName VARCHAR(64), @ColumnTypeSize VARCHAR(64), @AllowNull BIT = 1,@Default NVARCHAR(256) = ''

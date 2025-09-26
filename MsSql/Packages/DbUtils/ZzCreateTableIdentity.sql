@@ -4,7 +4,7 @@ EXEC DBO.Zync 'DbUtils/ZzObjectExist.sql'
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-02
--- Description:	Create a table with a Identity column
+-- Description:	Creates a new table with a primary key column that uses an auto-incrementing IDENTITY property.
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzCreateTableIdentity]
 	@TableName VARCHAR(128), @PkFieldName VARCHAR(64) = 'Id', @PkFieldType VARCHAR(32) = 'INT',

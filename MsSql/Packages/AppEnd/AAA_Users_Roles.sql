@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2024-03-31
--- Description:	Table to hold roles of users - AppEnd LowCode system
+-- Description:	Maps users to roles, creating the many-to-many relationship that is fundamental for role-based access control.
 -- =============================================
 CREATE TABLE [DBO].[AAA_Users_Roles](
 	[Id] [int] IDENTITY(1000000,1) NOT NULL,

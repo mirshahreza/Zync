@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-05-18
--- Description:	Calculate count of existing a word in a string
+-- Description:	Calculates the number of non-overlapping occurrences of a specified word within a given string.
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzCountWord] 
 ( 

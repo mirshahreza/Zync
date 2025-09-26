@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2024-03-31
--- Description:	Table to hold roles - AppEnd LowCode system
+-- Description:	Defines user roles for the application, forming a core part of the security and access control system.
 -- =============================================
 CREATE TABLE [DBO].[AAA_Roles](
 	[Id] [int] IDENTITY(100,1) NOT NULL,

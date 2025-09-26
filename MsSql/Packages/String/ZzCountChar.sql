@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-05-18
--- Description:	Calculate count of existing a char in a string
+-- Description:	Counts the total number of occurrences of a specific character within a given string by iterating through it.
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzCountChar] 
 ( 

@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-02
--- Description:	Add a field to a table
+-- Description:	Adds a new column to an existing table with a specified name, data type, and nullability.
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzCreateColumn]
 	@TableName VARCHAR(128), @ColumnName VARCHAR(64) , @ColumnTypeSize VARCHAR(64) , @AllowNull BIT = 1

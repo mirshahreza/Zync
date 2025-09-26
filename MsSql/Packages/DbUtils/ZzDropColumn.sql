@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-02
--- Description:	Drop a field from a table
+-- Description:	Safely drops a column from a table if it exists, preventing errors that would occur if the column is not found.
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzDropColumn]
 	@TableName VARCHAR(128), @ColumnName VARCHAR(64)

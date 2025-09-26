@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-05-12
--- Description:	To get nth item of a separated string
+-- Description:	Extracts the Nth item from a delimited string, based on the specified separator and zero-based index.
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzNthItem]
 (

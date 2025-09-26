@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-07-04
--- Description:	Drops a Fk
+-- Description:	Safely drops a foreign key constraint from a specified table if the constraint name is provided.
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzDropFk]
 	@FkName VARCHAR(128),

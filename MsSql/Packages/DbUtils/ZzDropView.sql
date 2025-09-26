@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-02
--- Description:	Drop a view from a database
+-- Description:	Safely drops a view if it exists in the database, preventing errors that would occur if the view is not found.
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzDropView]
 	@ViewName VARCHAR(128)

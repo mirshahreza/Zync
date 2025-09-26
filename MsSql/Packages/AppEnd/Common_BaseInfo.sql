@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2024-03-31
--- Description:	Table to hold base information - AppEnd LowCode system
+-- Description:	A generic table for storing hierarchical or categorical data, often used for dropdown lists, taxonomies, or other basic lookup information.
 -- =============================================
 CREATE TABLE [DBO].[Common_BaseInfo](
 	[Id] [int] IDENTITY(10000,1) NOT NULL,

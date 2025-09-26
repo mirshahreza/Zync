@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2024-03-31
--- Description:	Table to hold users activities - AppEnd LowCode system
+-- Description:	Logs user and system activities, providing a comprehensive audit trail for security, debugging, and monitoring purposes.
 -- =============================================
 CREATE TABLE [DBO].[Common_ActivityLog](
 	[Id] [int] IDENTITY(1,1) NOT NULL,

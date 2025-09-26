@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2024-08-07
--- Description:	Table to hold additional attributes for roles 
+-- Description:	This table stores additional, custom attributes for user roles, allowing for a flexible and extensible role-based access control system.
 -- =============================================
 CREATE TABLE [dbo].[AAA_Roles_Attributes](
 	[Id] [int] IDENTITY(1,1) NOT NULL,

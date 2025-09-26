@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-05-18
--- Description:	Adds a zero before if the lenght is equal to 1
+-- Description:	Formats a single-digit string by prepending a '0' to ensure it is two characters long. Returns the original string if it's already two characters.
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzFix2Char] ( @S VARCHAR(8) )
 RETURNS VARCHAR(8)

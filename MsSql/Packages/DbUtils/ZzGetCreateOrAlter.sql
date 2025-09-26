@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-07-08
--- Description:	Generates Create Or Alter
+-- Description:	Dynamically generates a 'CREATE OR ALTER' script for a given database object, making deployments and updates more robust.
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzGetCreateOrAlter]
 	@ObjectName VARCHAR(128)

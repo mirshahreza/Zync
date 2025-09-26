@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-05-25
--- Description:	Select all objects (Table,View,Procedure,ScalarFunction,TableValuedFunction) created by user in details
+-- Description:	A comprehensive view that lists all user-created database objects (Tables, Views, Procedures, Functions) with their names, types, and creation/modification dates.
 -- =============================================
 CREATE OR ALTER VIEW [DBO].[ZzSelectObjectsDetails]
 AS

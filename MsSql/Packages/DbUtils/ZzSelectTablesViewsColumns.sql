@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-01
--- Description:	Select all table or view columns
+-- Description:	A view that provides detailed metadata about all columns in every table and view, including data type, nullability, primary key status, and default values.
 -- =============================================
 CREATE OR ALTER VIEW [DBO].[ZzSelectTablesViewsColumns]
 AS

@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-21
--- Description:	Rename a table 
+-- Description:	A wrapper for the system stored procedure `sp_rename`, allowing for the safe renaming of a table.
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzRenameTable]
 	@TableName VARCHAR(128),@NewName VARCHAR(128)

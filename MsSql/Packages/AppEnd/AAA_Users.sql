@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2024-03-31
--- Description:	Table to hold users - AppEnd LowCode system
+-- Description:	Contains user account information, including credentials, profile details, and security-related fields. This is the central table for user management.
 -- =============================================
 CREATE TABLE [DBO].[AAA_Users](
 	[Id] [int] IDENTITY(100000,1) NOT NULL,

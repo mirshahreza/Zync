@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-02
--- Description:	Drop a Procedure from a database
+-- Description:	Safely drops a stored procedure if it exists in the database, preventing errors that would occur if the procedure is not found.
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzDropProcedure]
 	@ProcedureName VARCHAR(128)

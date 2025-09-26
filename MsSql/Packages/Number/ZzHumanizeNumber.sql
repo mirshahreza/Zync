@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-05-27
--- Description:	Turns numbers to human readable format
+-- Description:	Formats a number into a more human-readable string by adding commas as thousands separators.
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzHumanizeNumber] 
 ( 

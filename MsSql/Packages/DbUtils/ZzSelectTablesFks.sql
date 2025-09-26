@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-02
--- Description:	Select all Fks for tables
+-- Description:	Details all foreign key relationships, showing the constraint name, the source table and column, and the target table and column.
 -- =============================================
 CREATE OR ALTER VIEW [DBO].[ZzSelectTablesFks]
 AS

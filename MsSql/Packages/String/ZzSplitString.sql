@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-05-13
--- Description:	To split a separated string to rows
+-- Description:	A table-valued function that splits a delimited string into a table of values, using the specified separator. It leverages the built-in STRING_SPLIT function.
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzSplitString] 
 (
