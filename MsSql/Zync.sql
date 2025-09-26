@@ -44,9 +44,9 @@ BEGIN
 				BEGIN
 					SET @deps = TRIM(SUBSTRING(@rv, 3, CHARINDEX('*/', @rv)-3));
 					PRINT ' -> Fetching dependencies...';
-					PRINT REPLACE(@deps,'EXEC DBO.Zync ','	');
+					PRINT REPLACE(REPLACE(@deps,'EXEC DBO.Zync ','		'),'i ','');
 				END
-				PRINT REPLACE(@rv,'EXEC DBO.Zync ','	');
+				PRINT REPLACE(REPLACE(@rv,'EXEC DBO.Zync ','		'),'i ','');
 				PRINT ' -> Package ''' + @PackageName + ''' listed successfully.';
 			END
 			ELSE
