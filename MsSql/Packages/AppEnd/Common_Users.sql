@@ -3,7 +3,7 @@
 -- Create date: 2024-03-31
 -- Description:	Contains user account information, including credentials, profile details, and security-related fields. This is the central table for user management.
 -- =============================================
-CREATE TABLE [DBO].[AAA_Users](
+CREATE TABLE [DBO].[Common_Users](
 	[Id] [int] IDENTITY(100000,1) NOT NULL,
 	[CreatedBy] [int] NOT NULL,
 	[CreatedOn] [datetime] NOT NULL,
@@ -32,20 +32,20 @@ CREATE TABLE [DBO].[AAA_Users](
 	[LoginTrySuccesses] [int] NULL,
 	[LoginTrySuccessLastOn] [datetime] NULL,
 	[Settings] [ntext] NULL,
- CONSTRAINT [PK_AppEnd_Users] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_Common_Users] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
 
-ALTER TABLE [DBO].[AAA_Users] ADD  CONSTRAINT [IsBuiltIn_Default]  DEFAULT ('0') FOR [IsBuiltIn];
+ALTER TABLE [DBO].[Common_Users] ADD  CONSTRAINT [IsBuiltIn_Default]  DEFAULT ('0') FOR [IsBuiltIn];
 
-ALTER TABLE [DBO].[AAA_Users] ADD  CONSTRAINT [IsActive_Default]  DEFAULT ('1') FOR [IsActive];
+ALTER TABLE [DBO].[Common_Users] ADD  CONSTRAINT [IsActive_Default]  DEFAULT ('1') FOR [IsActive];
 
-ALTER TABLE [DBO].[AAA_Users] ADD  CONSTRAINT [LoginLocked_Default]  DEFAULT ('0') FOR [LoginLocked];
+ALTER TABLE [DBO].[Common_Users] ADD  CONSTRAINT [LoginLocked_Default]  DEFAULT ('0') FOR [LoginLocked];
 
-ALTER TABLE [DBO].[AAA_Users] ADD  CONSTRAINT [LoginFailed_Default]  DEFAULT ('0') FOR [LoginTryFails];
+ALTER TABLE [DBO].[Common_Users] ADD  CONSTRAINT [LoginFailed_Default]  DEFAULT ('0') FOR [LoginTryFails];
 
-INSERT INTO AAA_Users	
+INSERT INTO Common_Users	
 		(IsBuiltIn,UserName,Email,Mobile,[Password],IsActive,LoginLocked,Settings,CreatedBy,CreatedOn) 
-VALUES	(1,'admin','youremail@yourdomain.com','989122026228','D7B91B6A9FA705E968B2C859FDDE9457',1,0,'{}',10000,GETDATE());
+VALUES	(1,'admin','youremail@yourdomain.com','','D7B91B6A9FA705E968B2C859FDDE9457',1,0,'{}',10000,GETDATE());

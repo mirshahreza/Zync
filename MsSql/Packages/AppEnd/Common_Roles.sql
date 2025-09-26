@@ -3,7 +3,7 @@
 -- Create date: 2024-03-31
 -- Description:	Defines user roles for the application, forming a core part of the security and access control system.
 -- =============================================
-CREATE TABLE [DBO].[AAA_Roles](
+CREATE TABLE [DBO].[Common_Roles](
 	[Id] [int] IDENTITY(100,1) NOT NULL,
 	[CreatedBy] [int] NOT NULL,
 	[CreatedOn] [datetime] NOT NULL,
@@ -12,14 +12,14 @@ CREATE TABLE [DBO].[AAA_Roles](
 	[IsBuiltIn] [bit] NULL,
 	[RoleName] [nvarchar](64) NOT NULL,
 	[Note] [nvarchar](256) NULL,
- CONSTRAINT [PK_AppEnd_Roles] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_Common_Roles] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY];
 
-ALTER TABLE [DBO].[AAA_Roles] ADD  CONSTRAINT [AppEnd_Roles_IsBuiltIn_Default]  DEFAULT ('0') FOR [IsBuiltIn];
+ALTER TABLE [DBO].[Common_Roles] ADD  CONSTRAINT [Common_Roles_IsBuiltIn_Default]  DEFAULT ('0') FOR [IsBuiltIn];
 
-INSERT INTO AAA_Roles
+INSERT INTO Common_Roles
 		(IsBuiltIn,RoleName,Note,CreatedBy,CreatedOn) 
 VALUES	(1,'admin','',10000,GETDATE());
