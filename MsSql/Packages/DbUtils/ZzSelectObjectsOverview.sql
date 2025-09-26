@@ -1,5 +1,5 @@
 /*
-EXEC Zzz_Deploy 'DbUtils/ZzSelectObjectsDetails.sql'
+EXEC DBO.Zync 'DbUtils/ZzSelectObjectsDetails.sql'
 */
 -- =============================================
 -- Author:		Mohsen Mirshahreza

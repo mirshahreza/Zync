@@ -1,8 +1,8 @@
 # Number
  
 ### Deploy all scripts
->EXEC dbo.zzz_Deploy 'Number' <br />
+>EXEC dbo.Zync 'Number' <br />
 
 OR <br />
 
->EXEC dbo.zzz_Deploy 'Number/_.sql' <br />
+>EXEC dbo.Zync 'Number/_.sql' <br />

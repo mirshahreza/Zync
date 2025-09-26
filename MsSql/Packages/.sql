@@ -1,3 +1,3 @@
-EXEC Zzz_Deploy 'String';
-EXEC Zzz_Deploy 'Number';
-EXEC Zzz_Deploy 'DbUtils';
+EXEC DBO.Zync 'String';
+EXEC DBO.Zync 'Number';
+EXEC DBO.Zync 'DbUtils';

@@ -1,7 +1,7 @@
 -- =============================================
 -- Author:		https://gist.github.com/jozefizso/203be6677dd01a3464cb
 -- Create date: 2023-05-17
--- Description:	To format numbers as formatted volumes / SELECT [DBO].[zz_FormatBytes] (6542444431,'B') : 6.09 GB
+-- Description:	To format numbers as formatted volumes / SELECT [DBO].[ZzFormatBytes] (6542444431,'B') : 6.09 GB
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzFormatBytes] 
 ( 

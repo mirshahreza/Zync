@@ -1,6 +1,6 @@
-EXEC Zzz_Deploy 'String/Zz_SplitString.sql';
-EXEC Zzz_Deploy 'String/Zz_NthItem.sql';
-EXEC Zzz_Deploy 'String/Zz_Trim.sql';
-EXEC Zzz_Deploy 'String/Zz_Fix2Char.sql';
-EXEC Zzz_Deploy 'String/Zz_CountChar.sql';
-EXEC Zzz_Deploy 'String/Zz_CountWord.sql';
+EXEC DBO.Zync 'String/ZzSplitString.sql';
+EXEC DBO.Zync 'String/ZzNthItem.sql';
+EXEC DBO.Zync 'String/ZzTrim.sql';
+EXEC DBO.Zync 'String/ZzFix2Char.sql';
+EXEC DBO.Zync 'String/ZzCountChar.sql';
+EXEC DBO.Zync 'String/ZzCountWord.sql';

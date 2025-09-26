@@ -1,6 +1,6 @@
 /*
-EXEC Zzz_Deploy 'DbUtils/ZzSelectObjectsDetails.sql'
-EXEC Zzz_Deploy 'DbUtils/ZzSelectTablesIndexes.sql'
+EXEC DBO.Zync 'DbUtils/ZzSelectObjectsDetails.sql'
+EXEC DBO.Zync 'DbUtils/ZzSelectTablesIndexes.sql'
 */
 -- =============================================
 -- Author:		Mohsen Mirshahreza

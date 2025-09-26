@@ -1,5 +1,5 @@
 /*
-EXEC Zzz_Deploy 'DbUtils/ZzObjectExist.sql'
+EXEC DBO.Zync 'DbUtils/ZzObjectExist.sql'
 */
 -- =============================================
 -- Author:		Mohsen Mirshahreza

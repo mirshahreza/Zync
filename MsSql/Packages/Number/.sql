@@ -1,2 +1,2 @@
-EXEC Zzz_Deploy 'Number/Zz_FormatBytes.sql';
-EXEC Zzz_Deploy 'Number/Zz_HumanizeNumber.sql';
+EXEC DBO.Zync 'Number/ZzFormatBytes.sql';
+EXEC DBO.Zync 'Number/ZzHumanizeNumber.sql';

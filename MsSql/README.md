@@ -17,22 +17,28 @@ First, download and run the `Zync.sql` script to initialize the package manageme
 
 ### 2. Deploy Your First Package
 
+Help and Commands avalable:
+
+```sql
+EXEC DBO.Zync '?'
+```
+
 Deploy a complete package (e.g., database utilities):
 
 ```sql
-EXEC Zzz_Deploy 'DbUtils'
+EXEC DBO.Zync 'i DbUtils'
 ```
 
 Deploy a specific script:
 
 ```sql
-EXEC Zzz_Deploy 'String/ZzSplitString.sql'
+EXEC DBO.Zync 'i String/ZzSplitString.sql'
 ```
 
 Deploy all available packages:
 
 ```sql
-EXEC Zzz_Deploy ''
+EXEC DBO.Zync 'i'
 ```
 
 ## 📚 Available Packages
@@ -46,7 +52,7 @@ Database utilities for common administrative tasks:
 - Schema exploration tools
 
 ```sql
-EXEC Zzz_Deploy 'DbUtils'
+EXEC DBO.Zync 'DbUtils'
 ```
 
 ### 🔤 String
@@ -57,7 +63,7 @@ String manipulation and processing functions:
 - N-th item extraction
 
 ```sql
-EXEC Zzz_Deploy 'String'
+EXEC DBO.Zync 'String'
 ```
 
 ### 🔢 Number  
@@ -67,7 +73,7 @@ Numeric formatting and conversion utilities:
 - Mathematical helper functions
 
 ```sql
-EXEC Zzz_Deploy 'Number'
+EXEC DBO.Zync 'Number'
 ```
 
 ### 👤 AppEnd
@@ -78,7 +84,7 @@ Application framework components:
 - Authentication helpers
 
 ```sql
-EXEC Zzz_Deploy 'AppEnd'
+EXEC DBO.Zync 'AppEnd'
 ```
 
 ## 🏗️ Project Structure
@@ -100,26 +106,26 @@ MsSql/
 
 ```sql
 -- Install string splitting function
-EXEC Zzz_Deploy 'String/ZzSplitString.sql'
+EXEC DBO.Zync 'String/ZzSplitString.sql'
 
 -- Install table creation utilities
-EXEC Zzz_Deploy 'DbUtils/ZzCreateTableGuid.sql'
+EXEC DBO.Zync 'DbUtils/ZzCreateTableGuid.sql'
 
 -- Install user management system
-EXEC Zzz_Deploy 'AppEnd/AAA_Users.sql'
+EXEC DBO.Zync 'AppEnd/AAA_Users.sql'
 ```
 
 ### Deploy Complete Solutions
 
 ```sql
 -- Install all string utilities
-EXEC Zzz_Deploy 'String'
+EXEC DBO.Zync 'String'
 
 -- Install complete user management system
-EXEC Zzz_Deploy 'AppEnd'
+EXEC DBO.Zync 'AppEnd'
 
 -- Install everything
-EXEC Zzz_Deploy ''
+EXEC DBO.Zync ''
 ```
 
 ## 🎯 Naming Conventions

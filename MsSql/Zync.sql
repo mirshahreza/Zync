@@ -65,8 +65,7 @@ BEGIN
 		PRINT ('EXEC [DBO].[Zync] (''i'', DEFAULT) -- Installs all available packages from the default repository.');
 		PRINT ('EXEC [DBO].[Zync] (''i pkg-name'', DEFAULT) -- Installs a specific package from the default repository.');
 		PRINT ('EXEC [DBO].[Zync] (''i pkg-name/script-name.sql'', DEFAULT) -- Installs a specific script from a specific package in the default repository.');
-		PRINT ('');
-		PRINT ('Note : Replace the second parameter (DEFAULT) with a specific/custom repository URL.');
+		PRINT ('EXEC [DBO].[Zync] (''i any-package-name'', ''your-repo-url'') -- Installs a specific script from a specific repository.');
 	END
 	
 
