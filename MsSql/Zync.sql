@@ -13,7 +13,7 @@ BEGIN
 	DECLARE	@rr				INT;
 	DECLARE @rv				NVARCHAR(MAX);
 	DECLARE @PackageName	NVARCHAR(128);
-	DECLARE @PackageFullURL NVARCHAR(4000) = @Repo + ISNULL(@PackageName,'');
+	DECLARE @PackageFullURL NVARCHAR(4000) = @Repo;
 	DECLARE @status INT;
 	DECLARE @responseText AS TABLE(responseText NVARCHAR(MAX));
 	DECLARE @res AS INT;
@@ -22,7 +22,8 @@ BEGIN
 	IF (@Command LIKE 'ls%')
     BEGIN
 		SET @PackageName	= TRIM(SUBSTRING(@Command, 3, LEN(@Command)));
-		IF(@PackageFullURL NOT LIKE N'%.sql') SET @PackageFullURL = @PackageFullURL + @PackageName + '/' + '.sql'
+		IF(@PackageName NOT LIKE N'%.sql') SET @PackageFullURL = @PackageFullURL + @PackageName + '/' + '.sql'
+		ELSE SET @PackageFullURL = @PackageFullURL + @PackageName;
 		SET @PackageFullURL = REPLACE(@PackageFullURL,'//.sql','/.sql');
 
 		PRINT ('Listing package(s): '''+ @PackageName +'''...');
@@ -64,10 +65,13 @@ BEGIN
     ELSE IF (@Command LIKE 'i%')
     BEGIN
 		SET @PackageName	= TRIM(SUBSTRING(@Command, 2, LEN(@Command)));
-		IF(@PackageFullURL NOT LIKE N'%.sql') SET @PackageFullURL = @PackageFullURL + @PackageName + '/' + '.sql'
+		IF(@PackageName NOT LIKE N'%.sql') SET @PackageFullURL = @PackageFullURL + @PackageName + '/' + '.sql'
+		ELSE SET @PackageFullURL = @PackageFullURL + @PackageName;
 		SET @PackageFullURL = REPLACE(@PackageFullURL,'//.sql','/.sql');
 
 		PRINT ('Installing package: '''+ @PackageName +'''...');
+
+		PRINT (@PackageFullURL);
 
 		BEGIN TRY
 			EXEC SP_OACREATE 'MSXML2.ServerXMLHTTP', @res OUT;
