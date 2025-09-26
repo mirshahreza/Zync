@@ -128,26 +128,6 @@ EXEC DBO.Zync 'AppEnd'
 EXEC DBO.Zync ''
 ```
 
-## 🎯 Naming Conventions
-
-### Why Objects Start with "Zz"
-
-We recommend prefixing utility objects with `Zz` because:
-- 📍 **Organized Listing**: Objects appear at the end of alphabetical lists
-- 🎯 **Clear Separation**: Project objects are visible first, utilities last  
-- 🔍 **Easy Identification**: Quickly distinguish between business logic and utilities
-- 🚀 **Professional Structure**: Maintains clean database schemas
-
-Example:
-```
-Customer_Orders        (your business objects)
-Product_Inventory      
-User_Profiles         
-...
-ZzSplitString        (Zync utilities)
-ZzFormatBytes        
-ZzCreateTable        
-```
 
 
 
