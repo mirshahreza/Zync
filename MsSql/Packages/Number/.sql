@@ -1,2 +1,2 @@
-EXEC DBO.Zync 'Number/ZzFormatBytes.sql';
-EXEC DBO.Zync 'Number/ZzHumanizeNumber.sql';
+EXEC DBO.Zync 'i Number/ZzFormatBytes.sql';
+EXEC DBO.Zync 'i Number/ZzHumanizeNumber.sql';

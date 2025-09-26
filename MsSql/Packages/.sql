@@ -1,3 +1,3 @@
-EXEC DBO.Zync 'String';
-EXEC DBO.Zync 'Number';
-EXEC DBO.Zync 'DbUtils';
+EXEC DBO.Zync 'i String';
+EXEC DBO.Zync 'i Number';
+EXEC DBO.Zync 'i DbUtils';

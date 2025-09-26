@@ -8,63 +8,114 @@ CREATE OR ALTER   PROCEDURE [dbo].[Zync]
 	@Command VARCHAR(128)='?',@Repo VARCHAR(256)='https://raw.githubusercontent.com/mirshahreza/Zync/master/MsSql/Packages/'
 AS
 BEGIN
+	SET NOCOUNT ON;
 
-	IF (@Command LIKE 'ls %')
+	DECLARE	@rr				INT;
+	DECLARE @rv				NVARCHAR(MAX);
+	DECLARE @PackageName	NVARCHAR(128);
+	DECLARE @PackageFullURL NVARCHAR(4000) = @Repo + ISNULL(@PackageName,'');
+	DECLARE @status INT;
+	DECLARE @responseText AS TABLE(responseText NVARCHAR(MAX));
+	DECLARE @res AS INT;
+	DECLARE @deps NVARCHAR(MAX);
+
+	IF (@Command LIKE 'ls%')
     BEGIN
-		PRINT ('Listing packages is not yet implemented.');
-    END
-    ELSE IF (@Command LIKE 'i %')
-    BEGIN
+		SET @PackageName	= TRIM(SUBSTRING(@Command, 3, LEN(@Command)));
+		IF(@PackageFullURL NOT LIKE N'%.sql') SET @PackageFullURL = @PackageFullURL + @PackageName + '/' + '.sql'
+		SET @PackageFullURL = REPLACE(@PackageFullURL,'//.sql','/.sql');
 
-		DECLARE	@rr				INT;
-		DECLARE @rv				NVARCHAR(4000);
-		DECLARE @PackageName	NVARCHAR(128) = REPLACE(@Command,'i ','');
-		DECLARE @PackageFullURL NVARCHAR(4000) = @Repo + ISNULL(@PackageName,'');
+		PRINT ('Listing package(s): '''+ @PackageName +'''...');
 
-		PRINT ('Installing '+@PackageName+' ...');
+		BEGIN TRY
+			EXEC SP_OACREATE 'MSXML2.ServerXMLHTTP', @res OUT;
+			EXEC SP_OAMETHOD @res, 'open', NULL, 'GET',@PackageFullURL,'false';
+			EXEC SP_OAMETHOD @res, 'send';
+			EXEC SP_OAGETPROPERTY @res, 'status', @status OUT;
+			INSERT INTO @ResponseText (ResponseText) EXEC SP_OAGETPROPERTY @res, 'responseText';
+			EXEC SP_OADESTROY @res;
+			SELECT @rr=@status,@rv=responseText FROM @responseText;
 
-		IF(@PackageFullURL NOT LIKE N'%.sql') SET @PackageFullURL = @PackageFullURL + '/.sql'
-
-		DECLARE @status INT;
-		DECLARE @responseText AS TABLE(responseText NVARCHAR(MAX));
-		DECLARE @res AS INT;
-		EXEC SP_OACREATE 'MSXML2.ServerXMLHTTP', @res OUT;
-		EXEC SP_OAMETHOD @res, 'open', NULL, 'GET',@PackageFullURL,'false';
-		EXEC SP_OAMETHOD @res, 'send';
-		EXEC SP_OAGETPROPERTY @res, 'status', @status OUT;
-		INSERT INTO @ResponseText (ResponseText) EXEC SP_OAGETPROPERTY @res, 'responseText';
-		EXEC SP_OADESTROY @res;
-		SELECT @rr=@status,@rv=responseText FROM @responseText;
-
-		IF(@rr=200)
-		BEGIN
-			PRINT @PackageName + ' fetched successful.'
-			SET @rv = LTRIM(RTRIM(@rv));
-			IF(CHARINDEX('/*', @rv)=1)
+			IF(@rr=200)
 			BEGIN
-				DECLARE @deps NVARCHAR(4000);
-				SET @deps = LTRIM(RTRIM(SUBSTRING(@rv, 3, CHARINDEX('*/', @rv)-3)));
-				EXECUTE SP_EXECUTESQL @deps;
+				PRINT ' -> Fetched ''' + @PackageName + ''' successfully.'
+				SET @rv = TRIM(@rv);
+				IF(CHARINDEX('/*', @rv)=1 AND CHARINDEX('*/', @rv) > 1)
+				BEGIN
+					SET @deps = TRIM(SUBSTRING(@rv, 3, CHARINDEX('*/', @rv)-3));
+					PRINT ' -> Fetching dependencies...';
+					PRINT REPLACE(@deps,'EXEC DBO.Zync ','	');
+				END
+				PRINT REPLACE(@rv,'EXEC DBO.Zync ','	');
+				PRINT ' -> Package ''' + @PackageName + ''' listed successfully.';
 			END
+			ELSE
+			BEGIN
+				PRINT 'Error: Could not fetch package from URL: ' + @PackageFullURL;
+				PRINT 'HTTP Status: ' + CAST(@rr AS VARCHAR(10));
+			END
+		END TRY
+		BEGIN CATCH
+			PRINT 'An error occurred during package listing.';
+			IF @res IS NOT NULL EXEC SP_OADESTROY @res;
+			THROW;
+		END CATCH
+    END
+    ELSE IF (@Command LIKE 'i%')
+    BEGIN
+		SET @PackageName	= TRIM(SUBSTRING(@Command, 2, LEN(@Command)));
+		IF(@PackageFullURL NOT LIKE N'%.sql') SET @PackageFullURL = @PackageFullURL + @PackageName + '/' + '.sql'
+		SET @PackageFullURL = REPLACE(@PackageFullURL,'//.sql','/.sql');
 
-			EXECUTE SP_EXECUTESQL @rv;
-			PRINT @PackageName + ' executed successful.';
-		END
-		ELSE
-		BEGIN
-			PRINT (@PackageFullURL + ' fetch problem.');
-		END
+		PRINT ('Installing package: '''+ @PackageName +'''...');
+
+		BEGIN TRY
+			EXEC SP_OACREATE 'MSXML2.ServerXMLHTTP', @res OUT;
+			EXEC SP_OAMETHOD @res, 'open', NULL, 'GET',@PackageFullURL,'false';
+			EXEC SP_OAMETHOD @res, 'send';
+			EXEC SP_OAGETPROPERTY @res, 'status', @status OUT;
+			INSERT INTO @ResponseText (ResponseText) EXEC SP_OAGETPROPERTY @res, 'responseText';
+			EXEC SP_OADESTROY @res;
+			SELECT @rr=@status,@rv=responseText FROM @responseText;
+
+			IF(@rr=200)
+			BEGIN
+				PRINT ' -> Fetched ''' + @PackageName + ''' successfully.'
+				SET @rv = TRIM(@rv);
+				IF(CHARINDEX('/*', @rv)=1 AND CHARINDEX('*/', @rv) > 1)
+				BEGIN
+					SET @deps = TRIM(SUBSTRING(@rv, 3, CHARINDEX('*/', @rv)-3));
+					PRINT ' -> Installing dependencies...';
+					EXECUTE SP_EXECUTESQL @deps;
+				END
+
+				EXECUTE SP_EXECUTESQL @rv;
+				PRINT ' -> Package ''' + @PackageName + ''' installed successfully.';
+			END
+			ELSE
+			BEGIN
+				PRINT 'Error: Could not fetch package from URL: ' + @PackageFullURL;
+				PRINT 'HTTP Status: ' + CAST(@rr AS VARCHAR(10));
+			END
+		END TRY
+		BEGIN CATCH
+			PRINT 'An error occurred during installation.';
+			IF @res IS NOT NULL EXEC SP_OADESTROY @res;
+			THROW;
+		END CATCH
     END
 	ELSE
 	BEGIN
-		PRINT ('Commands :');
-		PRINT ('EXEC [DBO].[Zync] (''?'', DEFAULT) -- Displays available commands and usage.');
-		PRINT ('EXEC [DBO].[Zync] (''ls'', DEFAULT) -- Lists all available packages in the default repository.');
-		PRINT ('EXEC [DBO].[Zync] (''i'', DEFAULT) -- Installs all available packages from the default repository.');
-		PRINT ('EXEC [DBO].[Zync] (''i pkg-name'', DEFAULT) -- Installs a specific package from the default repository.');
-		PRINT ('EXEC [DBO].[Zync] (''i pkg-name/script-name.sql'', DEFAULT) -- Installs a specific script from a specific package in the default repository.');
-		PRINT ('EXEC [DBO].[Zync] (''i any-package-name'', ''your-repo-url'') -- Installs a specific script from a specific repository.');
+		PRINT ('Zync - Database Package Manager');
+		PRINT ('---------------------------------');
+		PRINT ('Commands:');
+		PRINT ('  EXEC [dbo].[Zync] ''?''						-- Displays this help message.');
+		PRINT ('  EXEC [dbo].[Zync] ''ls''					-- Lists all available packages in the repository.');
+		PRINT ('  EXEC [dbo].[Zync] ''i <package-name>''		-- Installs a specific package.');
+		PRINT ('  EXEC [dbo].[Zync] ''i <pkg/script.sql>''	-- Installs a specific script from a package.');
+		PRINT ('');
+		PRINT ('Example:');
+		PRINT ('  EXEC [dbo].[Zync] ''i String''');
 	END
 	
-
 END
