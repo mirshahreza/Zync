@@ -1,8 +1,8 @@
 # DbUtils
  
 ### Deploy all scripts
->EXEC dbo.zzz_Deploy 'AppEnd' <br />
+>EXEC dbo.Zync 'i AppEnd' <br />
 
 OR <br />
 
->EXEC dbo.zzz_Deploy 'AppEnd/_.sql' <br />
+>EXEC dbo.Zync 'i AppEnd/.sql' <br />

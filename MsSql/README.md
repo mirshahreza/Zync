@@ -26,7 +26,7 @@ EXEC Zzz_Deploy 'DbUtils'
 Deploy a specific script:
 
 ```sql
-EXEC Zzz_Deploy 'String/Zz_SplitString.sql'
+EXEC Zzz_Deploy 'String/ZzSplitString.sql'
 ```
 
 Deploy all available packages:
@@ -100,10 +100,10 @@ MsSql/
 
 ```sql
 -- Install string splitting function
-EXEC Zzz_Deploy 'String/Zz_SplitString.sql'
+EXEC Zzz_Deploy 'String/ZzSplitString.sql'
 
 -- Install table creation utilities
-EXEC Zzz_Deploy 'DbUtils/Zz_CreateTableGuid.sql'
+EXEC Zzz_Deploy 'DbUtils/ZzCreateTableGuid.sql'
 
 -- Install user management system
 EXEC Zzz_Deploy 'AppEnd/AAA_Users.sql'
@@ -138,9 +138,9 @@ Customer_Orders        (your business objects)
 Product_Inventory      
 User_Profiles         
 ...
-Zz_SplitString        (Zync utilities)
-Zz_FormatBytes        
-Zz_CreateTable        
+ZzSplitString        (Zync utilities)
+ZzFormatBytes        
+ZzCreateTable        
 ```
 
 

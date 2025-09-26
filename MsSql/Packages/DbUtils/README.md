@@ -1,8 +1,8 @@
 # DbUtils
  
 ### Deploy all scripts
->EXEC dbo.zzz_Deploy 'DbUtils' <br />
+>EXEC dbo.Zync 'i DbUtils' <br />
 
 OR <br />
 
->EXEC dbo.zzz_Deploy 'DbUtils/_.sql' <br />
+>EXEC dbo.Zync 'i DbUtils/.sql' <br />

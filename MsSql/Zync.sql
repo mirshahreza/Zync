@@ -7,7 +7,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE OR ALTER   PROCEDURE [dbo].[Zync] 
-	@Command VARCHAR(16)='?',@Repo VARCHAR(256)='https://raw.githubusercontent.com/mirshahreza/Zync/master/MsSql/Packages/'
+	@Command VARCHAR(128)='?',@Repo VARCHAR(256)='https://raw.githubusercontent.com/mirshahreza/Zync/master/MsSql/Packages/'
 AS
 BEGIN
 
@@ -55,19 +55,16 @@ BEGIN
 		ELSE
 		BEGIN
 			PRINT (@PackageFullURL + ' fetch problem.');
-			PRINT (@PackageFullURL + ' fetch problem.');
-			PRINT (@PackageFullURL + ' fetch problem.');
 		END
     END
 	ELSE
 	BEGIN
 		PRINT ('Commands :');
-		PRINT ('EXEC [DBO].[ZipQl] (''?'', DEFAULT) -- Displays available commands and usage.');
-		PRINT ('EXEC [DBO].[ZipQl] (''ls'', DEFAULT) -- Lists all available packages in the default repository.');
-		PRINT ('EXEC [DBO].[ZipQl] (''ls'', DEFAULT) -- Lists all available packages in the default repository.');
-		PRINT ('EXEC [DBO].[ZipQl] (''i'', DEFAULT) -- Installs all available packages from the default repository.');
-		PRINT ('EXEC [DBO].[ZipQl] (''i pkg-name'', DEFAULT) -- Installs a specific package from the default repository.');
-		PRINT ('EXEC [DBO].[ZipQl] (''i pkg-name/script-name.sql'', DEFAULT) -- Installs a specific script from a specific package in the default repository.');
+		PRINT ('EXEC [DBO].[Zync] (''?'', DEFAULT) -- Displays available commands and usage.');
+		PRINT ('EXEC [DBO].[Zync] (''ls'', DEFAULT) -- Lists all available packages in the default repository.');
+		PRINT ('EXEC [DBO].[Zync] (''i'', DEFAULT) -- Installs all available packages from the default repository.');
+		PRINT ('EXEC [DBO].[Zync] (''i pkg-name'', DEFAULT) -- Installs a specific package from the default repository.');
+		PRINT ('EXEC [DBO].[Zync] (''i pkg-name/script-name.sql'', DEFAULT) -- Installs a specific script from a specific package in the default repository.');
 		PRINT ('');
 		PRINT ('Note : Replace the second parameter (DEFAULT) with a specific/custom repository URL.');
 	END
