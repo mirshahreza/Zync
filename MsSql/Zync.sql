@@ -1,6 +1,4 @@
-USE [Test]
-GO
-/****** Object:  StoredProcedure [dbo].[Zync]    Script Date: 9/26/2025 9:39:53 PM ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
