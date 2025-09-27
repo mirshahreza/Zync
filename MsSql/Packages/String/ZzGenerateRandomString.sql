@@ -17,7 +17,8 @@ BEGIN
 
     WHILE @i < @Length
     BEGIN
-        DECLARE @RandomIndex INT = FLOOR(RAND() * @CharSetLength) + 1;
+        DECLARE @Rand FLOAT = (SELECT Value FROM DBO.ZzRandom);
+        DECLARE @RandomIndex INT = FLOOR(@Rand * @CharSetLength) + 1;
         SET @RandomString = @RandomString + SUBSTRING(@CharSet, @RandomIndex, 1);
         SET @i = @i + 1;
     END
