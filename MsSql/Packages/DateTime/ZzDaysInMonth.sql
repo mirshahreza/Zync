@@ -10,4 +10,4 @@ AS
 BEGIN
     RETURN DAY(EOMONTH(DATEFROMPARTS(@year, @month, 1)))
 END
-GO
+

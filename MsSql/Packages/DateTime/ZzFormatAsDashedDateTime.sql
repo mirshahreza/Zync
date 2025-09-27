@@ -18,4 +18,4 @@ BEGIN
         RETURN @datePart + N' ' + CONVERT(CHAR(8), @dateTime, 108); -- HH:mm:ss
     RETURN @datePart + N' ' + CONVERT(CHAR(5), @dateTime, 108); -- HH:mm
 END
-GO
+

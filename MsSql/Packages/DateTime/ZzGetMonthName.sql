@@ -10,4 +10,4 @@ AS
 BEGIN
     RETURN FORMAT(@date, 'MMMM', 'en-US')
 END
-GO
+

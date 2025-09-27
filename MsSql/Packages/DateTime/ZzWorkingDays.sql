@@ -13,4 +13,4 @@ BEGIN
           -(CASE WHEN DATENAME(dw, @startDate) = 'Sunday' THEN 1 ELSE 0 END)
           -(CASE WHEN DATENAME(dw, @endDate) = 'Saturday' THEN 1 ELSE 0 END)
 END
-GO
+

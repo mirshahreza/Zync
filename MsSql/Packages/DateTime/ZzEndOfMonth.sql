@@ -10,4 +10,4 @@ AS
 BEGIN
     RETURN EOMONTH(@date)
 END
-GO
+

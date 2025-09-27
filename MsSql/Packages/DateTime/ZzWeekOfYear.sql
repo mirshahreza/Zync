@@ -10,4 +10,4 @@ AS
 BEGIN
     RETURN DATEPART(wk, @date)
 END
-GO
+

@@ -10,4 +10,4 @@ AS
 BEGIN
     RETURN DATEPART(qq, @date)
 END
-GO
+

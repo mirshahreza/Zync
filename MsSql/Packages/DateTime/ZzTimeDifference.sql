@@ -13,4 +13,4 @@ BEGIN
     DECLARE @diff INT = ABS(@seconds1 - @seconds2)
     RETURN TIMEFROMPARTS(@diff / 3600, (@diff % 3600) / 60, @diff % 60, 0, 0)
 END
-GO
+

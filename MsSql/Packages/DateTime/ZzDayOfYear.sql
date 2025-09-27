@@ -10,4 +10,4 @@ AS
 BEGIN
     RETURN DATEPART(dy, @date)
 END
-GO
+

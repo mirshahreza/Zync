@@ -10,4 +10,4 @@ AS
 BEGIN
     RETURN CONVERT(CHAR(10), @date, 23); -- 23 = yyyy-mm-dd
 END
-GO
+

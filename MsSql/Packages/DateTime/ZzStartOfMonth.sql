@@ -10,4 +10,4 @@ AS
 BEGIN
     RETURN DATEFROMPARTS(YEAR(@date), MONTH(@date), 1)
 END
-GO
+

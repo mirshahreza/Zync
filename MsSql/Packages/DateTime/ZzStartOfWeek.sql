@@ -10,4 +10,4 @@ AS
 BEGIN
     RETURN DATEADD(wk, DATEDIFF(wk, 7, @date), 6)
 END
-GO
+
