@@ -81,11 +81,6 @@ If you find this project helpful, your contribution would be greatly appreciated
 
 Thank you for your support!
 
-### 💻 Contributing
-For development and contribution workflow, please see the dedicated guides:
-- `CONTRIBUTING_EN.md`
-- `CONTRIBUTING_FA.md`
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.

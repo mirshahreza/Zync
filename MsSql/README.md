@@ -168,9 +168,9 @@ EXEC dbo.Zync 'i'
 ```
 
 ## 🤝 Contributing
-For development and contribution workflow, please see the dedicated guides:
-- `CONTRIBUTING_EN.md`
-- `CONTRIBUTING_FA.md`
+For development and contribution workflow, please see the dedicated guides in the `Doc` folder:
+- [CONTRIBUTING_EN.md](Doc/CONTRIBUTING_EN.md)
+- [CONTRIBUTING_FA.md](Doc/CONTRIBUTING_FA.md)
 
 
 
