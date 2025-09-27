@@ -88,6 +88,9 @@ Code contributions are welcome! For major changes, please open an issue first to
 4. Push to the branch (`git push origin feature/AmazingFeature`).
 5. Open a Pull Request.
 
+- Persian guide: See `CONTRIBUTING_FA.md` for a complete, step-by-step guide to adding objects/packages and publishing to the main or a personal repo.
+- English guide: See `CONTRIBUTING_EN.md` for the English version of the development & contribution guide.
+
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details.
