@@ -156,6 +156,8 @@ BEGIN
 				PRINT ' -> Package ''' + @PackageName + ''' listed successfully.';
 
 				   -- New: Also show sub-items (objects) inside each package
+				   -- Preserve the fetched package index source before any further HTTP calls (like README)
+				   DECLARE @IndexSrc NVARCHAR(MAX) = @rv;
 				   DECLARE @ScanSrc NVARCHAR(MAX) = ISNULL(@deps + CHAR(10), '') + ISNULL(@rv, '');
 				   DECLARE @p INT, @q INT, @token NVARCHAR(512);
                
@@ -265,7 +267,8 @@ BEGIN
 						   IF @res IS NOT NULL EXEC SP_OADESTROY @res;
 					   END CATCH
 					   PRINT ' -> Objects inside package ' + QUOTENAME(@PackageName) + CASE WHEN @PkgDesc2 IS NOT NULL AND @PkgDesc2<>'' THEN ' — ' + @PkgDesc2 ELSE ':' END;
-					   DECLARE @PkgSrc2 NVARCHAR(MAX) = @rv;
+					   -- Use the preserved package index source (not README content)
+					   DECLARE @PkgSrc2 NVARCHAR(MAX) = @IndexSrc;
 					   SET @p = CHARINDEX('''i ', @PkgSrc2);
 					   WHILE @p > 0
 					   BEGIN
@@ -275,6 +278,9 @@ BEGIN
 						   IF @token LIKE @PackageName + '/%'
 						   BEGIN
 							   DECLARE @Item2 NVARCHAR(512) = SUBSTRING(@token, LEN(@PackageName) + 2, 512);
+							   -- Skip the meta entry '/.sql' if present
+							   IF @Item2 <> '.sql'
+							   BEGIN
 							   -- Fetch script for description
 							   DECLARE @FileUrl2 NVARCHAR(4000) = @Repo + @token;
 							   DECLARE @ItemDesc2 NVARCHAR(4000) = NULL;
@@ -313,6 +319,7 @@ BEGIN
 							   END CATCH
 							   IF @ItemDesc2 IS NULL SET @ItemDesc2 = '';
 							   PRINT '    - ' + @Item2 + CASE WHEN @ItemDesc2<>'' THEN ' — ' + @ItemDesc2 ELSE '' END;
+							   END
 						   END
 						   SET @p = CHARINDEX('''i ', @PkgSrc2, @q + 1);
 					   END
