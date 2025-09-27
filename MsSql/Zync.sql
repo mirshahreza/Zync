@@ -149,11 +149,11 @@ BEGIN
 				IF(CHARINDEX('/*', @rv)=1 AND CHARINDEX('*/', @rv) > 1)
 				BEGIN
 					SET @deps = TRIM(SUBSTRING(@rv, 3, CHARINDEX('*/', @rv)-3));
-					PRINT ' -> Fetching dependencies...';
-					PRINT REPLACE(REPLACE(@deps,'EXEC DBO.Zync ','		'),'i ','');
+						-- PRINT ' -> Fetching dependencies...';
+						-- PRINT REPLACE(REPLACE(@deps,'EXEC DBO.Zync ','		'),'i ','');
 				END
-				PRINT REPLACE(REPLACE(@rv,'EXEC DBO.Zync ','		'),'i ','');
-				PRINT ' -> Package ''' + @PackageName + ''' listed successfully.';
+					-- PRINT REPLACE(REPLACE(@rv,'EXEC DBO.Zync ','		'),'i ','');
+					-- PRINT ' -> Package ''' + @PackageName + ''' listed successfully.';
 
 				   -- New: Also show sub-items (objects) inside each package
 				   -- Preserve the fetched package index source before any further HTTP calls (like README)
