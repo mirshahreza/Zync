@@ -138,7 +138,7 @@ BEGIN
 			EXEC SP_OAMETHOD @res, 'open', NULL, 'GET',@PackageFullURL,'false';
 			EXEC SP_OAMETHOD @res, 'send';
 			EXEC SP_OAGETPROPERTY @res, 'status', @status OUT;
-			INSERT INTO @ResponseText (ResponseText) EXEC SP_OAGETPROPERTY @res, 'responseText';
+			   DELETE FROM @ResponseText; INSERT INTO @ResponseText (ResponseText) EXEC SP_OAGETPROPERTY @res, 'responseText';
 			EXEC SP_OADESTROY @res;
 			SELECT @rr=@status,@rv=responseText FROM @responseText;
 
@@ -154,6 +154,169 @@ BEGIN
 				END
 				PRINT REPLACE(REPLACE(@rv,'EXEC DBO.Zync ','		'),'i ','');
 				PRINT ' -> Package ''' + @PackageName + ''' listed successfully.';
+
+				   -- New: Also show sub-items (objects) inside each package
+				   DECLARE @ScanSrc NVARCHAR(MAX) = ISNULL(@deps + CHAR(10), '') + ISNULL(@rv, '');
+				   DECLARE @p INT, @q INT, @token NVARCHAR(512);
+               
+				   -- If no package specified, expand all packages listed in the index
+				   IF (ISNULL(@PackageName, '') = '')
+				   BEGIN
+					   PRINT '';
+					   PRINT ' -> Expanding packages and listing contained objects:';
+					   DECLARE @Packages TABLE (Name NVARCHAR(128) PRIMARY KEY);
+					   SET @p = CHARINDEX('''i ', @ScanSrc);
+					   WHILE @p > 0
+					   BEGIN
+						   SET @q = CHARINDEX('''', @ScanSrc, @p + 3);
+						   IF @q = 0 BREAK;
+						   SET @token = TRIM(SUBSTRING(@ScanSrc, @p + 3, @q - (@p + 3)));
+						   -- Only capture top-level packages (no slash)
+						   IF @token NOT LIKE '%.sql' AND CHARINDEX('/', @token) = 0 AND LEN(@token) > 0
+							   IF NOT EXISTS (SELECT 1 FROM @Packages WHERE Name = @token) INSERT INTO @Packages(Name) VALUES(@token);
+						   SET @p = CHARINDEX('''i ', @ScanSrc, @q + 1);
+					   END
+
+					   DECLARE @CurPkg NVARCHAR(128);
+					   DECLARE pkg_cursor CURSOR LOCAL FOR SELECT Name FROM @Packages ORDER BY Name;
+					   OPEN pkg_cursor; FETCH NEXT FROM pkg_cursor INTO @CurPkg;
+					   WHILE @@FETCH_STATUS = 0
+					   BEGIN
+						   -- In root ls mode we only print package names without descriptions
+						   PRINT '    ' + QUOTENAME(@CurPkg) + ':';
+						   DECLARE @PkgUrl NVARCHAR(4000) = @Repo + @CurPkg + '/.sql';
+						   SET @PkgUrl = REPLACE(@PkgUrl,'//.sql','/.sql');
+
+						   BEGIN TRY
+							   EXEC SP_OACREATE 'MSXML2.ServerXMLHTTP', @res OUT;
+							   EXEC SP_OAMETHOD @res, 'open', NULL, 'GET',@PkgUrl,'false';
+							   EXEC SP_OAMETHOD @res, 'send';
+							   EXEC SP_OAGETPROPERTY @res, 'status', @status OUT;
+							   DELETE FROM @ResponseText; INSERT INTO @ResponseText (ResponseText) EXEC SP_OAGETPROPERTY @res, 'responseText';
+							   EXEC SP_OADESTROY @res;
+							   SELECT @rr=@status,@rv=responseText FROM @responseText;
+
+							   IF(@rr=200)
+							   BEGIN
+								   DECLARE @PkgSrc NVARCHAR(MAX) = @rv;
+								   SET @p = CHARINDEX('''i ', @PkgSrc);
+								   WHILE @p > 0
+								   BEGIN
+									   SET @q = CHARINDEX('''', @PkgSrc, @p + 3);
+									   IF @q = 0 BREAK;
+									   SET @token = TRIM(SUBSTRING(@PkgSrc, @p + 3, @q - (@p + 3)));
+									   -- Expecting tokens like '<Pkg>/SomeScript.sql'
+									   IF @token LIKE @CurPkg + '/%'
+									   BEGIN
+										   DECLARE @Item NVARCHAR(512) = SUBSTRING(@token, LEN(@CurPkg) + 2, 512);
+										   -- Root ls mode: show only filenames, no descriptions
+										   PRINT '        - ' + @Item;
+									   END
+									   SET @p = CHARINDEX('''i ', @PkgSrc, @q + 1);
+								   END
+							   END
+							   ELSE
+							   BEGIN
+								   PRINT '        (could not fetch: HTTP ' + CAST(@rr AS VARCHAR(10)) + ')';
+							   END
+						   END TRY
+						   BEGIN CATCH
+							   PRINT '        (error expanding package: ' + ERROR_MESSAGE() + ')';
+							   IF @res IS NOT NULL EXEC SP_OADESTROY @res;
+						   END CATCH
+
+						   FETCH NEXT FROM pkg_cursor INTO @CurPkg;
+					   END
+					   CLOSE pkg_cursor; DEALLOCATE pkg_cursor;
+				   END
+				   ELSE
+				   BEGIN
+					   -- Specific package requested: list its objects
+					   PRINT '';
+					   -- Fetch package README for description
+					   DECLARE @PkgReadmeUrl2 NVARCHAR(4000) = @Repo + @PackageName + '/README.md';
+					   DECLARE @PkgDesc2 NVARCHAR(4000) = NULL;
+					   BEGIN TRY
+						   EXEC SP_OACREATE 'MSXML2.ServerXMLHTTP', @res OUT;
+						   EXEC SP_OAMETHOD @res, 'open', NULL, 'GET',@PkgReadmeUrl2,'false';
+						   EXEC SP_OAMETHOD @res, 'send';
+						   EXEC SP_OAGETPROPERTY @res, 'status', @status OUT;
+						   DELETE FROM @ResponseText; INSERT INTO @ResponseText (ResponseText) EXEC SP_OAGETPROPERTY @res, 'responseText';
+						   EXEC SP_OADESTROY @res;
+						   SELECT @rr=@status,@rv=responseText FROM @ResponseText;
+						   IF (@rr=200)
+						   BEGIN
+							   DECLARE @readme2 NVARCHAR(MAX) = @rv;
+							   DECLARE @ls2 INT=1, @le2 INT, @line2 NVARCHAR(4000);
+							   WHILE 1=1
+							   BEGIN
+								   SET @le2 = CHARINDEX(CHAR(10), @readme2, @ls2);
+								   IF @le2 = 0 SET @le2 = LEN(@readme2) + 1;
+								   SET @line2 = TRIM(REPLACE(REPLACE(SUBSTRING(@readme2, @ls2, @le2-@ls2), CHAR(13), ''), CHAR(10), ''));
+								   IF (@line2 IS NULL OR @line2 = '') OR LEFT(@line2,3)='```' OR LEFT(@line2,1)='#' OR LEFT(@line2,2)='##' OR LEFT(@line2,1)='>' OR LEFT(@line2,1)='-' OR LEFT(@line2,1)='*'
+								   BEGIN
+									   IF @le2 >= LEN(@readme2) BREAK; ELSE SET @ls2 = @le2 + 1; CONTINUE;
+								   END
+								   ELSE BEGIN SET @PkgDesc2 = LEFT(@line2, 180); BREAK; END
+							   END
+						   END
+					   END TRY
+					   BEGIN CATCH
+						   IF @res IS NOT NULL EXEC SP_OADESTROY @res;
+					   END CATCH
+					   PRINT ' -> Objects inside package ' + QUOTENAME(@PackageName) + CASE WHEN @PkgDesc2 IS NOT NULL AND @PkgDesc2<>'' THEN ' — ' + @PkgDesc2 ELSE ':' END;
+					   DECLARE @PkgSrc2 NVARCHAR(MAX) = @rv;
+					   SET @p = CHARINDEX('''i ', @PkgSrc2);
+					   WHILE @p > 0
+					   BEGIN
+						   SET @q = CHARINDEX('''', @PkgSrc2, @p + 3);
+						   IF @q = 0 BREAK;
+						   SET @token = TRIM(SUBSTRING(@PkgSrc2, @p + 3, @q - (@p + 3)));
+						   IF @token LIKE @PackageName + '/%'
+						   BEGIN
+							   DECLARE @Item2 NVARCHAR(512) = SUBSTRING(@token, LEN(@PackageName) + 2, 512);
+							   -- Fetch script for description
+							   DECLARE @FileUrl2 NVARCHAR(4000) = @Repo + @token;
+							   DECLARE @ItemDesc2 NVARCHAR(4000) = NULL;
+							   BEGIN TRY
+								   EXEC SP_OACREATE 'MSXML2.ServerXMLHTTP', @res OUT;
+								   EXEC SP_OAMETHOD @res, 'open', NULL, 'GET',@FileUrl2,'false';
+								   EXEC SP_OAMETHOD @res, 'send';
+								   EXEC SP_OAGETPROPERTY @res, 'status', @status OUT;
+								   DELETE FROM @ResponseText; INSERT INTO @ResponseText (ResponseText) EXEC SP_OAGETPROPERTY @res, 'responseText';
+								   EXEC SP_OADESTROY @res;
+								   SELECT @rr=@status,@rv=responseText FROM @ResponseText;
+								   IF (@rr=200)
+								   BEGIN
+									   DECLARE @src2 NVARCHAR(MAX) = @rv;
+									   DECLARE @pos2 INT = CHARINDEX('-- Description:', @src2);
+									   IF @pos2 > 0
+									   BEGIN
+										   DECLARE @eol2 INT = CHARINDEX(CHAR(10), @src2, @pos2);
+										   IF @eol2 = 0 SET @eol2 = LEN(@src2)+1;
+										   SET @ItemDesc2 = TRIM(REPLACE(REPLACE(SUBSTRING(@src2, @pos2 + LEN('-- Description:'), @eol2 - (@pos2 + LEN('-- Description:'))), CHAR(13), ''), CHAR(10), ''));
+									   END
+									   ELSE
+									   BEGIN
+										   SET @pos2 = CHARINDEX('Description:', @src2);
+										   IF @pos2 > 0 AND @pos2 < 500
+										   BEGIN
+											   DECLARE @end22 INT = CHARINDEX(CHAR(10), @src2, @pos2);
+											   IF @end22 = 0 SET @end22 = LEN(@src2)+1;
+											   SET @ItemDesc2 = TRIM(REPLACE(REPLACE(SUBSTRING(@src2, @pos2 + LEN('Description:'), @end22 - (@pos2 + LEN('Description:'))), CHAR(13), ''), CHAR(10), ''));
+										   END
+									   END
+								   END
+							   END TRY
+							   BEGIN CATCH
+								   IF @res IS NOT NULL EXEC SP_OADESTROY @res;
+							   END CATCH
+							   IF @ItemDesc2 IS NULL SET @ItemDesc2 = '';
+							   PRINT '    - ' + @Item2 + CASE WHEN @ItemDesc2<>'' THEN ' — ' + @ItemDesc2 ELSE '' END;
+						   END
+						   SET @p = CHARINDEX('''i ', @PkgSrc2, @q + 1);
+					   END
+				   END
 			END
 			ELSE
 			BEGIN
