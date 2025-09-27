@@ -10,4 +10,4 @@ AS
 BEGIN
     RETURN @principal * @rate * @years / 100;
 END
-GO
+

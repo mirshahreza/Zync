@@ -11,4 +11,4 @@ BEGIN
     DECLARE @monthlyRate DECIMAL(18, 10) = @rate / 100 / 12;
     RETURN @principal * @monthlyRate * POWER(1 + @monthlyRate, @months) / (POWER(1 + @monthlyRate, @months) - 1);
 END
-GO
+

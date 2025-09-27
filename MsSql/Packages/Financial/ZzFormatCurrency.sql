@@ -10,4 +10,4 @@ AS
 BEGIN
     RETURN FORMAT(@amount, 'C', @culture);
 END
-GO
+
