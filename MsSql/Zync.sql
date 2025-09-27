@@ -126,12 +126,35 @@ BEGIN
 
 	IF (@Command LIKE 'ls%')
     BEGIN
-		SET @PackageName	= TRIM(SUBSTRING(@Command, 3, LEN(@Command)));
+		-- Support optional search: syntax 'ls ?term' or 'ls <package> ?term'
+		DECLARE @RawArg NVARCHAR(256) = TRIM(SUBSTRING(@Command, 3, LEN(@Command)));
+		DECLARE @Search NVARCHAR(128) = NULL;
+		DECLARE @SearchPattern NVARCHAR(256) = NULL;
+		DECLARE @qpos INT = NULL;
+		SET @qpos = CHARINDEX('?', @RawArg);
+		IF (@qpos > 0)
+		BEGIN
+			SET @Search = TRIM(SUBSTRING(@RawArg, @qpos + 1, 4000));
+			SET @PackageName = TRIM(LEFT(@RawArg, @qpos - 1));
+			IF (@Search = '') SET @Search = NULL;
+		END
+		ELSE
+		BEGIN
+			SET @PackageName = @RawArg;
+		END
+
+		IF @Search IS NOT NULL
+		BEGIN
+			-- Build a case-insensitive LIKE pattern; allow '*' as wildcard too
+			SET @SearchPattern = LOWER(REPLACE(@Search, '*', '%'));
+			IF CHARINDEX('%', @SearchPattern) = 0 SET @SearchPattern = '%' + @SearchPattern + '%';
+		END
+
 		IF(@PackageName NOT LIKE N'%.sql') SET @PackageFullURL = @PackageFullURL + @PackageName + '/' + '.sql'
 		ELSE SET @PackageFullURL = @PackageFullURL + @PackageName;
 		SET @PackageFullURL = REPLACE(@PackageFullURL,'//.sql','/.sql');
 
-		PRINT ('Listing package(s): '''+ @PackageName +'''...');
+		PRINT ('Listing package(s): '''+ @PackageName + CASE WHEN @Search IS NOT NULL THEN ''' (filter: ' + @Search + ')' ELSE '''' END + '...');
 
 		BEGIN TRY
 			EXEC SP_OACREATE 'MSXML2.ServerXMLHTTP', @res OUT;
@@ -165,7 +188,10 @@ BEGIN
 				   IF (ISNULL(@PackageName, '') = '')
 				   BEGIN
 					   PRINT '';
-					   PRINT ' -> Expanding packages and listing contained objects:';
+					   IF @Search IS NULL
+					   	PRINT ' -> Expanding packages and listing contained objects:';
+					   ELSE
+					   	PRINT ' -> Searching across packages and objects...';
 					   DECLARE @Packages TABLE (Name NVARCHAR(128) PRIMARY KEY);
 					   SET @p = CHARINDEX('''i ', @ScanSrc);
 					   WHILE @p > 0
@@ -184,8 +210,8 @@ BEGIN
 					   OPEN pkg_cursor; FETCH NEXT FROM pkg_cursor INTO @CurPkg;
 					   WHILE @@FETCH_STATUS = 0
 					   BEGIN
-						   -- In root ls mode we only print package names without descriptions
-						   PRINT '    ' + QUOTENAME(@CurPkg) + ':';
+						   -- In root ls mode print package heading unless filtering; with filtering, print when first match is found
+						   IF @Search IS NULL PRINT '    ' + QUOTENAME(@CurPkg) + ':';
 						   DECLARE @PkgUrl NVARCHAR(4000) = @Repo + @CurPkg + '/.sql';
 						   SET @PkgUrl = REPLACE(@PkgUrl,'//.sql','/.sql');
 
@@ -201,6 +227,7 @@ BEGIN
 							   IF(@rr=200)
 							   BEGIN
 								   DECLARE @PkgSrc NVARCHAR(MAX) = @rv;
+						   	   	   DECLARE @GroupPrinted BIT = 0;
 								   SET @p = CHARINDEX('''i ', @PkgSrc);
 								   WHILE @p > 0
 								   BEGIN
@@ -212,7 +239,21 @@ BEGIN
 									   BEGIN
 										   DECLARE @Item NVARCHAR(512) = SUBSTRING(@token, LEN(@CurPkg) + 2, 512);
 										   -- Root ls mode: show only filenames, no descriptions
-										   PRINT '        - ' + @Item;
+						   	   	   	   	   IF @Search IS NULL
+						   	   	   	   	   	   PRINT '        - ' + @Item;
+						   	   	   	   	   ELSE
+						   	   	   	   	   	   BEGIN
+						   	   	   	   	   	   	   DECLARE @ItemLower NVARCHAR(512) = LOWER(@Item);
+						   	   	   	   	   	   	   IF PATINDEX(@SearchPattern, @ItemLower) > 0
+						   	   	   	   	   	   	   BEGIN
+						   	   	   	   	   	   	   	   IF @GroupPrinted = 0
+						   	   	   	   	   	   	   	   BEGIN
+						   	   	   	   	   	   	   	   	   PRINT '    ' + QUOTENAME(@CurPkg) + ':';
+						   	   	   	   	   	   	   	   	   SET @GroupPrinted = 1;
+						   	   	   	   	   	   	   	   END
+						   	   	   	   	   	   	   	   PRINT '        - ' + @Item;
+						   	   	   	   	   	   	   END
+						   	   	   	   	   	   END
 									   END
 									   SET @p = CHARINDEX('''i ', @PkgSrc, @q + 1);
 								   END
@@ -266,7 +307,10 @@ BEGIN
 					   BEGIN CATCH
 						   IF @res IS NOT NULL EXEC SP_OADESTROY @res;
 					   END CATCH
-					   PRINT ' -> Objects inside package ' + QUOTENAME(@PackageName) + CASE WHEN @PkgDesc2 IS NOT NULL AND @PkgDesc2<>'' THEN ' — ' + @PkgDesc2 ELSE ':' END;
+					   IF @Search IS NULL
+					   	   PRINT ' -> Objects inside package ' + QUOTENAME(@PackageName) + CASE WHEN @PkgDesc2 IS NOT NULL AND @PkgDesc2<>'' THEN ' — ' + @PkgDesc2 ELSE ':' END;
+					   ELSE
+					   	   PRINT ' -> Searching inside package ' + QUOTENAME(@PackageName) + CASE WHEN @PkgDesc2 IS NOT NULL AND @PkgDesc2<>'' THEN ' — ' + @PkgDesc2 ELSE '' END + ' (filter: ' + @Search + ')';
 					   -- Use the preserved package index source (not README content)
 					   DECLARE @PkgSrc2 NVARCHAR(MAX) = @IndexSrc;
 					   SET @p = CHARINDEX('''i ', @PkgSrc2);
@@ -317,8 +361,17 @@ BEGIN
 							   BEGIN CATCH
 								   IF @res IS NOT NULL EXEC SP_OADESTROY @res;
 							   END CATCH
-							   IF @ItemDesc2 IS NULL SET @ItemDesc2 = '';
-							   PRINT '    - ' + @Item2 + CASE WHEN @ItemDesc2<>'' THEN ' — ' + @ItemDesc2 ELSE '' END;
+						   	   IF @ItemDesc2 IS NULL SET @ItemDesc2 = '';
+						   	   -- Apply search filter if provided: match on file name or description
+						   	   IF (@Search IS NULL)
+						   	   	   PRINT '    - ' + @Item2 + CASE WHEN @ItemDesc2<>'' THEN ' — ' + @ItemDesc2 ELSE '' END;
+						   	   ELSE
+						   	   	   BEGIN
+						   	   	   	   DECLARE @Item2Lower NVARCHAR(512) = LOWER(@Item2);
+						   	   	   	   DECLARE @Desc2Lower NVARCHAR(4000) = LOWER(@ItemDesc2);
+						   	   	   	   IF PATINDEX(@SearchPattern, @Item2Lower) > 0 OR PATINDEX(@SearchPattern, @Desc2Lower) > 0
+						   	   	   	   	   PRINT '    - ' + @Item2 + CASE WHEN @ItemDesc2<>'' THEN ' — ' + @ItemDesc2 ELSE '' END;
+						   	   	   END
 							   END
 						   END
 						   SET @p = CHARINDEX('''i ', @PkgSrc2, @q + 1);
