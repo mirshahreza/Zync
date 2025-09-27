@@ -126,6 +126,12 @@ BEGIN
                     DECLARE @DropStatement NVARCHAR(MAX);
                     DECLARE @start INT, @end INT;
 
+                    -- Strip comments to prevent parsing errors
+                    WHILE CHARINDEX('/*', @SqlScript) > 0
+                        SET @SqlScript = STUFF(@SqlScript, CHARINDEX('/*', @SqlScript), CHARINDEX('*/', @SqlScript, CHARINDEX('/*', @SqlScript)) - CHARINDEX('/*', @SqlScript) + 2, '');
+                    WHILE CHARINDEX('--', @SqlScript) > 0
+                        SET @SqlScript = STUFF(@SqlScript, CHARINDEX('--', @SqlScript), CHARINDEX(CHAR(10), @SqlScript, CHARINDEX('--', @SqlScript)) - CHARINDEX('--', @SqlScript), '');
+
                     -- Normalize script for parsing
                     SET @SqlScript = UPPER(REPLACE(REPLACE(@SqlScript, '[', ''), ']', ''));
 
@@ -144,8 +150,16 @@ BEGIN
                         IF @end = 0 OR @end IS NULL SET @end = CHARINDEX(' AS', @SqlScript);
                         SET @ObjectName = TRIM(SUBSTRING(@SqlScript, 1, @end - 1));
 
+                        -- If the object name contains a schema, extract just the object name for the TYPE_ID check
+                        DECLARE @ObjectOnlyName NVARCHAR(128) = PARSENAME(@ObjectName, 1);
+
                         -- Build DROP statement
-                        SET @DropStatement = 'DROP ' + @ObjectType + ' IF EXISTS ' + @ObjectName;
+                        IF @ObjectType = 'TYPE'
+						BEGIN
+							SET @DropStatement = 'IF TYPE_ID(''' + @ObjectName + ''') IS NOT NULL DROP ' + @ObjectType + ' ' + @ObjectName;
+						END
+                        ELSE
+                            SET @DropStatement = 'DROP ' + @ObjectType + ' IF EXISTS ' + @ObjectName;
                         
                         PRINT ' -> Dropping ' + @ObjectType + ' ' + @ObjectName + '...';
                         EXECUTE SP_EXECUTESQL @DropStatement;
