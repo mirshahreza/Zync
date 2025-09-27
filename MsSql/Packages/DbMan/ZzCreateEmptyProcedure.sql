@@ -13,7 +13,6 @@ BEGIN
 
 	DECLARE @S NVARCHAR(4000);
 	SET @S = '
-CREATE PROCEDURE [DBO].['+@ProcedureName+'] 
 	@Param1 INT
 AS
 BEGIN

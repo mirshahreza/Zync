@@ -1,4 +1,10 @@
-CREATE FUNCTION ZzTimeDifference (@time1 TIME, @time2 TIME)
+-- =============================================
+-- Author:		Zync
+-- Create date:	2025-09-27
+-- Description:	Returns absolute difference between two times as TIME.
+-- Sample:		SELECT [dbo].[ZzTimeDifference]('08:30','10:45');
+-- =============================================
+CREATE OR ALTER FUNCTION [dbo].[ZzTimeDifference] (@time1 TIME, @time2 TIME)
 RETURNS TIME
 AS
 BEGIN

@@ -1,4 +1,10 @@
-CREATE FUNCTION ZzAge (@birthDate DATE)
+-- =============================================
+-- Author:		Zync
+-- Create date:	2025-09-27
+-- Description:	Calculates age in full years from birth date to today.
+-- Sample:		SELECT [dbo].[ZzAge]('1990-01-15');
+-- =============================================
+CREATE OR ALTER FUNCTION [dbo].[ZzAge] (@birthDate DATE)
 RETURNS INT
 AS
 BEGIN

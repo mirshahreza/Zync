@@ -1,4 +1,10 @@
-CREATE FUNCTION ZzWorkingDays (@startDate DATE, @endDate DATE)
+-- =============================================
+-- Author:		Zync
+-- Create date:	2025-09-27
+-- Description:	Counts working days between two dates (excludes Sat/Sun).
+-- Sample:		SELECT [dbo].[ZzWorkingDays]('2025-09-01','2025-09-30');
+-- =============================================
+CREATE OR ALTER FUNCTION [dbo].[ZzWorkingDays] (@startDate DATE, @endDate DATE)
 RETURNS INT
 AS
 BEGIN

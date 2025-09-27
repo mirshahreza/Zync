@@ -1,4 +1,10 @@
-CREATE FUNCTION ZzConvertToShamsi(@gregorianDate DATE)
+-- =============================================
+-- Author:		Zync
+-- Create date:	2025-09-27
+-- Description:	Formats a Gregorian date as Persian (fa-IR) yyyy/MM/dd.
+-- Sample:		SELECT [dbo].[ZzConvertToShamsi]('2025-09-27');
+-- =============================================
+CREATE OR ALTER FUNCTION [dbo].[ZzConvertToShamsi](@gregorianDate DATE)
 RETURNS NVARCHAR(10)
 AS
 BEGIN

@@ -13,15 +13,15 @@ BEGIN
 
 	DECLARE @S NVARCHAR(4000);
 	SET @S = '
-CREATE   FUNCTION [DBO].['+@ScalarFunctionName+'] 
-( 
-    @Param1 INT, @Param2 INT 
-)
-RETURNS INT
-BEGIN
-    RETURN 1
-END
-';
+	CREATE OR ALTER  FUNCTION [DBO].['+@ScalarFunctionName+'] 
+	( 
+		@Param1 INT, @Param2 INT 
+	)
+	RETURNS INT
+	BEGIN
+		RETURN 1
+	END
+	';
 
 	EXECUTE SP_EXECUTESQL @S;
 END
