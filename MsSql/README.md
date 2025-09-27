@@ -80,17 +80,6 @@ Numeric formatting and conversion utilities:
 EXEC DBO.Zync 'Math'
 ```
 
-### 👤 AppEnd
-Application framework components:
-- User management system
-- Role-based access control (RBAC)
-- Activity logging
-- Authentication helpers
-
-```sql
-EXEC DBO.Zync 'AppEnd'
-```
-
 ### 📅 DateTime
 Date and time utilities:
 - Hijri and Shamsi converters
@@ -117,7 +106,6 @@ MsSql/
 ├── README.md
 ├── Zync.sql              # Core package manager setup
 └── Packages/
-    ├── AppEnd/           # Application framework
     ├── DbMan/            # Database management utilities
     ├── DbMon/            # Database monitoring tools
     ├── DbSel/            # Database selection/querying tools
@@ -164,18 +152,12 @@ EXEC DBO.Zync 'String/ZzSplitString.sql'
 -- Install table creation utilities
 EXEC DBO.Zync 'DbMan/ZzCreateTableGuid.sql'
 
--- Install user management system
-EXEC DBO.Zync 'AppEnd/AAA_Users.sql'
-```
 
 ### Deploy Complete Solutions
 
 ```sql
 -- Install all string utilities
 EXEC DBO.Zync 'String'
-
--- Install complete user management system
-EXEC DBO.Zync 'AppEnd'
 
 -- Install everything
 EXEC DBO.Zync ''

@@ -54,7 +54,6 @@ This command queries the GitHub API and returns a list of available packages (di
 Fetching available packages from repository...
 Available packages:
 -------------------
-AppEnd
 DbMan
 DbMon
 DbSel
@@ -101,7 +100,6 @@ The default repository already includes several useful packages to get you start
 *   **DbMan, DbMon, DbSel:** A powerful suite of tools for database administration, including procedures to create/drop tables, manage columns, and analyze object dependencies.
 *   **String:** A collection of functions for common string operations like splitting, trimming, and counting.
 *   **Math:** Helper functions for formatting numbers and converting byte sizes (e.g., to KB, MB, GB).
-*   **AppEnd:** A set of building blocks for applications, including user and role management.
 
 ### The Future is Bright
 

@@ -34,7 +34,6 @@ Zync/
     ├── README.md            # SQL Server specific documentation
     ├── Zync.sql             # Core package manager setup
     └── Packages/            # Available packages
-        ├── AppEnd/          # Application framework
         ├── DbMon/           # Database utilities  
         ├── DbMan/           # Database utilities  
         ├── DbSel/           # Database utilities  
