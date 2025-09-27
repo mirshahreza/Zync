@@ -1,24 +1,21 @@
 # 📊 DbMon Package
 
-The `DbMon` package provides a collection of scripts for database monitoring and diagnostics.
+The `DbMon` package provides scripts for database monitoring and diagnostics.
 
 ## 🚀 Deployment
 
-### Deploy All Scripts
-To deploy all scripts in the `DbMon` package, run the following command:
+To deploy all scripts in the `DbMon` package:
 ```sql
 EXEC dbo.Zync 'i DbMon'
 ```
-Alternatively, you can use:
+Alternatively:
 ```sql
 EXEC dbo.Zync 'i DbMon/.sql'
 ```
 
-## 📜 Scripts
-
-This package includes utilities for:
-- Viewing active sessions and blocking processes.
-- Checking backup history and agent job status.
-- Analyzing index fragmentation and usage.
-- Identifying expensive or long-running queries.
-- And more.
+## 📜 Included Utilities
+- Active sessions and blocking processes
+- Backup history and Agent jobs status
+- Index fragmentation and usage analysis
+- Expensive/long-running queries
+- Log file usage, growth, and more

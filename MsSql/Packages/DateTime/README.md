@@ -1,26 +1,21 @@
-```markdown
 # 📅 DateTime Package
 
 The `DateTime` package provides a collection of functions for advanced date and time manipulations.
 
 ## 🚀 Deployment
 
-### Deploy All Scripts
-To deploy all scripts in the `DateTime` package, run the following command:
+To deploy all scripts in the `DateTime` package:
 ```sql
 EXEC dbo.Zync 'i DateTime'
 ```
-Alternatively, you can use:
+Alternatively:
 ```sql
 EXEC dbo.Zync 'i DateTime/.sql'
 ```
 
-## 📜 Scripts
-
-This package includes utilities for:
-- Hijri and Shamsi calendar conversions.
-- Date and time formatting.
-- Calculating the start and end of a day, week, month, or year.
-- Business day calculations.
-- And more.
-```
+## 📜 Included Utilities
+- Hijri and Shamsi calendar conversions
+- Date and time formatting
+- Start/end of day, week, month, year calculations
+- Working/business day calculations
+- Other date/time helpers

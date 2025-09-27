@@ -1,22 +1,21 @@
 # 🔢 Math Package
 
-The `Math` package provides a collection of helper functions for numeric formatting and calculations.
+The `Math` package provides helper functions for numeric formatting and calculations.
 
 ## 🚀 Deployment
 
-### Deploy All Scripts
-To deploy all scripts in the `Math` package, run the following command:
+To deploy all scripts in the `Math` package:
 ```sql
 EXEC dbo.Zync 'i Math'
 ```
-Alternatively, you can use:
+Alternatively:
 ```sql
 EXEC dbo.Zync 'i Math/.sql'
 ```
 
-## 📜 Scripts
-
-This package includes utilities for:
-- Formatting byte sizes (e.g., KB, MB, GB).
-- Humanizing numbers.
-- Other mathematical helper functions.
+## 📜 Included Utilities
+- Format byte sizes (KB, MB, GB)
+- Humanize numbers
+- Statistical helpers (e.g., standard deviation)
+- Conversions (binary/hex/roman)
+- Misc math helpers (safe divide, rounding, random, ...)

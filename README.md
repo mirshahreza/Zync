@@ -20,7 +20,7 @@ Zync simplifies database development by applying modern package management princ
 Zync currently supports **SQL Server**, with plans to expand to other database systems.
 
 ### 📊 SQL Server
-> **Note**: Under development but usable. Some features, like package uninstallation, are not yet implemented.
+> Note: Under active development and usable. Some behaviors may change as the project evolves.
 
 **[📖 Get Started with SQL Server →](MsSql/README.md)**
 
@@ -37,8 +37,10 @@ Zync/
         ├── DbMon/           # Database utilities  
         ├── DbMan/           # Database utilities  
         ├── DbSel/           # Database utilities  
+        ├── DateTime/        # Date/time functions
         ├── Math/            # Numeric functions
-        └── String/          # String functions
+        ├── String/          # String functions
+        └── Financial/       # Financial functions (WIP)
 ```
 
 ## 🎯 Naming Conventions
@@ -79,17 +81,10 @@ If you find this project helpful, your contribution would be greatly appreciated
 
 Thank you for your support!
 
-### 💻 Contributing to Code
-Code contributions are welcome! For major changes, please open an issue first to discuss what you would like to change.
-
-1. Fork the repository.
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`).
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4. Push to the branch (`git push origin feature/AmazingFeature`).
-5. Open a Pull Request.
-
-- Persian guide: See `CONTRIBUTING_FA.md` for a complete, step-by-step guide to adding objects/packages and publishing to the main or a personal repo.
-- English guide: See `CONTRIBUTING_EN.md` for the English version of the development & contribution guide.
+### 💻 Contributing
+For development and contribution workflow, please see the dedicated guides:
+- `CONTRIBUTING_EN.md`
+- `CONTRIBUTING_FA.md`
 
 ## 📄 License
 

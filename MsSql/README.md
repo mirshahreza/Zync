@@ -8,39 +8,41 @@ Complete SQL Server implementation of Zync database package manager. Install and
 
 ### 1. Setup Database
 
-First, download and run the `Zync.sql` script to initialize the package management system in your database:
+Run the `Zync.sql` script to initialize the package management system in your database:
 
 ```sql
--- Run this in your SQL Server database
--- Download from: MsSql/Zync.sql
+-- Execute this once in your SQL Server database
+-- File path: MsSql/Zync.sql
 ```
 
-### 2. Deploy Your First Package
+### 2. Explore Commands
 
-Help and Commands avalable:
+View help and available commands:
 
 ```sql
-EXEC DBO.Zync '?'
+EXEC dbo.Zync '?'
 ```
 
-Deploy a complete package (e.g., database utilities):
+### 3. Deploy Packages or Scripts
+
+Install a complete package (e.g., database utilities):
 
 ```sql
-EXEC DBO.Zync 'i DbMan'
-EXEC DBO.Zync 'i DbMon'
-EXEC DBO.Zync 'i DbSel'
+EXEC dbo.Zync 'i DbMan'
+EXEC dbo.Zync 'i DbMon'
+EXEC dbo.Zync 'i DbSel'
 ```
 
-Deploy a specific script:
+Install a specific script from a package:
 
 ```sql
-EXEC DBO.Zync 'i String/ZzSplitString.sql'
+EXEC dbo.Zync 'i String/ZzSplitString.sql'
 ```
 
-Deploy all available packages:
+Install all available packages listed by the index:
 
 ```sql
-EXEC DBO.Zync 'i'
+EXEC dbo.Zync 'i'
 ```
 
 ## 📚 Available Packages
@@ -54,9 +56,9 @@ Database utilities for common administrative tasks:
 - Schema exploration tools
 
 ```sql
-EXEC DBO.Zync 'DbMan'
-EXEC DBO.Zync 'DbMon'
-EXEC DBO.Zync 'DbSel'
+EXEC dbo.Zync 'i DbMan'
+EXEC dbo.Zync 'i DbMon'
+EXEC dbo.Zync 'i DbSel'
 ```
 
 ### 🔤 String
@@ -67,7 +69,7 @@ String manipulation and processing functions:
 - N-th item extraction
 
 ```sql
-EXEC DBO.Zync 'String'
+EXEC dbo.Zync 'i String'
 ```
 
 ### 🔢 Math  
@@ -77,7 +79,7 @@ Numeric formatting and conversion utilities:
 - Mathematical helper functions
 
 ```sql
-EXEC DBO.Zync 'Math'
+EXEC dbo.Zync 'i Math'
 ```
 
 ### 📅 DateTime
@@ -88,7 +90,7 @@ Date and time utilities:
 - Working day calculations
 
 ```sql
-EXEC DBO.Zync 'DateTime'
+EXEC dbo.Zync 'i DateTime'
 ```
 
 ### 💰 Financial
@@ -96,7 +98,7 @@ Financial calculations and utilities:
 - (Content to be added)
 
 ```sql
-EXEC DBO.Zync 'Financial'
+EXEC dbo.Zync 'i Financial'
 ```
 
 ## 🏗️ Project Structure
@@ -109,8 +111,10 @@ MsSql/
     ├── DbMan/            # Database management utilities
     ├── DbMon/            # Database monitoring tools
     ├── DbSel/            # Database selection/querying tools
+    ├── DateTime/         # Date/time functions
     ├── Math/             # Numeric functions
-    └── String/           # String functions
+    ├── String/           # String functions
+    └── Financial/        # Financial functions (WIP)
 ```
 
 ## 📖 Usage Examples
@@ -128,40 +132,45 @@ Behavior:
 Examples:
 ```sql
 -- Global listing (names only)
-EXEC DBO.Zync 'ls'
+EXEC dbo.Zync 'ls'
 
 -- List DateTime package with descriptions
-EXEC DBO.Zync 'ls DateTime'
+EXEC dbo.Zync 'ls DateTime'
 
 -- Search everywhere for "week" (e.g., WeekOfYear)
-EXEC DBO.Zync 'ls ?week'
+EXEC dbo.Zync 'ls ?week'
 
 -- Search inside DbMon for items matching agent%status
-EXEC DBO.Zync 'ls DbMon ?agent%status'
+EXEC dbo.Zync 'ls DbMon ?agent%status'
 
 -- You can also use * as wildcard
-EXEC DBO.Zync 'ls DateTime ?start*of'
+EXEC dbo.Zync 'ls DateTime ?start*of'
 ```
 
 ### Deploy Specific Functionality
 
 ```sql
 -- Install string splitting function
-EXEC DBO.Zync 'String/ZzSplitString.sql'
+EXEC dbo.Zync 'i String/ZzSplitString.sql'
 
 -- Install table creation utilities
-EXEC DBO.Zync 'DbMan/ZzCreateTableGuid.sql'
-
+EXEC dbo.Zync 'i DbMan/ZzCreateTableGuid.sql'
+```
 
 ### Deploy Complete Solutions
 
 ```sql
 -- Install all string utilities
-EXEC DBO.Zync 'String'
+EXEC dbo.Zync 'i String'
 
 -- Install everything
-EXEC DBO.Zync ''
+EXEC dbo.Zync 'i'
 ```
+
+## 🤝 Contributing
+For development and contribution workflow, please see the dedicated guides:
+- `CONTRIBUTING_EN.md`
+- `CONTRIBUTING_FA.md`
 
 
 

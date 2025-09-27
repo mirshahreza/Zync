@@ -4,20 +4,18 @@ The `String` package provides a collection of functions for common string manipu
 
 ## 🚀 Deployment
 
-### Deploy All Scripts
-To deploy all scripts in the `String` package, run the following command:
+To deploy all scripts in the `String` package:
 ```sql
 EXEC dbo.Zync 'i String'
 ```
-Alternatively, you can use:
+Alternatively:
 ```sql
 EXEC dbo.Zync 'i String/.sql'
 ```
 
-## 📜 Scripts
-
-This package includes utilities for:
-- Splitting strings by a delimiter.
-- Counting words.
-- Trimming characters from strings.
-- And more.
+## 📜 Included Utilities
+- Split strings by a delimiter
+- Count words/characters and substring occurrences
+- Trim and normalize text
+- Case transformations (camel/snake, etc.)
+- Misc string helpers (masking, soundex, similarity, slugify, ...)

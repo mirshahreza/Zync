@@ -1,23 +1,22 @@
 # 🛠️ DbMan Package
 
-The `DbMan` package provides a collection of scripts for database structure management and manipulation.
+The `DbMan` package provides scripts for database structure management and manipulation.
 
 ## 🚀 Deployment
 
-### Deploy All Scripts
-To deploy all scripts in the `DbMan` package, run the following command:
+To deploy all scripts in the `DbMan` package:
 ```sql
 EXEC dbo.Zync 'i DbMan'
 ```
-Alternatively, you can use:
+Alternatively:
 ```sql
 EXEC dbo.Zync 'i DbMan/.sql'
 ```
 
-## 📜 Scripts
-
-This package includes utilities for:
-- Creating, altering, and dropping tables, columns, and constraints.
-- Renaming database objects.
-- Truncating tables.
-- And more.
+## 📜 Included Utilities
+- Create/alter/drop tables, columns, and constraints
+- Rename database objects
+- Truncate tables
+- Foreign key management
+- Object existence helpers
+- And more
