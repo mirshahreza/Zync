@@ -1013,8 +1013,10 @@ BEGIN
 		PRINT ('Commands:');
 		PRINT ('  ?                      Displays this help message.');
 		PRINT ('');
-		PRINT ('  ls                     Lists all available packages in the repository.');
-		PRINT ('  ls <package-name>      Lists all scripts in a specific package.');
+		PRINT ('  ls                               Lists all packages and their scripts (names only).');
+		PRINT ('  ls <package-name>                Lists scripts of a package with descriptions.');
+		PRINT ('  ls ?<term>                        Search all packages (case-insensitive; use % or * as wildcard).');
+		PRINT ('  ls <package-name> ?<term>         Search inside a package (matches name or description).');
 		PRINT ('');
 		PRINT ('  i                      Installs all available packages.');
 		PRINT ('  i <package-name>       Installs a package (with backup of existing objects).');
@@ -1035,11 +1037,15 @@ BEGIN
 		PRINT ('  list-objects           Alias for ''lo''.');
 		PRINT ('');
 		PRINT ('Examples:');
-		PRINT ('  EXEC [dbo].[Zync] ''i Math''         -- Install the "Math" package.');
-		PRINT ('  EXEC [dbo].[Zync] ''u String''       -- Update the "String" package.');
-		PRINT ('  EXEC [dbo].[Zync] ''rb DbMon''         -- Rollback the "DbMon" package.');
-		PRINT ('  EXEC [dbo].[Zync] ''rm DateTime''      -- Remove the "DateTime" package.');
-		PRINT ('  EXEC [dbo].[Zync] ''clean''          -- Remove all Zync objects from the database.');
+		PRINT ('  EXEC [dbo].[Zync] ''ls''                     -- List all packages and contained scripts (no descriptions).');
+		PRINT ('  EXEC [dbo].[Zync] ''ls DateTime''            -- List DateTime scripts with descriptions.');
+		PRINT ('  EXEC [dbo].[Zync] ''ls ?week''               -- Search across all packages for "week".');
+		PRINT ('  EXEC [dbo].[Zync] ''ls DbMon ?agent%status'' -- Search in DbMon for names/descriptions like agent%status.');
+		PRINT ('  EXEC [dbo].[Zync] ''i Math''                 -- Install the "Math" package.');
+		PRINT ('  EXEC [dbo].[Zync] ''u String''               -- Update the "String" package.');
+		PRINT ('  EXEC [dbo].[Zync] ''rb DbMon''               -- Rollback the "DbMon" package.');
+		PRINT ('  EXEC [dbo].[Zync] ''rm DateTime''            -- Remove the "DateTime" package.');
+		PRINT ('  EXEC [dbo].[Zync] ''clean''                  -- Remove all Zync objects from the database.');
 		PRINT ('');
 		PRINT ('For more information, visit: https://github.com/mirshahreza/Zync');
 	END

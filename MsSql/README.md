@@ -127,6 +127,34 @@ MsSql/
 
 ## 📖 Usage Examples
 
+### Listing and Searching (ls)
+
+The `ls` command lists available packages and their contents. It supports a simple search filter.
+
+Behavior:
+- `ls` lists all packages and their scripts (names only; fast overview).
+- `ls <package>` lists scripts inside a package with per-script descriptions.
+- `ls ?term` searches across all packages (case-insensitive). Use `%` or `*` as wildcard.
+- `ls <package> ?term` searches inside a package and matches on filename or description.
+
+Examples:
+```sql
+-- Global listing (names only)
+EXEC DBO.Zync 'ls'
+
+-- List DateTime package with descriptions
+EXEC DBO.Zync 'ls DateTime'
+
+-- Search everywhere for "week" (e.g., WeekOfYear)
+EXEC DBO.Zync 'ls ?week'
+
+-- Search inside DbMon for items matching agent%status
+EXEC DBO.Zync 'ls DbMon ?agent%status'
+
+-- You can also use * as wildcard
+EXEC DBO.Zync 'ls DateTime ?start*of'
+```
+
 ### Deploy Specific Functionality
 
 ```sql
