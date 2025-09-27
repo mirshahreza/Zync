@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2025-09-28
+
+### Documentation
+- Documented the database-to-package generator script in development guides:
+  - Updated `MsSql/Doc/CONTRIBUTING_FA.md` with a new section on using `scripts/GenerateZyncPackageFromDb.ps1`
+  - Updated `MsSql/Doc/CONTRIBUTING_EN.md` with the English counterpart
+- Added `scripts/README.md` with usage, parameters, example, outputs, and troubleshooting for the generator script
+
 ## 2025-09-27
 
 ### Documentation

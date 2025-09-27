@@ -277,3 +277,75 @@ EXEC DBO.Zync 'i Text/ZzToTitleCase.sql';
 ---
 
 با رعایت این راهنما، می‌توانید به‌راحتی آبجکت‌های جدید بسازید، پکیج‌های تازه تعریف کنید و آن‌ها را در ریپوی اصلی یا شخصی خودتان منتشر نمایید. سپاس از مشارکت شما در Zync.
+
+---
+
+## ساخت پکیج از روی دیتابیس با اسکریپت خودکار
+
+برای استخراج بخشی از آبجکت‌های یک دیتابیس (مثلاً همه‌ی جدول‌هایی که با «Base» شروع می‌شوند) و تبدیل آن‌ها به یک پکیج Zync، از اسکریپت زیر استفاده کنید:
+
+- مسیر اسکریپت: `scripts/GenerateZyncPackageFromDb.ps1`
+- خروجی نمونه: `MsSql/Packages/Base/`
+- ویژگی مهم: ابتدا خود جدول‌ها بدون Foreign Key اسکریپت می‌شوند، سپس تمام کلیدهای خارجی در یک فایل واحد به نام `_ForeignKeys.sql` اسکریپت می‌گردند و در انتهای فایل شاخص پکیج اضافه می‌شوند تا ترتیب نصب ایمن باشد.
+
+### پیش‌نیازها
+
+- PowerShell (روی ویندوز) و دسترسی اجرای اسکریپت‌ها
+- نصب بودن SMO (SQL Server Management Objects) یا ماژول PowerShell به نام `SqlServer`
+  - اگر اسکریپت نتواند اسمبلی‌های SMO را بارگذاری کند، به‌صورت خودکار تلاش می‌کند ماژول `SqlServer` را Import کند
+  - در صورت نیاز، می‌توانید ماژول را نصب کنید:
+    - در PowerShell: `Install-Module -Name SqlServer -Scope CurrentUser`
+
+### پارامترها
+
+- `-ServerName` نام یا instance سرور SQL (پیش‌فرض: `.
+SQL2022`)
+- `-Database` نام دیتابیس (پیش‌فرض: `AppEndV2`)
+- `-User`, `-Password` اعتبارنامه‌ی SQL Login (در حالت Windows Auth لازم نیست اما اسکریپت فعلی روی SQL Login تنظیم شده است)
+- `-NamePrefix` پیشوند نام آبجکت‌ها برای فیلتر (مثلاً `Base`)
+- `-OutputDir` مسیر خروجی برای پکیج تولیدشده (مثلاً `MsSql/Packages/Base`)
+
+### مثال اجرا (Windows PowerShell)
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File "c:\Workspace\Projects\Zync\scripts\GenerateZyncPackageFromDb.ps1" `
+  -ServerName ".\SQL2022" `
+  -Database "AppEndV2" `
+  -User "sa" `
+  -Password "1" `
+  -NamePrefix "Base" `
+  -OutputDir "c:\Workspace\Projects\Zync\MsSql\Packages\Base"
+```
+
+### خروجی‌ها و ساختار پکیج تولیدی
+
+- یک فایل برای هر جدول: مانند `BaseUser.sql`, `BaseInfo.sql`, ... (بدون FK)
+- یک فایل مجزا برای همه‌ی FKها: `MsSql/Packages/<Prefix>/_ForeignKeys.sql`
+- فایل شاخص پکیج: `MsSql/Packages/<Prefix>/.sql` که خطوط نصب را به ترتیب زیر دارد:
+  - ابتدا تمام فایل‌های جدول
+  - در انتها: `EXEC DBO.Zync 'i <Prefix>/_ForeignKeys.sql';`
+
+با این چینش، نصب پکیج با دستور زیر انجام می‌شود:
+
+```sql
+EXEC dbo.Zync 'i Base';
+```
+
+و می‌توانید اقلام پکیج را لیست کنید:
+
+```sql
+EXEC dbo.Zync 'ls Base';
+```
+
+### نکات و رفع اشکال
+
+- اگر پیام «Cycles detected among tables…» نمایش داده شد، طبیعی است؛ چون وابستگی‌های دوری ممکن است وجود داشته باشد. چون FKها جداگانه و در انتها اعمال می‌شوند، نصب امن است.
+- اگر خطا درباره‌ی نوع جنریک `List[SMO.Urn]` دیدید، نسخه‌ی اسکریپت فعلی با آرایه‌ی ساده‌ی PowerShell کار می‌کند و این مشکل رفع شده است. مطمئن شوید آخرین نسخه را اجرا می‌کنید.
+- اگر SMO در سیستم شما نصب نیست و Import ماژول `SqlServer` هم موفق نمی‌شود، ابتدا ماژول را نصب کنید یا SQL Server Management Studio/Feature Pack شامل SMO را اضافه نمایید.
+- برای فیلتر کردن مجموعه‌ی دیگری از آبجکت‌ها، مقدار `-NamePrefix` را عوض کنید (مثلاً `Core` یا `User`).
+
+### یکپارچه‌سازی با توسعه‌ی پکیج
+
+- بعد از تولید پوشه‌ی پکیج، در صورت نیاز توضیحات هر فایل را با خط `-- Description:` تکمیل کنید تا در خروجی `ls` نمایش داده شود.
+- یک `README.md` کوتاه برای پکیج بسازید (الگو در پکیج‌های موجود).
+- در صورت تمایل می‌توانید ایندکس‌ها/Check Constraints را نیز مانند FKها جداگانه اسکریپت کنید (Feature پیشنهادی).

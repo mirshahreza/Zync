@@ -277,3 +277,75 @@ EXEC DBO.Zync 'i Text/ZzToTitleCase.sql';
 ---
 
 With these guidelines, you can confidently build new objects, create packages, and publish them either to the main repository or your personal one. Thanks for contributing to Zync!
+
+---
+
+## Generate a Package from an Existing Database (Automation Script)
+
+To extract a subset of objects from a database (e.g., all tables whose names start with "Base") and turn them into a Zync package, use the automation script:
+
+- Script path: `scripts/GenerateZyncPackageFromDb.ps1`
+- Typical output path: `MsSql/Packages/Base/`
+- Key behavior: the script generates tables first without foreign keys, then emits all foreign keys into a single `_ForeignKeys.sql` file and adds it at the end of the package index to ensure a safe install order.
+
+### Prerequisites
+
+- Windows PowerShell with permission to run scripts
+- SMO (SQL Server Management Objects) or the `SqlServer` PowerShell module
+  - If SMO assemblies are not found, the script will try to `Import-Module SqlServer`
+  - If needed, install the module:
+    - In PowerShell: `Install-Module -Name SqlServer -Scope CurrentUser`
+
+### Parameters
+
+- `-ServerName` SQL Server instance name (default: `.
+SQL2022`)
+- `-Database` Database name (default: `AppEndV2`)
+- `-User`, `-Password` SQL Login credentials (the current script uses SQL auth)
+- `-NamePrefix` Name prefix filter for objects (e.g., `Base`)
+- `-OutputDir` Output folder for the generated package (e.g., `MsSql/Packages/Base`)
+
+### Example run (Windows PowerShell)
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File "c:\Workspace\Projects\Zync\scripts\GenerateZyncPackageFromDb.ps1" `
+  -ServerName ".\SQL2022" `
+  -Database "AppEndV2" `
+  -User "sa" `
+  -Password "1" `
+  -NamePrefix "Base" `
+  -OutputDir "c:\Workspace\Projects\Zync\MsSql\Packages\Base"
+```
+
+### Outputs and package layout
+
+- One file per table: e.g., `BaseUser.sql`, `BaseInfo.sql`, ... (without FKs)
+- A single file for all FKs: `MsSql/Packages/<Prefix>/_ForeignKeys.sql`
+- Package index file: `MsSql/Packages/<Prefix>/.sql` listing install lines in order:
+  - All table files first
+  - Final line: `EXEC DBO.Zync 'i <Prefix>/_ForeignKeys.sql';`
+
+Install the generated package with:
+
+```sql
+EXEC dbo.Zync 'i Base';
+```
+
+List items:
+
+```sql
+EXEC dbo.Zync 'ls Base';
+```
+
+### Notes and troubleshooting
+
+- Seeing “Cycles detected among tables…” is expected for mutually referencing schemas. Since FKs are applied at the end, install remains safe.
+- If you encounter an error about `List[SMO.Urn]`, the current script version uses plain PowerShell arrays for URNs, which resolves the issue. Ensure you are running the latest version.
+- If SMO is missing and importing `SqlServer` fails, install the module or add SMO via SSMS/Feature Pack.
+- To target a different subset, adjust `-NamePrefix` (e.g., `Core`, `User`).
+
+### Integrating with package development
+
+- After generation, consider adding a `-- Description:` line at the top of each file so Zync’s `ls <package>` can show friendly descriptions.
+- Add a brief `README.md` for the new package (use existing packages as a template).
+- Optionally, you can extend the script to split indexes/check constraints into separate scripts similar to the FK split.
