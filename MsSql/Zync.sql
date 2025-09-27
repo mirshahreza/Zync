@@ -1,4 +1,3 @@
-
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -170,11 +169,12 @@ BEGIN
     END
     ELSE IF (@Command LIKE 'list-objects%' OR @Command LIKE 'lo%')
     BEGIN
-		PRINT ('Listing all Zync-managed objects (Zz* pattern)...');
+		PRINT ('')
+		PRINT ('Listing all Zync-managed objects...');
 		
 		-- Show all objects starting with 'Zz'
 		SELECT 
-			'[' + SCHEMA_NAME(schema_id) + '].[' + name + ']' as ObjectName,
+			dbo.RPAD(CONCAT('[', SCHEMA_NAME(schema_id), '].[', name, ']'), 70, ' ') as ObjectName,
 			CASE type
 				WHEN 'P' THEN 'PROCEDURE'
 				WHEN 'FN' THEN 'FUNCTION'
@@ -188,7 +188,7 @@ BEGIN
 		UNION ALL
 		
 		SELECT 
-			'[' + SCHEMA_NAME(schema_id) + '].[' + name + ']' as ObjectName,
+			dbo.RPAD(CONCAT('[', SCHEMA_NAME(schema_id), '].[', name, ']'), 70, ' ') as ObjectName,
 			'TYPE' as ObjectType
 		FROM sys.types 
 		WHERE name LIKE 'Zz%' AND is_user_defined = 1
@@ -202,11 +202,13 @@ BEGIN
 			SELECT name FROM sys.types WHERE name LIKE 'Zz%' AND is_user_defined = 1
 		) AllObjects
 		
+		PRINT '---------------------------------------------------------------------------'
 		PRINT 'Total Zync-managed objects found: ' + CAST(@TotalObjectCount AS VARCHAR)
     END
     ELSE IF (@Command LIKE 'clean%')
     BEGIN
-		PRINT ('Cleaning all Zync-managed objects (Zz* pattern)...');
+		PRINT ('')
+		PRINT ('Cleaning all Zync-managed objects...');
 		
 		-- Find all objects starting with 'Zz'
 		DECLARE @ObjectsToClean TABLE (
@@ -325,12 +327,13 @@ BEGIN
     ELSE IF (@Command LIKE 'rm%')
     BEGIN
         SET @PackageName = TRIM(SUBSTRING(@Command, 3, LEN(@Command)));
+		PRINT ('')
 		PRINT ('Removing package group or file: '''+ @PackageName +'''...');
 
 		-- First, check if it's a package group and remove its members
 		IF @PackageName NOT LIKE '%.sql'
 		BEGIN
-			PRINT 'Input ''' + @PackageName + ''' is a package group. Removing all sub-packages...';
+			PRINT ' -> Input ''' + @PackageName + ''' is a package group. Removing all sub-packages...';
 			
 			DECLARE @GroupPackagesToRemove TABLE (PackageName NVARCHAR(128));
 			INSERT INTO @GroupPackagesToRemove (PackageName)
@@ -338,7 +341,7 @@ BEGIN
 
 			IF NOT EXISTS (SELECT 1 FROM @GroupPackagesToRemove)
 			BEGIN
-				PRINT 'No installed sub-packages found in group ''' + @PackageName + '''.';
+				PRINT ' -> No installed sub-packages found in group ''' + @PackageName + '''.';
 			END
 			ELSE
 			BEGIN
@@ -353,7 +356,7 @@ BEGIN
 				WHILE @@FETCH_STATUS = 0
 				BEGIN
 					SET @SubCommand = 'rm ' + @SubPackageName;
-					PRINT ' -> Recursively calling remove for sub-package: ' + @SubPackageName;
+					-- PRINT ' -> Recursively calling remove for sub-package: ' + @SubPackageName;
 					EXEC [dbo].[Zync] @Command = @SubCommand;
 					FETCH NEXT FROM group_remove_cursor INTO @SubPackageName;
 				END
@@ -361,7 +364,7 @@ BEGIN
 				CLOSE group_remove_cursor;
 				DEALLOCATE group_remove_cursor;
 				
-				PRINT 'Successfully removed all sub-packages in group ''' + @PackageName + '''.';
+				PRINT ' -> Successfully removed all sub-packages in group ''' + @PackageName + '''.';
 			END
 		END
 
@@ -373,7 +376,7 @@ BEGIN
 
 		IF @RemovePackageId IS NULL
 		BEGIN
-			PRINT 'Package ''' + @PackageName + ''' is not tracked or already removed. Skipping final removal step.';
+			-- PRINT ' -> Package ''' + @PackageName + ''' is not tracked or already removed. Skipping final removal step.';
 			RETURN;
 		END
 
@@ -396,11 +399,11 @@ BEGIN
 			
 			IF @ObjectCount = 0
 			BEGIN
-				PRINT 'No objects found for package ''' + @PackageName + ''' itself. It might be a meta-package.';
+				PRINT ' -> No objects found for package ''' + @PackageName + ''' itself. It might be a meta-package.';
 			END
 			ELSE
 			BEGIN
-				PRINT 'Found ' + CAST(@ObjectCount AS VARCHAR) + ' object(s) to remove for package ''' + @PackageName + '''.';
+				PRINT ' -> Found ' + CAST(@ObjectCount AS VARCHAR) + ' object(s) to remove for package ''' + @PackageName + '''.';
 
 				DECLARE @RemoveObjectName NVARCHAR(256);
 				DECLARE @RemoveObjectType NVARCHAR(50);
@@ -439,31 +442,31 @@ BEGIN
 					BEGIN
 						DECLARE @RemoveFullObjectName NVARCHAR(256) = '[dbo].[' + @RemoveCleanObjectName + ']';
 						SET @DropStatement = 'DROP ' + @RemoveObjectType + ' ' + @RemoveFullObjectName;
-						PRINT ' -> Dropping ' + @RemoveObjectType + ' ' + @RemoveFullObjectName + '...';
+						PRINT '  -> Dropping ' + @RemoveObjectType + ' ' + @RemoveFullObjectName + '...';
 						
 						BEGIN TRY
 							EXECUTE SP_EXECUTESQL @DropStatement;
-							PRINT '    ✓ Successfully dropped ' + @RemoveObjectType + ' ' + @RemoveFullObjectName;
+							PRINT '     ✓ Successfully dropped ' + @RemoveObjectType + ' ' + @RemoveFullObjectName;
 						END TRY
 						BEGIN CATCH
-							PRINT '    ✗ Error dropping ' + @RemoveObjectType + ' ' + @RemoveFullObjectName + ': ' + ERROR_MESSAGE();
+							PRINT '     ✗ Error dropping ' + @RemoveObjectType + ' ' + @RemoveFullObjectName + ': ' + ERROR_MESSAGE();
 						END CATCH
 						
 						IF @PreviousDefinition IS NOT NULL AND LEN(@PreviousDefinition) > 0
 						BEGIN
-							PRINT ' -> Restoring previous version of ' + @RemoveObjectName + '...';
+							PRINT '  -> Restoring previous version of ' + @RemoveObjectName + '...';
 							BEGIN TRY
 								EXECUTE SP_EXECUTESQL @PreviousDefinition;
-								PRINT '    ✓ Successfully restored previous version';
+								PRINT '     ✓ Successfully restored previous version';
 							END TRY
 							BEGIN CATCH
-								PRINT '    ✗ Error restoring previous version: ' + ERROR_MESSAGE();
+								PRINT '     ✗ Error restoring previous version: ' + ERROR_MESSAGE();
 							END CATCH
 						END
 					END
 					ELSE
 					BEGIN
-						PRINT ' -> Object ' + @RemoveObjectType + ' ' + @RemoveObjectName + ' does not exist (already removed).';
+						PRINT '  -> Object ' + @RemoveObjectType + ' ' + @RemoveObjectName + ' does not exist (already removed).';
 					END
 
 					FETCH NEXT FROM remove_cursor INTO @RemoveObjectName, @RemoveObjectType, @PreviousDefinition;
@@ -480,7 +483,7 @@ BEGIN
 			PRINT ' -> Package ''' + @PackageName + ''' and its objects removed successfully.';
 		END TRY
 		BEGIN CATCH
-			PRINT 'An error occurred during final removal of package ''' + @PackageName + '''.';
+			PRINT 'ERROR: An error occurred during final removal of package ''' + @PackageName + '''.';
 			THROW;
 		END CATCH
     END
@@ -488,6 +491,7 @@ BEGIN
     BEGIN
 		SET @PackageName = TRIM(SUBSTRING(@Command, CASE WHEN @Command LIKE 'rb%' THEN 3 ELSE 9 END, LEN(@Command)));
 
+		PRINT ('');
 		PRINT ('Rolling back package: '''+ @PackageName +'''...');
 
 		-- Check if package exists
@@ -498,7 +502,7 @@ BEGIN
 
 		IF @RollbackPackageId IS NULL
 		BEGIN
-			PRINT 'Package ''' + @PackageName + ''' is not installed or has no rollback data.';
+			PRINT ' -> Package ''' + @PackageName + ''' is not installed or has no rollback data.';
 			RETURN;
 		END
 
@@ -517,7 +521,7 @@ BEGIN
 
 			IF NOT EXISTS (SELECT 1 FROM @ObjectsToRollback)
 			BEGIN
-				PRINT 'No rollback data available for package ''' + @PackageName + '''.';
+				PRINT ' -> No rollback data available for package ''' + @PackageName + '''.';
 				RETURN;
 			END
 
@@ -580,7 +584,7 @@ BEGIN
 			PRINT ' -> Package ''' + @PackageName + ''' rolled back successfully.';
 		END TRY
 		BEGIN CATCH
-			PRINT 'An error occurred during rollback.';
+			PRINT 'ERROR: An error occurred during rollback.';
 			THROW;
 		END CATCH
     END
@@ -591,6 +595,7 @@ BEGIN
 		ELSE SET @PackageFullURL = @PackageFullURL + @PackageName;
 		SET @PackageFullURL = REPLACE(@PackageFullURL,'//.sql','/.sql');
 
+		PRINT ('')
 		PRINT ('Updating package: '''+ @PackageName +'''...');
 
 		-- Check if package exists
@@ -600,7 +605,7 @@ BEGIN
 
 		IF @UpdatePackageId IS NULL
 		BEGIN
-			PRINT 'Package ''' + @PackageName + ''' is not installed. Use ''i'' command to install first.';
+			PRINT ' -> Package ''' + @PackageName + ''' is not installed. Use ''i'' command to install first.';
 			RETURN;
 		END
 
@@ -663,22 +668,22 @@ BEGIN
 					END
 					ELSE
 					BEGIN
-						PRINT 'Object ''' + @UpdateObjectName + ''' does not exist in database. Use ''i'' command to install first.';
+						PRINT ' -> Object ''' + @UpdateObjectName + ''' does not exist in database. Use ''i'' command to install first.';
 					END
 				END
 				ELSE
 				BEGIN
-					PRINT 'Could not parse object information from package script.';
+					PRINT ' -> Could not parse object information from package script.';
 				END
 			END
 			ELSE
 			BEGIN
-				PRINT 'Error: Could not fetch package from URL: ' + @PackageFullURL;
+				PRINT 'ERROR: Could not fetch package from URL: ' + @PackageFullURL;
 				PRINT 'HTTP Status: ' + CAST(@rr AS VARCHAR(10));
 			END
 		END TRY
 		BEGIN CATCH
-			PRINT 'An error occurred during update.';
+			PRINT 'ERROR: An error occurred during update.';
 			IF @res IS NOT NULL EXEC SP_OADESTROY @res;
 			THROW;
 		END CATCH
@@ -690,16 +695,17 @@ BEGIN
 		ELSE SET @PackageFullURL = @PackageFullURL + @PackageName;
 		SET @PackageFullURL = REPLACE(@PackageFullURL,'//.sql','/.sql');
 
+		PRINT ('')
 		PRINT ('Installing package: '''+ @PackageName +'''...');
 
 		-- Check if package already exists
 		DECLARE @ExistingPackageId UNIQUEIDENTIFIER;
 		SELECT @ExistingPackageId = PackageId FROM [dbo].[ZyncPackages] 
-		WHERE PackageName = @PackageName AND Status = 'INSTALLED';
+		WHERE PackageName = @PackageName AND Status IN ('INSTALLED', 'UPDATED');
 
 		IF @ExistingPackageId IS NOT NULL
 		BEGIN
-			PRINT 'Package ''' + @PackageName + ''' is already installed. Use ''u'' command to update.';
+			-- PRINT ' -> Package ''' + @PackageName + ''' is already installed. Use ''u'' command to update.';
 			RETURN;
 		END
 
@@ -724,7 +730,7 @@ BEGIN
 				IF(CHARINDEX('/*', @rv)=1 AND CHARINDEX('*/', @rv) > 1)
 				BEGIN
 					SET @deps = TRIM(SUBSTRING(@rv, 3, CHARINDEX('*/', @rv)-3));
-					PRINT ' -> Installing dependencies...';
+					-- PRINT ' -> Installing dependencies...';
 					EXECUTE SP_EXECUTESQL @deps;
 				END
 
@@ -749,7 +755,7 @@ BEGIN
 					INSERT INTO [dbo].[ZyncObjects] (PackageId, ObjectName, ObjectType, ObjectDefinition, PreviousDefinition)
 					VALUES (@NewPackageId, @ObjectName, @ObjectType, @rv, @ExistingDefinition);
 					
-					PRINT ' -> Backed up existing object: ' + ISNULL(@ObjectName, 'N/A');
+					-- PRINT ' -> Backed up existing object: ' + ISNULL(@ObjectName, 'N/A');
 				END
 				ELSE
 				BEGIN
@@ -760,16 +766,16 @@ BEGIN
 
 				-- Execute the installation
 				EXECUTE SP_EXECUTESQL @rv;
-				PRINT ' -> Package ''' + @PackageName + ''' installed successfully with backup.';
+				PRINT ' -> Package ''' + @PackageName + ''' installed successfully.';
 			END
 			ELSE
 			BEGIN
-				PRINT 'Error: Could not fetch package from URL: ' + @PackageFullURL;
+				PRINT 'ERROR: Could not fetch package from URL: ' + @PackageFullURL;
 				PRINT 'HTTP Status: ' + CAST(@rr AS VARCHAR(10));
 			END
 		END TRY
 		BEGIN CATCH
-			PRINT 'An error occurred during installation.';
+			PRINT 'ERROR: An error occurred during installation of package ''' + @PackageName + '''.';
 			IF @res IS NOT NULL EXEC SP_OADESTROY @res;
 			THROW;
 		END CATCH
@@ -816,3 +822,15 @@ BEGIN
 	END
 	
 END
+GO
+-- Add RPAD function for formatting if it doesn't exist
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RPAD]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+BEGIN
+EXEC('CREATE FUNCTION [dbo].[RPAD] (@string NVARCHAR(MAX), @length INT, @pad CHAR(1))
+RETURNS NVARCHAR(MAX)
+AS
+BEGIN
+    RETURN LEFT(CONCAT(@string, REPLICATE(@pad, @length)), @length)
+END')
+END
+GO
