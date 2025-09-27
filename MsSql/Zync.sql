@@ -96,7 +96,7 @@ BEGIN
                     DECLARE @CurrentScriptLine NVARCHAR(MAX);
                     DECLARE @RecursiveCommand NVARCHAR(MAX);
                     
-                    DECLARE script_cursor CURSOR FOR
+                    DECLARE script_cursor CURSOR LOCAL FOR
                     SELECT ScriptLine FROM @ScriptsToRemove WHERE LTRIM(ScriptLine) LIKE 'EXEC DBO.Zync%';
 
                     OPEN script_cursor;
