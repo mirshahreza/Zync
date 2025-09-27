@@ -35,8 +35,10 @@ Zync/
     ├── Zync.sql             # Core package manager setup
     └── Packages/            # Available packages
         ├── AppEnd/          # Application framework
-        ├── DbUtils/         # Database utilities  
-        ├── Number/          # Numeric functions
+        ├── DbMon/           # Database utilities  
+        ├── DbMan/           # Database utilities  
+        ├── DbSel/           # Database utilities  
+        ├── Math/            # Numeric functions
         └── String/          # String functions
 ```
 

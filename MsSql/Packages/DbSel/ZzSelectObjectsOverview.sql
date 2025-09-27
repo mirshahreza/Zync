@@ -1,5 +1,5 @@
 /*
-EXEC DBO.Zync 'DbUtils/ZzSelectObjectsDetails.sql'
+EXEC DBO.Zync 'DbSel/ZzSelectObjectsDetails.sql'
 */
 -- =============================================
 -- Author:		Mohsen Mirshahreza

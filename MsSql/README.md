@@ -26,7 +26,9 @@ EXEC DBO.Zync '?'
 Deploy a complete package (e.g., database utilities):
 
 ```sql
-EXEC DBO.Zync 'i DbUtils'
+EXEC DBO.Zync 'i DbMan'
+EXEC DBO.Zync 'i DbMon'
+EXEC DBO.Zync 'i DbSel'
 ```
 
 Deploy a specific script:
@@ -43,7 +45,7 @@ EXEC DBO.Zync 'i'
 
 ## 📚 Available Packages
 
-### 🔧 DbUtils
+### 🔧 DbMan, DbMon, DbSel
 Database utilities for common administrative tasks:
 - Table and column management (create, alter, drop)
 - Foreign key management  
@@ -52,7 +54,9 @@ Database utilities for common administrative tasks:
 - Schema exploration tools
 
 ```sql
-EXEC DBO.Zync 'DbUtils'
+EXEC DBO.Zync 'DbMan'
+EXEC DBO.Zync 'DbMon'
+EXEC DBO.Zync 'DbSel'
 ```
 
 ### 🔤 String
@@ -95,7 +99,9 @@ MsSql/
 ├── Zync.sql              # Core package manager setup
 └── Packages/
     ├── AppEnd/           # Application framework
-    ├── DbUtils/          # Database utilities  
+    ├── DbMan/            # Database management utilities
+    ├── DbMon/            # Database monitoring tools
+    ├── DbSel/            # Database selection/querying tools
     ├── Number/           # Numeric functions
     └── String/           # String functions
 ```
@@ -109,7 +115,7 @@ MsSql/
 EXEC DBO.Zync 'String/ZzSplitString.sql'
 
 -- Install table creation utilities
-EXEC DBO.Zync 'DbUtils/ZzCreateTableGuid.sql'
+EXEC DBO.Zync 'DbMan/ZzCreateTableGuid.sql'
 
 -- Install user management system
 EXEC DBO.Zync 'AppEnd/AAA_Users.sql'

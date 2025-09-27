@@ -1,5 +1,5 @@
 /*
-EXEC DBO.Zync 'DbUtils/ZzObjectExist.sql'
+EXEC DBO.Zync 'DbMan/ZzObjectExist.sql'
 */
 -- =============================================
 -- Author:		Mohsen Mirshahreza

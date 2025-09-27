@@ -55,7 +55,9 @@ Fetching available packages from repository...
 Available packages:
 -------------------
 AppEnd
-DbUtils
+DbMan
+DbMon
+DbSel
 Number
 String
 -------------------
@@ -96,7 +98,7 @@ EXEC [dbo].[Zync] 'i String/ZzSplitString.sql'
 
 The default repository already includes several useful packages to get you started:
 
-*   **DbUtils:** A powerful suite of tools for database administration, including procedures to create/drop tables, manage columns, and analyze object dependencies.
+*   **DbMan, DbMon, DbSel:** A powerful suite of tools for database administration, including procedures to create/drop tables, manage columns, and analyze object dependencies.
 *   **String:** A collection of functions for common string operations like splitting, trimming, and counting.
 *   **Number:** Helper functions for formatting numbers and converting byte sizes (e.g., to KB, MB, GB).
 *   **AppEnd:** A set of building blocks for applications, including user and role management.

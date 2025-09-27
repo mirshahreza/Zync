@@ -1,6 +1,6 @@
 /*
-EXEC DBO.Zync 'DbUtils/ZzSelectObjectsDetails.sql'
-EXEC DBO.Zync 'DbUtils/ZzSelectTablesIndexes.sql'
+EXEC DBO.Zync 'DbSel/ZzSelectObjectsDetails.sql'
+EXEC DBO.Zync 'DbSel/ZzSelectTablesIndexes.sql'
 */
 -- =============================================
 -- Author:		Mohsen Mirshahreza
