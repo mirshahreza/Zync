@@ -28,9 +28,9 @@ BEGIN
         -- SQL Server 2019+ : use sys.dm_db_log_stats(database_id)
         SELECT 
             db.name AS DatabaseName,
-            (ls.total_log_size_in_bytes / 1048576.0) AS TotalLogSizeMB,
-            (ls.used_log_space_in_bytes / 1048576.0) AS UsedLogSpaceMB,
-            ls.used_log_space_in_percent AS UsedLogSpacePercent
+            CAST(ls.total_log_size_mb AS decimal(19,2)) AS TotalLogSizeMB,
+            CAST(ls.active_log_size_mb AS decimal(19,2)) AS UsedLogSpaceMB,
+            CAST(CASE WHEN ls.total_log_size_mb > 0 THEN (ls.active_log_size_mb / ls.total_log_size_mb) * 100.0 ELSE 0 END AS decimal(5,2)) AS UsedLogSpacePercent
         FROM sys.databases AS db
         CROSS APPLY sys.dm_db_log_stats(db.database_id) AS ls
         WHERE db.state_desc = 'ONLINE'
