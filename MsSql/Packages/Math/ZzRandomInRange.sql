@@ -7,5 +7,5 @@ CREATE OR ALTER FUNCTION [DBO].[ZzRandomInRange] (@LowerBound INT, @UpperBound I
 RETURNS INT
 AS
 BEGIN
-    RETURN FLOOR(RAND() * (@UpperBound - @LowerBound + 1) + @LowerBound);
+    RETURN FLOOR((SELECT Value FROM DBO.ZzRandom) * (@UpperBound - @LowerBound + 1) + @LowerBound);
 END
