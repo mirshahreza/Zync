@@ -1,0 +1,7 @@
+CREATE FUNCTION ZzDaysInMonth (@year INT, @month INT)
+RETURNS INT
+AS
+BEGIN
+    RETURN DAY(EOMONTH(DATEFROMPARTS(@year, @month, 1)))
+END
+GO

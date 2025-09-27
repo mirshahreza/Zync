@@ -1,0 +1,7 @@
+CREATE FUNCTION ZzGetMonthName (@date DATE)
+RETURNS NVARCHAR(30)
+AS
+BEGIN
+    RETURN FORMAT(@date, 'MMMM', 'en-US')
+END
+GO

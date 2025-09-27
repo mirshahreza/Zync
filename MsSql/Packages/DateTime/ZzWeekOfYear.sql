@@ -1,0 +1,7 @@
+CREATE FUNCTION ZzWeekOfYear (@date DATE)
+RETURNS INT
+AS
+BEGIN
+    RETURN DATEPART(wk, @date)
+END
+GO

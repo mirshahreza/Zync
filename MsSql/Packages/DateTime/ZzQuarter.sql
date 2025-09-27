@@ -1,0 +1,7 @@
+CREATE FUNCTION ZzQuarter (@date DATE)
+RETURNS INT
+AS
+BEGIN
+    RETURN DATEPART(qq, @date)
+END
+GO
