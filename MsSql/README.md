@@ -91,6 +91,25 @@ Application framework components:
 EXEC DBO.Zync 'AppEnd'
 ```
 
+### 📅 DateTime
+Date and time utilities:
+- Hijri and Shamsi converters
+- Date formatting and manipulation
+- Start/end of period calculations
+- Working day calculations
+
+```sql
+EXEC DBO.Zync 'DateTime'
+```
+
+### 💰 Financial
+Financial calculations and utilities:
+- (Content to be added)
+
+```sql
+EXEC DBO.Zync 'Financial'
+```
+
 ## 🏗️ Project Structure
 
 ```

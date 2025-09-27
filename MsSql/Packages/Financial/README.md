@@ -1,11 +1,17 @@
 ```markdown
-# Financial
- 
-### Deploy all scripts
->EXEC dbo.Zync 'Financial' <br />
+# 💰 Financial Package
 
-OR <br />
+The `Financial` package will provide a collection of functions for financial calculations. (Currently under development).
 
->EXEC dbo.Zync 'Financial/.sql' <br />
+## 🚀 Deployment
 
+### Deploy All Scripts
+To deploy all scripts in the `Financial` package, run the following command:
+```sql
+EXEC dbo.Zync 'i Financial'
+```
+Alternatively, you can use:
+```sql
+EXEC dbo.Zync 'i Financial/.sql'
+```
 ```

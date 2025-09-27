@@ -6,9 +6,9 @@ GO
 
 -- =============================================
 -- Author:		Mohsen Mirshahreza
--- Create date: 2023-06-21
+-- Create date: 2024-07-29
 -- Description:	Enhanced Database Package Manager with backup/rollback capabilities
--- Version:		2.0
+-- Version:		3.0
 -- =============================================
 
 -- Create helper procedure first to avoid dependency issues
@@ -776,57 +776,43 @@ BEGIN
     END
 	ELSE
 	BEGIN
-		PRINT ('Zync - Enhanced Database Package Manager v2.0');
+		PRINT ('Zync - Database Package Manager v3.0');
 		PRINT ('================================================');
-		PRINT ('Features: Backup/Rollback, Version Control, Smart Updates');
+		PRINT ('');
+		PRINT ('Usage: EXEC [dbo].[Zync] ''<command> [package_name]''');
 		PRINT ('');
 		PRINT ('Commands:');
-		PRINT ('  EXEC [dbo].[Zync] ''?''                       -- Displays this help message.');
-		PRINT ('  EXEC [dbo].[Zync] ''ls''                      -- Lists all available packages in the repository.');
-		PRINT ('  EXEC [dbo].[Zync] ''ls <package-name>''       -- Lists all scripts in a specific package.');
+		PRINT ('  ?                      Displays this help message.');
 		PRINT ('');
-		PRINT ('Installation & Updates:');
-		PRINT ('  EXEC [dbo].[Zync] ''i <package-name>''        -- Installs a package (with backup of existing objects).');
-		PRINT ('  EXEC [dbo].[Zync] ''u <package-name>''        -- Updates an existing package to latest version.');
-		PRINT ('  EXEC [dbo].[Zync] ''i <pkg/script.sql>''      -- Installs a specific script from a package.');
+		PRINT ('  ls                     Lists all available packages in the repository.');
+		PRINT ('  ls <package-name>      Lists all scripts in a specific package.');
 		PRINT ('');
-		PRINT ('Removal & Rollback:');
-		PRINT ('  EXEC [dbo].[Zync] ''rm <package-name>''       -- Removes a package (restores previous versions).');
-		PRINT ('  EXEC [dbo].[Zync] ''rm <pkg/script.sql>''     -- Removes a specific script from a package.');
-		PRINT ('  EXEC [dbo].[Zync] ''rb <package-name>''       -- Rolls back package to previous version.');
-		PRINT ('  EXEC [dbo].[Zync] ''rollback <package-name>'' -- Same as ''rb'' command.');
-		PRINT ('  EXEC [dbo].[Zync] ''clean''                   -- Removes ALL Zync objects (Zz* pattern) and tracking data.');
+		PRINT ('  i                      Installs all available packages.');
+		PRINT ('  i <package-name>       Installs a package (with backup of existing objects).');
+		PRINT ('  i <pkg/script.sql>     Installs a specific script from a package.');
 		PRINT ('');
-		PRINT ('Package Status:');
-		PRINT ('  SELECT * FROM [dbo].[ZyncPackages]            -- View all installed packages and versions.');
-		PRINT ('  SELECT * FROM [dbo].[ZyncObjects]             -- View all managed objects and their history.');
-		PRINT ('  EXEC [dbo].[Zync] ''lo''                      -- Lists all Zync objects in database (Zz* pattern).');
+		PRINT ('  u                      Updates all installed packages to the latest version.');
+		PRINT ('  u <package-name>       Updates an existing package to the latest version.');
+		PRINT ('');
+		PRINT ('  rm                     Removes all installed packages.');
+		PRINT ('  rm <package-name>      Removes a package (restores previous versions).');
+		PRINT ('  rm <pkg/script.sql>    Removes a specific script from a package.');
+		PRINT ('');
+		PRINT ('  rb <package-name>      Rolls back a package to its previous version.');
+		PRINT ('  rollback <package-name>  Alias for ''rb''.');
+		PRINT ('');
+		PRINT ('  clean                  Removes ALL Zync-managed objects (Zz* pattern) and tracking data.');
+		PRINT ('  lo                     Lists all Zync-managed objects in the database (Zz* pattern).');
+		PRINT ('  list-objects           Alias for ''lo''.');
 		PRINT ('');
 		PRINT ('Examples:');
-		PRINT ('  -- Install the "Math" package with backup:');
-		PRINT ('  EXEC [dbo].[Zync] ''i Math''');
+		PRINT ('  EXEC [dbo].[Zync] ''i Math''         -- Install the "Math" package.');
+		PRINT ('  EXEC [dbo].[Zync] ''u String''       -- Update the "String" package.');
+		PRINT ('  EXEC [dbo].[Zync] ''rb DbMon''         -- Rollback the "DbMon" package.');
+		PRINT ('  EXEC [dbo].[Zync] ''rm DateTime''      -- Remove the "DateTime" package.');
+		PRINT ('  EXEC [dbo].[Zync] ''clean''          -- Remove all Zync objects from the database.');
 		PRINT ('');
-		PRINT ('  -- Update "String" package to latest version:');
-		PRINT ('  EXEC [dbo].[Zync] ''u String''');
-		PRINT ('');
-		PRINT ('  -- Rollback "DbMon" package to previous version:');
-		PRINT ('  EXEC [dbo].[Zync] ''rb DbMon''');
-		PRINT ('');
-		PRINT ('  -- Remove "DateTime" package (restore previous objects):');
-		PRINT ('  EXEC [dbo].[Zync] ''rm DateTime''');
-		PRINT ('');
-		PRINT ('  -- Clean all Zync objects from database:');
-		PRINT ('  EXEC [dbo].[Zync] ''clean''');
-		PRINT ('');
-		PRINT ('  -- Install specific script with backup:');
-		PRINT ('  EXEC [dbo].[Zync] ''i String/ZzTrim.sql''');
-		PRINT ('');
-		PRINT ('New in v2.0:');
-		PRINT ('  • Automatic backup before installation/update');
-		PRINT ('  • Version tracking and rollback capabilities');
-		PRINT ('  • Smart updates (only for existing objects)');
-		PRINT ('  • Restore previous versions on removal');
-		PRINT ('  • Enhanced error handling and logging');
+		PRINT ('For more information, visit: https://github.com/mirshahreza/Zync');
 	END
 	
 END

@@ -1,28 +1,36 @@
-# Common_BaseInfo Seed Scripts
+# 🌱 AppEnd Seed Scripts
 
-These scripts populate `dbo.Common_BaseInfo` with foundational lookup data. Each category has language-specific scripts:
+These scripts populate the `dbo.Common_BaseInfo` table with foundational lookup data. Each category has language-specific scripts to localize the `Title` field.
 
-- Suffix `.en.sql` – English titles
-- Suffix `.fa.sql` – Persian (Farsi) titles
-- Suffix `.ar.sql` – Arabic titles
+- **Suffix `.en.sql`**: English titles
+- **Suffix `.fa.sql`**: Persian (Farsi) titles
+- **Suffix `.ar.sql`**: Arabic titles
 
-Run only ONE language variant per environment to localize titles accordingly. Re-running a different language for the same category will update the localized `Title` field for existing rows (idempotent upserts by `ShortName` + `ParentId`).
+Run only **one** language variant per category in your environment. The scripts perform idempotent upserts, so you can safely re-run them or switch languages.
 
-Categories included:
-- General (grouped common lookups under GEN)
-- Gender
-- Geography (root + sample Countries → States/Provinces → Cities)
+## 📚 Categories
 
-Usage examples (via Zync):
+- **General**: Common lookups (e.g., marital status, titles) grouped under a `GEN` root.
+- **Gender**: `Male`, `Female`, etc.
+- **Geography**: A sample hierarchy of Countries → States/Provinces → Cities.
 
-- Install English Gender seeds:
-  - `EXEC dbo.Zync 'i AppEnd/Seed/Common_BaseInfo_Gender.en.sql';`
-- Install Persian Geography seeds:
-  - `EXEC dbo.Zync 'i AppEnd/Seed/Common_BaseInfo_Geo.fa.sql';`
+## 🚀 Usage Examples
 
-- Install Arabic General seeds (grouped):
-  - `EXEC dbo.Zync 'i AppEnd/Seed/Common_BaseInfo_General.ar.sql';`
+Use Zync to deploy a specific seed script.
 
-Notes:
-- These are sample seeds. Extend them by following the same pattern: use stable `ShortName` codes and link children via `ParentId`.
-- The General seeds create a `GEN` root, then categories (e.g., `TITLES`, `MARITAL`, `LANG`) and their items. If you run both standalone Gender and General, the Gender section under `GEN` will update its localized titles consistently.
+- **Install English Gender seeds:**
+  ```sql
+  EXEC dbo.Zync 'i AppEnd/Seed/Common_BaseInfo_Gender.en.sql';
+  ```
+- **Install Persian Geography seeds:**
+  ```sql
+  EXEC dbo.Zync 'i AppEnd/Seed/Common_BaseInfo_Geo.fa.sql';
+  ```
+- **Install Arabic General seeds:**
+  ```sql
+  EXEC dbo.Zync 'i AppEnd/Seed/Common_BaseInfo_General.ar.sql';
+  ```
+
+## 📝 Notes
+- These are sample seeds. You can extend them by following the same pattern.
+- The scripts use stable `ShortName` codes and link children via `ParentId` to maintain relationships.
