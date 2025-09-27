@@ -1,5 +1,6 @@
 /*
-EXEC DBO.Zync 'DbMan/ZzObjectExist.sql'
+EXEC DBO.Zync 'i DbMan/ZzDropTable.sql'
+EXEC DBO.Zync 'i DbMan/ZzObjectExist.sql'
 */
 -- =============================================
 -- Author:		Mohsen Mirshahreza

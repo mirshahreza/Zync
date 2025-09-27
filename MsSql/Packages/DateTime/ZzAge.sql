@@ -10,4 +10,3 @@ AS
 BEGIN
     RETURN DATEDIFF(YY, @birthDate, GETDATE()) - CASE WHEN( (MONTH(@birthDate)*100 + DAY(@birthDate)) > (MONTH(GETDATE())*100 + DAY(GETDATE())) ) THEN 1 ELSE 0 END
 END
-GO
