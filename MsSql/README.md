@@ -70,14 +70,14 @@ String manipulation and processing functions:
 EXEC DBO.Zync 'String'
 ```
 
-### 🔢 Number  
+### 🔢 Math  
 Numeric formatting and conversion utilities:
 - Byte size formatting (KB, MB, GB)
 - Number humanization
 - Mathematical helper functions
 
 ```sql
-EXEC DBO.Zync 'Number'
+EXEC DBO.Zync 'Math'
 ```
 
 ### 👤 AppEnd
@@ -102,7 +102,7 @@ MsSql/
     ├── DbMan/            # Database management utilities
     ├── DbMon/            # Database monitoring tools
     ├── DbSel/            # Database selection/querying tools
-    ├── Number/           # Numeric functions
+    ├── Math/             # Numeric functions
     └── String/           # String functions
 ```
 
