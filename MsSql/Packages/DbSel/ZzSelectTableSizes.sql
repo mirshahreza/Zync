@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Reports the row count and space used by each table and its indexes.
+-- Sample:
+-- EXEC [dbo].[ZzSelectTableSizes];
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzSelectTableSizes]
 AS

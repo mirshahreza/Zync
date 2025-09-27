@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Checks if a string is a palindrome.
+-- Sample:
+-- SELECT [dbo].[ZzIsPalindrome]('A man a plan a canal Panama');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzIsPalindrome] (@InputString NVARCHAR(MAX))
 RETURNS BIT

@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Strips all HTML/XML tags from a string.
+-- Sample:
+-- SELECT [dbo].[ZzRemoveHtmlTags]('<p>This is <b>bold</b> text.</p>');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzRemoveHtmlTags] (@HtmlString NVARCHAR(MAX))
 RETURNS NVARCHAR(MAX)

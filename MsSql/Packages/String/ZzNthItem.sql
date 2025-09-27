@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-05-12
 -- Description:	Extracts the Nth item from a delimited string, based on the specified separator and zero-based index.
+-- Sample:
+-- SELECT [dbo].[ZzNthItem]('apple,banana,cherry', ',', 1);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzNthItem]
 (

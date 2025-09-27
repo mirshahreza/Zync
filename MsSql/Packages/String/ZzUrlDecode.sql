@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Decodes a URL-encoded string.
+-- Sample:
+-- SELECT [dbo].[ZzUrlDecode]('Hello%20World');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzUrlDecode] (@InputString NVARCHAR(MAX))
 RETURNS NVARCHAR(MAX)

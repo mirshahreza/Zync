@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Checks if a string contains any of the substrings from a delimited list.
+-- Sample:
+-- SELECT [dbo].[ZzContainsAny]('The quick brown fox', 'cat,dog,fox', ',');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzContainsAny]
 (

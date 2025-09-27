@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-21
 -- Description:	A scalar function that checks for the existence of any database object (table, view, procedure, etc.) by its name and returns a bit (1 for exists, 0 for not found).
+-- Sample:
+-- SELECT [dbo].[ZzObjectExist]('MyTable');
 -- =============================================
 
 CREATE OR ALTER FUNCTION [DBO].[ZzObjectExist] 

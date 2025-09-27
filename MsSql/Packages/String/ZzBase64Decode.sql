@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Decodes a Base64 formatted string.
+-- Sample:
+-- SELECT [dbo].[ZzBase64Decode]('SGVsbG8gV29ybGQ=');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzBase64Decode] (@Base64String VARCHAR(MAX))
 RETURNS VARCHAR(MAX)

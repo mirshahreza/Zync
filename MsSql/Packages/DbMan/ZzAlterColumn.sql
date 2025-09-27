@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-02
 -- Description:	Alters an existing column's data type, size, and nullability, and can also set a new default value.
+-- Sample:
+-- EXEC [dbo].[ZzAlterColumn] @TableName = 'MyTable', @ColumnName = 'MyColumn', @ColumnTypeSize = 'NVARCHAR(200)', @AllowNull = 0, @Default = 'DefaultValue';
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzAlterColumn]
 	@TableName VARCHAR(128), @ColumnName VARCHAR(64), @ColumnTypeSize VARCHAR(64), @AllowNull BIT = 1,@Default NVARCHAR(256) = ''

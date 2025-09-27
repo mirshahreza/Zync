@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Identifies indexes with low or no usage.
+-- Sample:
+-- EXEC [dbo].[ZzSelectUnusedIndexes];
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzSelectUnusedIndexes]
 AS

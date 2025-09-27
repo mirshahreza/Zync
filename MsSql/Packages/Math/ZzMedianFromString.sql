@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Calculates the median value from a delimited string of numbers.
+-- Sample:
+-- SELECT [dbo].[ZzMedianFromString]('1,5,2,8,7', ',');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzMedianFromString]
 (

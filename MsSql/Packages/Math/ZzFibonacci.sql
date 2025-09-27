@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Generates the Nth number in the Fibonacci sequence.
+-- Sample:
+-- SELECT [dbo].[ZzFibonacci](10);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzFibonacci]
 (

@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Creates a hash of a string using a specified algorithm.
+-- Sample:
+-- SELECT [dbo].[ZzHash]('Hello World', 'SHA2_256');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzHash]
 (

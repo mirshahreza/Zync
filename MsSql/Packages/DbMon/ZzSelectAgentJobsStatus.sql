@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Displays the current status of all SQL Server Agent jobs.
+-- Sample:
+-- EXEC [dbo].[ZzSelectAgentJobsStatus];
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzSelectAgentJobsStatus]
 AS

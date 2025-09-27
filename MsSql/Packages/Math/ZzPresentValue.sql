@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Calculates the present value of an investment or loan.
+-- Sample:
+-- SELECT [dbo].[ZzPresentValue](0.05, 10, 100, 10000);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzPresentValue]
 (

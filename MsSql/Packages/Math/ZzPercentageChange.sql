@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Calculates the percentage increase or decrease from a starting value to an ending value.
+-- Sample:
+-- SELECT [dbo].[ZzPercentageChange](100, 120);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzPercentageChange]
 (

@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Shows the backup history for databases.
+-- Sample:
+-- EXEC [dbo].[ZzSelectBackupHistory];
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzSelectBackupHistory]
 AS

@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Converts an integer to its binary string representation.
+-- Sample:
+-- SELECT [dbo].[ZzToBinary](10);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzToBinary] (@Number INT)
 RETURNS VARCHAR(32)

@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Extracts the initials from a full name.
+-- Sample:
+-- SELECT [dbo].[ZzExtractInitials]('John Fitzgerald Kennedy');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzExtractInitials] (@FullName NVARCHAR(MAX))
 RETURNS NVARCHAR(MAX)

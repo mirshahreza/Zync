@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Identifies processes that are causing blocking on other processes.
+-- Sample:
+-- EXEC [dbo].[ZzSelectBlockingProcesses];
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzSelectBlockingProcesses]
 AS

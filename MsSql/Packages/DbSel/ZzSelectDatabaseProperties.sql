@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Displays various properties for all databases on the server.
+-- Sample:
+-- EXEC [dbo].[ZzSelectDatabaseProperties];
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzSelectDatabaseProperties]
 AS

@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Converts a string to camelCase.
+-- Sample:
+-- SELECT [dbo].[ZzToCamelCase]('hello_world-test');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzToCamelCase] (@InputString NVARCHAR(MAX))
 RETURNS NVARCHAR(MAX)

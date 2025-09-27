@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Calculates the factorial of a non-negative integer.
+-- Sample:
+-- SELECT [dbo].[ZzFactorial](5);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzFactorial] (@number INT)
 RETURNS BIGINT

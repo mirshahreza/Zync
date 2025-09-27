@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Calculates the Euclidean distance between two points (x1, y1) and (x2, y2).
+-- Sample:
+-- SELECT [dbo].[ZzDistance](0, 0, 3, 4);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzDistance]
 (

@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Calculates the average of a set of numbers from a delimited string.
+-- Sample:
+-- SELECT [dbo].[ZzAverage]('10,20,30', ',');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzAverage]
 (

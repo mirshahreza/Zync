@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Finds the mode (most frequently occurring value) in a delimited string of numbers.
+-- Sample:
+-- SELECT [dbo].[ZzMode]('1,2,2,3,3,3,4', ',');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzMode]
 (

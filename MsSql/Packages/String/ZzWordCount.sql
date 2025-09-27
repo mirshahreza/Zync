@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Counts the total number of words in a given string.
+-- Sample:
+-- SELECT [dbo].[ZzWordCount]('The quick brown fox');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzWordCount] (@InputString NVARCHAR(MAX))
 RETURNS INT

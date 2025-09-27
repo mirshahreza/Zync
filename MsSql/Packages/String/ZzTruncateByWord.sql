@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Truncates a string to the last full word before a specified length.
+-- Sample:
+-- SELECT [dbo].[ZzTruncateByWord]('The quick brown fox jumps over the lazy dog', 20);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzTruncateByWord]
 (

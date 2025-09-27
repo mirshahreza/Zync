@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Lists all indexes with fragmentation, indicating which need maintenance.
+-- Sample:
+-- EXEC [dbo].[ZzSelectFragmentedIndexes];
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzSelectFragmentedIndexes]
 AS

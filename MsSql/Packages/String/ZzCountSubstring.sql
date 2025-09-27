@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Counts the number of non-overlapping occurrences of a substring.
+-- Sample:
+-- SELECT [dbo].[ZzCountSubstring]('ababab', 'ab');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzCountSubstring]
 (

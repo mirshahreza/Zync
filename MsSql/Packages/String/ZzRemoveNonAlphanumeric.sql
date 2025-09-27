@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Removes all characters from a string that are not letters or numbers.
+-- Sample:
+-- SELECT [dbo].[ZzRemoveNonAlphanumeric]('Hello, World! 123');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzRemoveNonAlphanumeric] (@InputString NVARCHAR(MAX))
 RETURNS NVARCHAR(MAX)

@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Calculates the Levenshtein distance between two strings.
+-- Sample:
+-- SELECT [dbo].[ZzSimilarity]('kitten', 'sitting');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzSimilarity]
 (

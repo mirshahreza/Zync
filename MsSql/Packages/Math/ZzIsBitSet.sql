@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Checks if a specific bit is set (1) within an integer.
+-- Sample:
+-- SELECT [dbo].[ZzIsBitSet](5, 0);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzIsBitSet]
 (

@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Encodes a string into Base64 format.
+-- Sample:
+-- SELECT [dbo].[ZzBase64Encode]('Hello World');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzBase64Encode] (@InputString VARCHAR(MAX))
 RETURNS VARCHAR(MAX)

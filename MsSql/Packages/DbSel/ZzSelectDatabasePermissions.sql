@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Lists all users, roles, and their specific database permissions.
+-- Sample:
+-- EXEC [dbo].[ZzSelectDatabasePermissions];
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzSelectDatabasePermissions]
 AS

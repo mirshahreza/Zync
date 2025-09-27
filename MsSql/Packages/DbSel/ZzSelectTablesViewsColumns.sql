@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-01
 -- Description:	A view that provides detailed metadata about all columns in every table and view, including data type, nullability, primary key status, and default values.
+-- Sample:
+-- SELECT * FROM [dbo].[ZzSelectTablesViewsColumns];
 -- =============================================
 CREATE OR ALTER VIEW [DBO].[ZzSelectTablesViewsColumns]
 AS

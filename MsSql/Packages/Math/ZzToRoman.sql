@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Converts an integer into its Roman numeral equivalent (e.g., 2024 becomes "MMXXIV").
+-- Sample:
+-- SELECT [dbo].[ZzToRoman](2024);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzToRoman] (@number INT)
 RETURNS VARCHAR(255)

@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Converts a Roman numeral string back into an integer.
+-- Sample:
+-- SELECT [dbo].[ZzFromRoman]('X');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzFromRoman] (@roman VARCHAR(255))
 RETURNS INT

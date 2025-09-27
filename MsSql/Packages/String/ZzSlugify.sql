@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Converts a string into a clean, URL-friendly "slug".
+-- Sample:
+-- SELECT [dbo].[ZzSlugify]('This is a Test!');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzSlugify] (@Input NVARCHAR(MAX))
 RETURNS NVARCHAR(MAX)

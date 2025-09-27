@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Constrains a number within a specified range.
+-- Sample:
+-- SELECT [dbo].[ZzClamp](15, 0, 10);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzClamp]
 (

@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Extracts the portion of a string between two delimiters.
+-- Sample:
+-- SELECT [dbo].[ZzSubstringBetween]('The quick [brown] fox', '[', ']');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzSubstringBetween]
 (

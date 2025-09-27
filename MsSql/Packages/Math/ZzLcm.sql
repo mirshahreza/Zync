@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Calculates the least common multiple (LCM) of two integers.
+-- Sample:
+-- SELECT [dbo].[ZzLcm](12, 18);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzLcm] (@a INT, @b INT)
 RETURNS BIGINT

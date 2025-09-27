@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Calculates the number of combinations (nCr).
+-- Sample:
+-- SELECT [dbo].[ZzCombination](10, 3);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzCombination]
 (

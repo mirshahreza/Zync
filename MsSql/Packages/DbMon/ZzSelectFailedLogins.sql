@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Shows the history of failed login attempts.
+-- Sample:
+-- EXEC [dbo].[ZzSelectFailedLogins];
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzSelectFailedLogins]
 AS

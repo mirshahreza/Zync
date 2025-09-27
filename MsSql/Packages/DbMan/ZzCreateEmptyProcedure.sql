@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-21
 -- Description:	Creates a new, empty placeholder stored procedure with a single dummy parameter.
+-- Sample:
+-- EXEC [dbo].[ZzCreateEmptyProcedure] @ProcedureName = 'MyNewProcedure';
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzCreateEmptyProcedure]
 	@ProcedureName VARCHAR(128)

@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Shows how indexes are being used (seeks, scans, lookups).
+-- Sample:
+-- EXEC [dbo].[ZzSelectIndexUsage];
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzSelectIndexUsage]
 AS

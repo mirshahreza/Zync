@@ -5,6 +5,8 @@ EXEC DBO.Zync 'DbUtils/ZzObjectExist.sql'
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-02
 -- Description:	Creates a new table with a UNIQUEIDENTIFIER (GUID) primary key column, automatically populated with new GUIDs on insertion.
+-- Sample:
+-- EXEC [dbo].[ZzCreateTableGuid] @TableName = 'MyGuidTable', @PkFieldName = 'GuidId', @IgnoreIfExist = 1;
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzCreateTableGuid]
 	@TableName VARCHAR(128), @PkFieldName VARCHAR(64) = 'Id',

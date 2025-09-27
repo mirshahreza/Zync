@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Encodes a string for safe inclusion in a URL query string.
+-- Sample:
+-- SELECT [dbo].[ZzUrlEncode]('Hello World!');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzUrlEncode] (@InputString NVARCHAR(MAX))
 RETURNS NVARCHAR(MAX)

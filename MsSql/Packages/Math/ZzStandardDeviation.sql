@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Calculates the standard deviation of a set of numbers from a delimited string.
+-- Sample:
+-- SELECT [dbo].[ZzStandardDeviation]('1,2,3,4,5', ',');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzStandardDeviation]
 (

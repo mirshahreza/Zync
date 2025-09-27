@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-05-25
 -- Description:	A comprehensive view that lists all user-created database objects (Tables, Views, Procedures, Functions) with their names, types, and creation/modification dates.
+-- Sample:
+-- SELECT * FROM [dbo].[ZzSelectObjectsDetails];
 -- =============================================
 CREATE OR ALTER VIEW [DBO].[ZzSelectObjectsDetails]
 AS

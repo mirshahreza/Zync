@@ -2,6 +2,8 @@
 -- Author:		https://gist.github.com/jozefizso/203be6677dd01a3464cb
 -- Create date: 2023-05-17
 -- Description:	Formats a numeric value representing bytes into a human-readable string with appropriate size units (e.g., B, KB, MB, GB).
+-- Sample:
+-- SELECT [dbo].[ZzFormatBytes](1024, 'B');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzFormatBytes] 
 ( 

@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	A safe division function that prevents "divide by zero" errors by returning NULL if the denominator is zero.
+-- Sample:
+-- SELECT [dbo].[ZzSafeDivide](10, 0, 0);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzSafeDivide]
 (

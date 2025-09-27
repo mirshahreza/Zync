@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Identifies the most resource-intensive queries on the database.
+-- Sample:
+-- EXEC [dbo].[ZzSelectExpensiveQueries];
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzSelectExpensiveQueries]
 AS

@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Partially hides sensitive information in a string.
+-- Sample:
+-- SELECT [dbo].[ZzMask]('1234-5678-9012-3456', 4, 4, '*');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzMask]
 (

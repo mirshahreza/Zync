@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Wraps a long string to a specified line width.
+-- Sample:
+-- SELECT [dbo].[ZzWrapText]('This is a very long string that needs to be wrapped.', 20);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzWrapText]
 (

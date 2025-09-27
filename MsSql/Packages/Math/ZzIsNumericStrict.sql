@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	A more reliable version of ISNUMERIC() that strictly validates if a string is a valid number.
+-- Sample:
+-- SELECT [dbo].[ZzIsNumericStrict]('123.45');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzIsNumericStrict] (@Value NVARCHAR(MAX))
 RETURNS BIT

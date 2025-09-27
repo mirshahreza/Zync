@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Generates a random string of a specified length.
+-- Sample:
+-- SELECT [dbo].[ZzGenerateRandomString](10, 'ABCDEFG');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzGenerateRandomString]
 (

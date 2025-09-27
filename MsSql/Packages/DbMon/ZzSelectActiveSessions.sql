@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Displays all current active sessions on the server.
+-- Sample:
+-- EXEC [dbo].[ZzSelectActiveSessions];
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzSelectActiveSessions]
 AS

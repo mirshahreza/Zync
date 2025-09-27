@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Truncates a string to a specified length and appends an ellipsis.
+-- Sample:
+-- SELECT [dbo].[ZzAbbreviate]('This is a long string', 10, '...');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzAbbreviate]
 (

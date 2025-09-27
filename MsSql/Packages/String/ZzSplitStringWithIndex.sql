@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Splits a delimited string and returns the index and value of each element.
+-- Sample:
+-- SELECT * FROM [dbo].[ZzSplitStringWithIndex]('apple,banana,cherry', ',');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzSplitStringWithIndex]
 (

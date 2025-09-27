@@ -6,6 +6,8 @@ EXEC DBO.Zync 'DbUtils/ZzSelectTablesIndexes.sql'
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-05-27
 -- Description:	Provides a summary of all user-created tables, including column count, row count, total space used, and the number of indexes.
+-- Sample:
+-- SELECT * FROM [dbo].[ZzSelectTablesOverview];
 -- =============================================
 CREATE OR ALTER VIEW [DBO].[ZzSelectTablesOverview]
 AS

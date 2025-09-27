@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Identifies database users that do not have a corresponding server login.
+-- Sample:
+-- EXEC [dbo].[ZzSelectOrphanedUsers];
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzSelectOrphanedUsers]
 AS

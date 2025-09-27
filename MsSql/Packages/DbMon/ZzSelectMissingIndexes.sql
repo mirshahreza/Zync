@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Suggests new indexes based on query workload to improve performance.
+-- Sample:
+-- EXEC [dbo].[ZzSelectMissingIndexes];
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzSelectMissingIndexes]
 AS

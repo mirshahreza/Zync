@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Rounds a number to the nearest specified multiple.
+-- Sample:
+-- SELECT [dbo].[ZzRoundToMultiple](12, 5);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzRoundToMultiple] (@Number DECIMAL(38, 10), @Multiple DECIMAL(38, 10))
 RETURNS DECIMAL(38, 10)

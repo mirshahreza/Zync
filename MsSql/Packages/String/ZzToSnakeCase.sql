@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Converts a string to snake_case.
+-- Sample:
+-- SELECT [dbo].[ZzToSnakeCase]('helloWorld Test');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzToSnakeCase] (@InputString NVARCHAR(MAX))
 RETURNS NVARCHAR(MAX)

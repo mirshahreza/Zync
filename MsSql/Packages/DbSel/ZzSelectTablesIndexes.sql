@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-05-27
 -- Description:	Lists all indexes for every table in the database, showing the index name, type (e.g., clustered, non-clustered), and whether it enforces uniqueness.
+-- Sample:
+-- SELECT * FROM [dbo].[ZzSelectTablesIndexes];
 -- =============================================
 CREATE OR ALTER VIEW [DBO].[ZzSelectTablesIndexes]
 AS

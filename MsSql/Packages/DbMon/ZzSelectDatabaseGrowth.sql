@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Shows the data and log file growth history for databases.
+-- Sample:
+-- EXEC [dbo].[ZzSelectDatabaseGrowth];
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzSelectDatabaseGrowth]
 AS

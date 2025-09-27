@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Displays log file size and usage statistics for each database.
+-- Sample:
+-- EXEC [dbo].[ZzSelectLogFileUsage];
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzSelectLogFileUsage]
 AS

@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Calculates the number of permutations (nPr).
+-- Sample:
+-- SELECT [dbo].[ZzPermutation](10, 3);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzPermutation]
 (

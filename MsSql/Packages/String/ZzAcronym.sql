@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Creates an acronym from a phrase.
+-- Sample:
+-- SELECT [dbo].[ZzAcronym]('HyperText Markup Language');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzAcronym] (@Phrase NVARCHAR(MAX))
 RETURNS NVARCHAR(MAX)

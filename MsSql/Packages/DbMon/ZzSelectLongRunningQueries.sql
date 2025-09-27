@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Identifies queries that are currently running for a long time.
+-- Sample:
+-- EXEC [dbo].[ZzSelectLongRunningQueries] @MinDurationSeconds = 60;
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzSelectLongRunningQueries]
     @MinDurationSeconds INT = 60

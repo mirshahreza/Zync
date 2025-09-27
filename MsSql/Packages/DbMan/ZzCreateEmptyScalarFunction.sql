@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-21
 -- Description:	Creates a new, empty placeholder scalar function with two dummy parameters that returns a fixed integer value.
+-- Sample:
+-- EXEC [dbo].[ZzCreateEmptyScalarFunction] @ScalarFunctionName = 'MyNewFunction';
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzCreateEmptyScalarFunction]
 	@ScalarFunctionName VARCHAR(128)

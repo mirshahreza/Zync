@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Performs a structural validation of an email address.
+-- Sample:
+-- SELECT [dbo].[ZzIsValidEmail]('test@example.com');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzIsValidEmail] (@Email NVARCHAR(320))
 RETURNS BIT

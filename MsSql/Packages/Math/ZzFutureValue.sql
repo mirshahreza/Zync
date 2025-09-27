@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Calculates the future value of an investment.
+-- Sample:
+-- SELECT [dbo].[ZzFutureValue](0.05, 10, 100, 1000);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzFutureValue]
 (

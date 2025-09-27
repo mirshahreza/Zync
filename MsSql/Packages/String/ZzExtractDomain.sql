@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Extracts the domain name from an email address or a URL.
+-- Sample:
+-- SELECT [dbo].[ZzExtractDomain]('test@example.com');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzExtractDomain] (@InputString NVARCHAR(MAX))
 RETURNS NVARCHAR(MAX)

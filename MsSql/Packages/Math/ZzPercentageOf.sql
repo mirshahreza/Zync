@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Calculates the percentage that one number represents of a total.
+-- Sample:
+-- SELECT [dbo].[ZzPercentageOf](25, 200);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzPercentageOf]
 (

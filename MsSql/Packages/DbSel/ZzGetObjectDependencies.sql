@@ -2,42 +2,20 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-07-12
 -- Description:	Finds and lists all database objects that have a dependency on a specified object.
+-- Sample:
+-- EXEC [dbo].[ZzGetObjectDependencies] @ObjectName = 'MyTable';
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzGetObjectDependencies]
-	@TableName VARCHAR(128), @ColumnName VARCHAR(64), @ColumnTypeSize VARCHAR(64), @AllowNull BIT = 1,@Default NVARCHAR(256) = ''
+	@ObjectName VARCHAR(128)
 AS
 
 BEGIN
 
-	DECLARE @S NVARCHAR(4000);
-	DECLARE @Allow NVARCHAR(16);
-	DECLARE @DefaultName NVARCHAR(256);
-
-	IF(@AllowNull=1)
-	BEGIN
-		SET @Allow = ' NULL'
-	END
-	ELSE
-	BEGIN
-		SET @Allow = ' NOT NULL'
-	END
-
-	SET @DefaultName = ISNULL((SELECT TOP 1 Name FROM SYS.DEFAULT_CONSTRAINTS
-	WHERE PARENT_OBJECT_ID = OBJECT_ID(@TableName)
-	AND PARENT_COLUMN_ID = (SELECT COLUMN_ID FROM SYS.COLUMNS
-							WHERE NAME = @ColumnName
-							AND OBJECT_ID = OBJECT_ID(@TableName))
-						),'NODEFAULT');
-
-	SET @S ='
-ALTER TABLE ' + @TableName + ' DROP CONSTRAINT IF EXISTS ' + @DefaultName+';
-ALTER TABLE ' + @TableName + ' ALTER COLUMN ' + @ColumnName + ' ' + @ColumnTypeSize + @Allow + ';
-IF('''+@Default+'''!='''')
-BEGIN
-	ALTER TABLE ' + @TableName + ' ADD CONSTRAINT ' + @TableName + '_' + @ColumnName + '_Default DEFAULT '''+@Default+''' FOR ' + @ColumnName + '
-END
-;';
-
-	EXECUTE SP_EXECUTESQL @S;
+	SELECT 
+		OBJECT_NAME(referencing_id) AS ReferencingObject,
+		o.type_desc AS ReferencingObjectType
+	FROM sys.sql_expression_dependencies d
+	JOIN sys.objects o ON d.referencing_id = o.object_id
+	WHERE referenced_id = OBJECT_ID(@ObjectName);
 
 END

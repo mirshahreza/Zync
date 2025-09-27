@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Converts a string to "Proper Case" (or "Title Case").
+-- Sample:
+-- SELECT [dbo].[ZzProperCase]('the quick brown fox');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzProperCase] (@InputText NVARCHAR(MAX))
 RETURNS NVARCHAR(MAX)

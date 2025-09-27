@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	A function that checks if a given integer is a prime number.
+-- Sample:
+-- SELECT [dbo].[ZzIsPrime](7);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzIsPrime] (@number INT)
 RETURNS BIT

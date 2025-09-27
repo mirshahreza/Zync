@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Converts a binary string to its integer representation.
+-- Sample:
+-- SELECT [dbo].[ZzFromBinary]('1010');
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzFromBinary] (@Binary VARCHAR(32))
 RETURNS INT

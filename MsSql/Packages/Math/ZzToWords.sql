@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-27
 -- Description:	Converts a number into its full word representation (e.g., 123 becomes "One Hundred Twenty-Three").
+-- Sample:
+-- SELECT [dbo].[ZzToWords](123);
 -- =============================================
 CREATE OR ALTER FUNCTION [DBO].[ZzToWords] (@Number AS BIGINT)
 RETURNS VARCHAR(MAX)

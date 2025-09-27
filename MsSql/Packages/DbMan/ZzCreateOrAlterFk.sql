@@ -2,6 +2,8 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-06-02
 -- Description:	Creates or alters a foreign key constraint between two tables, with an option to enforce cascading updates and deletes.
+-- Sample:
+-- EXEC [dbo].[ZzCreateOrAlterFk] @FkName = 'FK_Orders_Customers', @BaseTableName = 'Orders', @BaseColumnName = 'CustomerId', @TargetTableName = 'Customers', @TargetColumnName = 'Id', @EnforceRelation = 1;
 -- =============================================
 CREATE OR ALTER PROCEDURE [DBO].[ZzCreateOrAlterFk]
 	@FkName VARCHAR(128),
