@@ -21,6 +21,8 @@ View help and available commands:
 
 ```sql
 EXEC dbo.Zync '?'
+```
+
 By default, Zync fetches from:
 
 ```
@@ -31,7 +33,6 @@ You can override the repository/branch by passing it as the second parameter, fo
 
 ```sql
 EXEC dbo.Zync 'i String', 'https://raw.githubusercontent.com/<user>/<repo>/main/MsSql/Packages/';
-```
 ```
 
 ### 3. Deploy Packages or Scripts
@@ -173,6 +174,7 @@ EXEC dbo.Zync 'i String'
 
 -- Install everything
 EXEC dbo.Zync 'i'
+```
 
 ### Maintenance
 
@@ -183,6 +185,9 @@ EXEC dbo.Zync 'lo'
 -- Remove a package or a specific script
 EXEC dbo.Zync 'rm String'
 EXEC dbo.Zync 'rm DbMan/ZzCreateTableGuid.sql'
+
+-- Roll back a package to its previous version
+EXEC dbo.Zync 'rb String'
 
 -- Clean ALL Zync-managed objects and tracking data
 EXEC dbo.Zync 'clean'

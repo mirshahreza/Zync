@@ -34,12 +34,12 @@ Zync/
     ├── README.md            # SQL Server specific documentation
     ├── Zync.sql             # Core package manager setup
     └── Packages/            # Available packages
-    ├── DbMon/           # Database monitoring & schema utilities  
-    ├── DbMan/           # Database management utilities  
+        ├── DbMan/           # Database management utilities
+        ├── DbMon/           # Database monitoring & schema tools
         ├── DateTime/        # Date/time functions
         ├── Math/            # Numeric functions
         ├── String/          # String functions
-    └── Financial/       # Financial functions
+        └── Financial/       # Financial functions
 ```
 
 ## 🎯 Naming Conventions

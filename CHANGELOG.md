@@ -16,6 +16,10 @@ All notable changes to this project will be documented in this file.
    - Fixed mixed-language phrasing in `DbMon/README.md`
  - Fixed package index: removed deprecated `DbSel` from `MsSql/Packages/.sql`
 
+### Fixes
+- Corrected broken Markdown code fences and section formatting in `MsSql/README.md` (help section and maintenance examples)
+- Fixed project structure tree indentation and package listing in root `README.md`
+
 ## 2025-09-27
 
 ### Documentation
