@@ -16,7 +16,8 @@ AS
 
 BEGIN
 
-	DECLARE @ObjectExist BIT = dbo.ZzObjectExist(@TableName);
+	DECLARE @ObjectExist BIT;
+	EXEC dbo.ZzObjectExist @ObjectName = @TableName, @Exists = @ObjectExist OUTPUT;
 	IF(@ObjectExist=1 AND @IgnoreIfExist=1) RETURN;
 
 	EXEC dbo.ZzDropTable @TableName;
