@@ -1,4 +1,6 @@
-EXEC DBO.Zync 'i DbSel/ZzGetObjectDependencies.sql';
+-- Prefer views
+EXEC DBO.Zync 'i DbSel/ZzSelectObjectDependencies.sql';
+EXEC DBO.Zync 'i DbSel/ZzSelectColumnDependencies.sql';
 EXEC DBO.Zync 'i DbSel/ZzSelectDatabasePermissions.sql';
 EXEC DBO.Zync 'i DbSel/ZzSelectDatabaseProperties.sql';
 EXEC DBO.Zync 'i DbSel/ZzSelectObjectsDetails.sql';

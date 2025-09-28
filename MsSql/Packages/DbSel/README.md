@@ -13,8 +13,11 @@ Alternatively:
 EXEC dbo.Zync 'i DbSel/.sql'
 ```
 
-## 📜 Included Utilities
+## 📜 Included Utilities (View-only)
 - List tables, views, procedures, and functions
-- Show columns, indexes, and foreign keys
-- Search objects or columns by name
+- Show columns, indexes, constraints (PK/Unique/Check/Default) and foreign keys
+- Identity columns, triggers, extended properties
+- Object and column dependencies
 - Schema exploration helpers
+
+All utilities are exposed as views under [dbo].[ZzSelect...]. Filter با WHERE برای سناریوهای خاص به‌جای EXEC توصیه می‌شود.
