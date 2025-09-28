@@ -19,3 +19,6 @@ EXEC dbo.Zync 'i Math/.sql'
 - Statistical helpers (e.g., standard deviation)
 - Conversions (binary/hex/roman)
 - Misc math helpers (safe divide, rounding, random, ...)
+
+Notes:
+- `ls Math` shows each item with its short description taken from a `-- Description:` line at the top of the script.

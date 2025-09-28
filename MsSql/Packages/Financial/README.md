@@ -33,3 +33,6 @@ EXEC dbo.Zync 'i Financial/.sql'
 	- Example: `SELECT [dbo].[ZzIPMT](18, 36, 1, 100000);`
 - ZzPPMT: Principal portion for a given payment period
 	- Example: `SELECT [dbo].[ZzPPMT](18, 36, 1, 100000);`
+
+Notes:
+- `ls Financial` shows each item with its short description taken from a `-- Description:` line at the top of the script.

@@ -17,7 +17,7 @@ Zync simplifies database development by applying modern package management princ
 
 ## 🚀 Getting Started
 
-Zync currently supports **SQL Server**, with plans to expand to other database systems.
+Zync currently supports **SQL Server** (MsSql), with plans to expand to other database systems.
 
 ### 📊 SQL Server
 > Note: Under active development and usable. Some behaviors may change as the project evolves.
@@ -36,11 +36,10 @@ Zync/
     └── Packages/            # Available packages
     ├── DbMon/           # Database monitoring & schema utilities  
     ├── DbMan/           # Database management utilities  
-    ├── DbSel/           # (deprecated) merged into DbMon  
         ├── DateTime/        # Date/time functions
         ├── Math/            # Numeric functions
         ├── String/          # String functions
-        └── Financial/       # Financial functions (WIP)
+    └── Financial/       # Financial functions
 ```
 
 ## 🎯 Naming Conventions

@@ -14,7 +14,7 @@ Automates creating a Zync package from existing SQL Server database tables filte
 - Requirements: SMO assemblies or the `SqlServer` PowerShell module
 
 ### Parameters
-- `-ServerName` (default: `./SQL2022`)
+- `-ServerName` (default: `.\SQL2022`)
 - `-Database` (default: `AppEndV2`)
 - `-User`, `-Password`
 - `-NamePrefix` (e.g., `Base`)

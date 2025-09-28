@@ -21,6 +21,17 @@ View help and available commands:
 
 ```sql
 EXEC dbo.Zync '?'
+By default, Zync fetches from:
+
+```
+https://raw.githubusercontent.com/mirshahreza/Zync/master/MsSql/Packages/
+```
+
+You can override the repository/branch by passing it as the second parameter, for example:
+
+```sql
+EXEC dbo.Zync 'i String', 'https://raw.githubusercontent.com/<user>/<repo>/main/MsSql/Packages/';
+```
 ```
 
 ### 3. Deploy Packages or Scripts
@@ -38,7 +49,7 @@ Install a specific script from a package:
 EXEC dbo.Zync 'i String/ZzSplitString.sql'
 ```
 
-Install all available packages listed by the index:
+Install all available packages listed by the index (Packages/.sql):
 
 ```sql
 EXEC dbo.Zync 'i'
@@ -111,7 +122,7 @@ MsSql/
     ├── DateTime/         # Date/time functions
     ├── Math/             # Numeric functions
     ├── String/           # String functions
-    └── Financial/        # Financial functions (WIP)
+    └── Financial/        # Financial functions
 ```
 
 ## 📖 Usage Examples
@@ -121,7 +132,7 @@ MsSql/
 The `ls` command lists available packages and their contents. It supports a simple search filter.
 
 Behavior:
-- `ls` lists all packages and their scripts (names only; fast overview).
+- `ls` lists all packages and their scripts (names only; fast overview from Packages/.sql).
 - `ls <package>` lists scripts inside a package with per-script descriptions.
 - `ls ?term` searches across all packages (case-insensitive). Use `%` or `*` as wildcard.
 - `ls <package> ?term` searches inside a package and matches on filename or description.
@@ -162,6 +173,20 @@ EXEC dbo.Zync 'i String'
 
 -- Install everything
 EXEC dbo.Zync 'i'
+
+### Maintenance
+
+```sql
+-- List all Zync-managed objects (names start with Zz)
+EXEC dbo.Zync 'lo'
+
+-- Remove a package or a specific script
+EXEC dbo.Zync 'rm String'
+EXEC dbo.Zync 'rm DbMan/ZzCreateTableGuid.sql'
+
+-- Clean ALL Zync-managed objects and tracking data
+EXEC dbo.Zync 'clean'
+```
 ```
 
 ## 🤝 Contributing

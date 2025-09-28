@@ -19,3 +19,6 @@ EXEC dbo.Zync 'i String/.sql'
 - Trim and normalize text
 - Case transformations (camel/snake, etc.)
 - Misc string helpers (masking, soundex, similarity, slugify, ...)
+
+Notes:
+- `ls String` shows each item with its short description taken from a `-- Description:` line at the top of the script.

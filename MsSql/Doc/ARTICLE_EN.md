@@ -40,26 +40,43 @@ First, you need to install the core `Zync` procedure in your target database. Ju
 
 #### Step 2: List Available Packages
 
-Once installed, you can see which packages are available in the default repository with the `ls` (list) command.
+Once installed, you can see which packages are available in the default repository with the `ls` (list) command. The root list expands the repository index at `MsSql/Packages/.sql` and shows the scripts contained in each package.
 
 ```sql
 EXEC [dbo].[Zync] 'ls'
 ```
 
-This command queries the GitHub API and returns a list of available packages (directories) you can install.
+This command reads the repository index and returns a list of packages and their contained scripts (names only) for a quick overview.
 
 **Expected Output:**
 
 ```
-Fetching available packages from repository...
-Available packages:
--------------------
-DbMan
-DbMon
-DbSel
-Math
-String
--------------------
+Listing package(s): ''...
+
+ -> Expanding packages and listing contained objects:
+	[DateTime]:
+		- ZzStartOfWeek.sql
+		- ZzEndOfWeek.sql
+		- ...
+	[DbMan]:
+		- ZzCreateTableGuid.sql
+		- ZzCreateOrAlterFk.sql
+		- ...
+	[DbMon]:
+		- ZzSelectActiveSessions.sql
+		- ZzSelectBackupHistory.sql
+		- ...
+	[Math]:
+		- ZzFormatBytes.sql
+		- ZzSafeDivide.sql
+		- ...
+	[String]:
+		- ZzSplitString.sql
+		- ZzCountWord.sql
+		- ...
+	[Financial]:
+		- ZzCalculateLoanPayment.sql
+		- ...
 ```
 
 #### Step 3: Install Your First Package
@@ -97,7 +114,7 @@ EXEC [dbo].[Zync] 'i String/ZzSplitString.sql'
 
 The default repository already includes several useful packages to get you started:
 
-*   **DbMan, DbMon, DbSel:** A powerful suite of tools for database administration, including procedures to create/drop tables, manage columns, and analyze object dependencies.
+*   **DbMan, DbMon:** A powerful suite of tools for database administration, including procedures to create/drop tables, manage columns, analyze dependencies, and explore schemas.
 *   **String:** A collection of functions for common string operations like splitting, trimming, and counting.
 *   **Math:** Helper functions for formatting numbers and converting byte sizes (e.g., to KB, MB, GB).
 
@@ -116,6 +133,14 @@ Managing database code shouldn't be a chore. Zync offers a streamlined, modern a
 Check out the project on GitHub, give it a star, and try it out in your own projects. Contributions, feedback, and ideas are always welcome.
 
 **Find the project here: [https://github.com/mirshahreza/Zync](https://github.com/mirshahreza/Zync)**
+
+Tip: By default Zync fetches from `https://raw.githubusercontent.com/mirshahreza/Zync/master/MsSql/Packages/`. You can point to your own repository/branch by passing it as the second parameter, e.g. `EXEC dbo.Zync 'i String', 'https://raw.githubusercontent.com/<user>/<repo>/main/MsSql/Packages/';`.
+
+Useful commands beyond install/list:
+- `lo` or `list-objects`: list all Zync-managed objects (name starts with Zz)
+- `clean`: remove ALL Zync-managed objects and tracking data
+- `rm <pkgOrFile>`: remove a package or a specific script (restores previous version when available)
+- `rb <package>`: rollback a package to its previous version
 
 ---
 

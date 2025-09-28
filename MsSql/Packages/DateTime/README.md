@@ -19,3 +19,6 @@ EXEC dbo.Zync 'i DateTime/.sql'
 - Start/end of day, week, month, year calculations
 - Working/business day calculations
 - Other date/time helpers
+
+Notes:
+- `ls DateTime` shows each item with its short description taken from a `-- Description:` line at the top of the script.

@@ -31,7 +31,12 @@ Schema exploration (migrated from DbSel):
 
 Still procedures (and why):
 - ZzSelectFailedLogins — relies on `sp_readerrorlog` which cannot be used inside a view.
-Wrappers removed: both `ZzSelectObjectDependenciesProc` و `ZzSelectColumnDependenciesProc` حذف شده‌اند. برای فیلتر کردن، مستقیماً روی ویوهای زیر شرط بگذارید:
+
+Wrappers removed:
+- `ZzSelectObjectDependenciesProc`
+- `ZzSelectColumnDependenciesProc`
+
+For filtering, query the companion views directly:
 - `ZzSelectObjectDependencies`
 - `ZzSelectColumnDependencies`
 

@@ -20,3 +20,7 @@ EXEC dbo.Zync 'i DbMan/.sql'
 - Foreign key management
 - Object existence helpers
 - And more
+
+Notes:
+- Prefer installing via `DbMan/.sql` to ensure the correct creation order for dependent items.
+- `ls DbMan` shows each item with its short description taken from a `-- Description:` line at the top of the script.
