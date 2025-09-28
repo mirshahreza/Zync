@@ -32,6 +32,8 @@ The core philosophy is simple: host your SQL packages in a GitHub repository, an
 
 ### Getting Started with Zync
 
+Zync currently targets SQL Server (MsSql). All scripts, packages, tests, and helper tools live under the `MsSql/` folder in the repository.
+
 Ready to give it a try? It only takes a few minutes to get up and running.
 
 #### Step 1: Install the Zync Stored Procedure
@@ -77,6 +79,18 @@ Listing package(s): ''...
 	[Financial]:
 		- ZzCalculateLoanPayment.sql
 		- ...
+```
+
+#### Search and Discover
+
+You can filter across all packages or inside a specific package:
+
+```sql
+-- Search everywhere (case-insensitive; % or * as wildcard)
+EXEC [dbo].[Zync] 'ls ?week';
+
+-- Search inside a package by name or description
+EXEC [dbo].[Zync] 'ls DbMon ?agent%status';
 ```
 
 #### Step 3: Install Your First Package
@@ -141,6 +155,16 @@ Useful commands beyond install/list:
 - `clean`: remove ALL Zync-managed objects and tracking data
 - `rm <pkgOrFile>`: remove a package or a specific script (restores previous version when available)
 - `rb <package>`: rollback a package to its previous version
+
+---
+
+### Local Testing (PowerShell)
+
+Run the full SQL test suite against a local SQL Server instance. The runner will create a test DB if needed, install `MsSql/Zync.sql`, execute tests from `MsSql/Test/`, and write logs to `MsSql/TestLogs/`.
+
+```powershell
+pwsh -NoProfile -ExecutionPolicy Bypass -File "c:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1" -ServerName ".\SQL2022" -Database "ZyncTest" -ContinueOnError
+```
 
 ---
 

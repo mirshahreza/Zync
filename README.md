@@ -17,12 +17,18 @@ Zync simplifies database development by applying modern package management princ
 
 ## 🚀 Getting Started
 
-Zync currently supports **SQL Server** (MsSql), with plans to expand to other database systems.
+Zync currently supports only **SQL Server** (MsSql). All scripts, tests, and docs live under the `MsSql/` folder.
 
 ### 📊 SQL Server
 > Note: Under active development and usable. Some behaviors may change as the project evolves.
 
 **[📖 Get Started with SQL Server →](MsSql/README.md)**
+
+Quick test run on Windows PowerShell:
+
+```powershell
+pwsh -NoProfile -ExecutionPolicy Bypass -File "c:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1" -ServerName ".\SQL2022" -Database "ZyncTest" -ContinueOnError
+```
 
 ## 🏗️ Project Structure
 

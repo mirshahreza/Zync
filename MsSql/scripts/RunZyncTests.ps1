@@ -100,11 +100,10 @@ END
 
 # --- Main ---
 $ErrorActionPreference = 'Stop'
-$repoRoot = Split-Path -Parent (Split-Path -Parent $PSCommandPath)
-$msSqlDir = Join-Path $repoRoot 'MsSql'
+$msSqlDir = Split-Path -Parent (Split-Path -Parent $PSCommandPath)  # points to MsSql
 $zyncSql = Join-Path $msSqlDir 'Zync.sql'
 $testsDir = Join-Path $msSqlDir 'Test'
-$logsDir = Join-Path $repoRoot 'TestLogs'
+$logsDir = Join-Path $msSqlDir 'TestLogs'
 New-Item -ItemType Directory -Force -Path $logsDir | Out-Null
 
 Write-Section "Preparation"
