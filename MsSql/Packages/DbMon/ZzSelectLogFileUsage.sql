@@ -3,64 +3,16 @@
 -- Create date: 2025-09-27
 -- Description:	Displays log file size and usage statistics for each database.
 -- Sample:
--- EXEC [dbo].[ZzSelectLogFileUsage];
+-- SELECT * FROM [dbo].[ZzSelectLogFileUsage];
+-- Note: Requires SQL Server 2019+ (sys.dm_db_log_stats)
 -- =============================================
-CREATE OR ALTER PROCEDURE [DBO].[ZzSelectLogFileUsage]
+CREATE OR ALTER VIEW [DBO].[ZzSelectLogFileUsage]
 AS
-BEGIN
-    SET NOCOUNT ON;
-
-    /*
-        Notes:
-        - sys.dm_db_log_space_usage returns data only for the CURRENT database and is a DMV (no parameters).
-          The previous implementation incorrectly tried to pass database_id to it via CROSS APPLY, causing
-          "is not a function" errors on many SQL Server versions.
-        - For SQL Server 2019+ (major version 15+), sys.dm_db_log_stats(database_id) safely returns per-db
-          log statistics. We use it when available.
-        - For older versions, we fall back to DBCC SQLPERF(LOGSPACE), which provides per-db log size (MB)
-          and used percent. We compute used MB accordingly.
-    */
-
-    DECLARE @majorVersion int = TRY_CAST(PARSENAME(CONVERT(varchar(50), SERVERPROPERTY('ProductVersion')), 4) AS int);
-
-    IF (@majorVersion IS NOT NULL AND @majorVersion >= 15)
-    BEGIN
-        -- SQL Server 2019+ : use sys.dm_db_log_stats(database_id)
-        SELECT 
-            db.name AS DatabaseName,
-            CAST(ls.total_log_size_mb AS decimal(19,2)) AS TotalLogSizeMB,
-            CAST(ls.active_log_size_mb AS decimal(19,2)) AS UsedLogSpaceMB,
-            CAST(CASE WHEN ls.total_log_size_mb > 0 THEN (ls.active_log_size_mb / ls.total_log_size_mb) * 100.0 ELSE 0 END AS decimal(5,2)) AS UsedLogSpacePercent
-        FROM sys.databases AS db
-        CROSS APPLY sys.dm_db_log_stats(db.database_id) AS ls
-        WHERE db.state_desc = 'ONLINE'
-        ORDER BY db.name;
-    END
-    ELSE
-    BEGIN
-        -- Older SQL Server versions: fall back to DBCC SQLPERF(LOGSPACE)
-        CREATE TABLE #logspace
-        (
-            DatabaseName sysname,
-            LogSizeMB    float,
-            LogSpaceUsedPercent float,
-            Status       int
-        );
-
-        INSERT INTO #logspace
-        EXEC ('DBCC SQLPERF(LOGSPACE) WITH NO_INFOMSGS');
-
-        SELECT 
-            ls.DatabaseName,
-            ls.LogSizeMB AS TotalLogSizeMB,
-            (ls.LogSizeMB * (ls.LogSpaceUsedPercent / 100.0)) AS UsedLogSpaceMB,
-            ls.LogSpaceUsedPercent AS UsedLogSpacePercent
-        FROM #logspace AS ls
-        INNER JOIN sys.databases AS db
-            ON db.name = ls.DatabaseName
-        WHERE db.state_desc = 'ONLINE'
-        ORDER BY ls.DatabaseName;
-
-        DROP TABLE #logspace;
-    END
-END
+SELECT 
+    db.name AS DatabaseName,
+    CAST(ls.total_log_size_mb AS decimal(19,2)) AS TotalLogSizeMB,
+    CAST(ls.active_log_size_mb AS decimal(19,2)) AS UsedLogSpaceMB,
+    CAST(CASE WHEN ls.total_log_size_mb > 0 THEN (ls.active_log_size_mb / ls.total_log_size_mb) * 100.0 ELSE 0 END AS decimal(5,2)) AS UsedLogSpacePercent
+FROM sys.databases AS db
+CROSS APPLY sys.dm_db_log_stats(db.database_id) AS ls
+WHERE db.state_desc = 'ONLINE';
