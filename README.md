@@ -34,9 +34,9 @@ Zync/
     ├── README.md            # SQL Server specific documentation
     ├── Zync.sql             # Core package manager setup
     └── Packages/            # Available packages
-        ├── DbMon/           # Database utilities  
-        ├── DbMan/           # Database utilities  
-        ├── DbSel/           # Database utilities  
+    ├── DbMon/           # Database monitoring & schema utilities  
+    ├── DbMan/           # Database management utilities  
+    ├── DbSel/           # (deprecated) merged into DbMon  
         ├── DateTime/        # Date/time functions
         ├── Math/            # Numeric functions
         ├── String/          # String functions

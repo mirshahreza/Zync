@@ -30,7 +30,6 @@ Install a complete package (e.g., database utilities):
 ```sql
 EXEC dbo.Zync 'i DbMan'
 EXEC dbo.Zync 'i DbMon'
-EXEC dbo.Zync 'i DbSel'
 ```
 
 Install a specific script from a package:
@@ -47,7 +46,7 @@ EXEC dbo.Zync 'i'
 
 ## 📚 Available Packages
 
-### 🔧 DbMan, DbMon, DbSel
+### 🔧 DbMan, DbMon
 Database utilities for common administrative tasks:
 - Table and column management (create, alter, drop)
 - Foreign key management  
@@ -58,7 +57,6 @@ Database utilities for common administrative tasks:
 ```sql
 EXEC dbo.Zync 'i DbMan'
 EXEC dbo.Zync 'i DbMon'
-EXEC dbo.Zync 'i DbSel'
 ```
 
 ### 🔤 String
@@ -109,8 +107,7 @@ MsSql/
 ├── Zync.sql              # Core package manager setup
 └── Packages/
     ├── DbMan/            # Database management utilities
-    ├── DbMon/            # Database monitoring tools
-    ├── DbSel/            # Database selection/querying tools
+    ├── DbMon/            # Database monitoring & schema tools (DbSel merged here)
     ├── DateTime/         # Date/time functions
     ├── Math/             # Numeric functions
     ├── String/           # String functions
