@@ -22,3 +22,6 @@ EXEC dbo.Zync 'i DateTime/.sql'
 
 Notes:
 - `ls DateTime` shows each item with its short description taken from a `-- Description:` line at the top of the script.
+
+### New (2025-09-29)
+- ZzISOWeekNumber — شماره هفته به‌صورت ISO-8601

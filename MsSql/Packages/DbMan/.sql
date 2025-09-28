@@ -18,3 +18,6 @@ EXEC DBO.Zync 'i DbMan/ZzObjectExist.sql';
 EXEC DBO.Zync 'i DbMan/ZzRenameColumn.sql';
 EXEC DBO.Zync 'i DbMan/ZzRenameTable.sql';
 EXEC DBO.Zync 'i DbMan/ZzTruncateTable.sql';
+
+EXEC DBO.Zync 'i DbMan/ZzEnsureSchema.sql';
+EXEC DBO.Zync 'i DbMan/ZzEnsureIndex.sql';

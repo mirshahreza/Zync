@@ -20,3 +20,5 @@ EXEC dbo.Zync 'i DateTime/ZzStartOfYear.sql'
 EXEC dbo.Zync 'i DateTime/ZzTimeDifference.sql'
 EXEC dbo.Zync 'i DateTime/ZzWeekOfYear.sql'
 EXEC dbo.Zync 'i DateTime/ZzWorkingDays.sql'
+
+EXEC dbo.Zync 'i DateTime/ZzISOWeekNumber.sql'

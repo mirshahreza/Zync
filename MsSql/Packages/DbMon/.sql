@@ -31,3 +31,7 @@ EXEC DBO.Zync 'i DbMon/ZzSelectOrphanedUsers.sql';
 EXEC DBO.Zync 'i DbMon/ZzSelectServerConfiguration.sql';
 EXEC DBO.Zync 'i DbMon/ZzSelectUnusedIndexes.sql';
 EXEC DBO.Zync 'i DbMon/ZzSelectFailedLogins.sql';
+
+EXEC DBO.Zync 'i DbMon/ZzSelectWaitStats.sql';
+EXEC DBO.Zync 'i DbMon/ZzSelectTempdbUsage.sql';
+EXEC DBO.Zync 'i DbMon/ZzSelectFileStats.sql';

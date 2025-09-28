@@ -24,3 +24,7 @@ EXEC dbo.Zync 'i DbMan/.sql'
 Notes:
 - Prefer installing via `DbMan/.sql` to ensure the correct creation order for dependent items.
 - `ls DbMan` shows each item with its short description taken from a `-- Description:` line at the top of the script.
+
+### New (2025-09-29)
+- ZzEnsureSchema — ایجاد خودکار اسکیمایی که وجود ندارد
+- ZzEnsureIndex — ایجاد ایندکس Nonclustered در صورت عدم وجود (Include/Filter)

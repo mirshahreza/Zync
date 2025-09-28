@@ -22,3 +22,7 @@ EXEC dbo.Zync 'i String/.sql'
 
 Notes:
 - `ls String` shows each item with its short description taken from a `-- Description:` line at the top of the script.
+
+### New (2025-09-29)
+- ZzNormalizePersianText — یکسان‌سازی حروف و فواصل فارسی
+- ZzConvertDigitsFaEn — تبدیل اعداد فارسی ↔ انگلیسی

@@ -20,6 +20,18 @@ All notable changes to this project will be documented in this file.
 - Corrected broken Markdown code fences and section formatting in `MsSql/README.md` (help section and maintenance examples)
 - Fixed project structure tree indentation and package listing in root `README.md`
 
+## 2025-09-29
+
+### Added
+- DbMon: `ZzSelectWaitStats`, `ZzSelectTempdbUsage`, `ZzSelectFileStats`
+- DbMan: `ZzEnsureSchema`, `ZzEnsureIndex`
+- String: `ZzNormalizePersianText`, `ZzConvertDigitsFaEn`
+- DateTime: `ZzISOWeekNumber`
+
+### Documentation
+- Updated package READMEs (`DbMon`, `DbMan`, `String`, `DateTime`) with new utilities and notes
+- Wired new scripts into package indexes (`MsSql/Packages/*/.sql`) for install via `EXEC dbo.Zync 'i <Package>'`
+
 ## 2025-09-27
 
 ### Documentation
