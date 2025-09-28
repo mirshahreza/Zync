@@ -1,6 +1,12 @@
 -- Remove all DbMan related packages
 PRINT 'Removing all DbMan packages...'
 
+IF OBJECT_ID('[dbo].[ZyncPackages]') IS NULL OR OBJECT_ID('[dbo].[ZyncObjects]') IS NULL
+BEGIN
+    PRINT 'Tracking tables do not exist. Skipping removal.'
+    RETURN;
+END
+
 -- Get list of all DbMan packages
 DECLARE @PackageName NVARCHAR(256)
 DECLARE package_cursor CURSOR FOR

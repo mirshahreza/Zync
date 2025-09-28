@@ -16,7 +16,10 @@ PRINT ''
 PRINT 'Executing clean command...'
 
 -- Execute clean command
-EXEC [dbo].[Zync] 'clean'
+IF OBJECT_ID('[dbo].[Zync]', 'P') IS NOT NULL
+    EXEC [dbo].[Zync] 'clean'
+ELSE
+    PRINT 'Zync procedure not found. Skipping clean.'
 
 PRINT ''
 PRINT 'Objects remaining after clean:'

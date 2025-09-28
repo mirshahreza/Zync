@@ -15,6 +15,12 @@
 PRINT 'Starting comprehensive test for Zync...';
 PRINT '=========================================';
 
+IF OBJECT_ID('[dbo].[Zync]', 'P') IS NULL
+BEGIN
+    PRINT 'Zync is not installed in this database. Please run MsSql/Zync.sql first.';
+    RETURN;
+END
+
 -- Enable OLE Automation if not enabled
 PRINT 'Step 0: Ensuring OLE Automation is enabled...';
 BEGIN TRY
@@ -81,3 +87,11 @@ PRINT '=========================================';
 PRINT 'Comprehensive test finished.';
 
 GO
+
+-- Optional: quick smoke check of newly added utilities if present
+PRINT 'Optional smoke checks for new utilities...';
+IF OBJECT_ID('[dbo].[ZzSelectWaitStats]', 'V') IS NOT NULL SELECT TOP 1 * FROM [dbo].[ZzSelectWaitStats];
+IF OBJECT_ID('[dbo].[ZzSelectTempdbUsage]', 'V') IS NOT NULL SELECT TOP 1 * FROM [dbo].[ZzSelectTempdbUsage];
+IF OBJECT_ID('[dbo].[ZzSelectFileStats]', 'V') IS NOT NULL SELECT TOP 1 * FROM [dbo].[ZzSelectFileStats];
+IF OBJECT_ID('[dbo].[ZzISOWeekNumber]', 'FN') IS NOT NULL SELECT [dbo].[ZzISOWeekNumber](GETDATE()) AS ISOWeekNumber;
+PRINT 'Smoke checks completed.';

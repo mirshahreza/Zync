@@ -32,6 +32,9 @@ All notable changes to this project will be documented in this file.
 - Updated package READMEs (`DbMon`, `DbMan`, `String`, `DateTime`) with new utilities and notes
 - Wired new scripts into package indexes (`MsSql/Packages/*/.sql`) for install via `EXEC dbo.Zync 'i <Package>'`
 
+### Tests
+- Hardened test scripts under `MsSql/Test`: added guards when Zync or tracking tables are missing and optional smoke checks for new utilities
+
 ## 2025-09-27
 
 ### Documentation

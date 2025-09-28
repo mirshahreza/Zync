@@ -1,8 +1,8 @@
 -- Test script to exactly simulate the stored procedure logic
 -- First reinstall a fresh package for testing
-DELETE FROM [dbo].[ZyncObjects]; 
-DELETE FROM [dbo].[ZyncPackages];
-EXEC DBO.Zync 'i DbMan/ZzAlterColumn.sql';
+IF OBJECT_ID('[dbo].[ZyncObjects]') IS NOT NULL DELETE FROM [dbo].[ZyncObjects]; 
+IF OBJECT_ID('[dbo].[ZyncPackages]') IS NOT NULL DELETE FROM [dbo].[ZyncPackages];
+IF OBJECT_ID('[dbo].[Zync]', 'P') IS NOT NULL EXEC DBO.Zync 'i DbMan/ZzAlterColumn.sql'; ELSE PRINT 'Zync not installed; skipping install.';
 
 -- Now simulate the exact remove logic
 DECLARE @PackageName NVARCHAR(128) = 'DbMan/ZzAlterColumn.sql';
