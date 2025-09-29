@@ -25,3 +25,11 @@ Notes:
 
 ### New (2025-09-29)
 - ZzISOWeekNumber — شماره هفته به‌صورت ISO-8601
+
+### Advanced Functions (2025-09-30)
+- ZzConvertToLunar — تبدیل تاریخ میلادی به قمری اسلامی
+- ZzHolidayChecker — بررسی تعطیلات رسمی ایران و سایر کشورها
+- ZzBusinessDaysCalculator — محاسبه روزهای کاری با در نظر گیری تعطیلات
+- ZzTimeZoneConverter — تبدیل زمان بین مناطق زمانی مختلف
+- ZzScheduleGenerator — تولید برنامه‌های کاری با الگوهای مختلف
+- ZzDateValidator — اعتبارسنجی تاریخ در تقویم‌های مختلف
