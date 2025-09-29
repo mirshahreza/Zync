@@ -79,12 +79,14 @@ If you encounter any issues, have questions, or would like to contribute, here�
 - **📧 Contact the maintainers**: For direct inquiries.
 - **📚 Check the documentation**: Each package has its own `README` file.
 
+<!--
 ### ❤️ Financial Support
 If you find this project helpful, your contribution would be greatly appreciated. Donations help us dedicate more time to maintenance and new features.
 
 - **[💖 Sponsor on GitHub](https://github.com/sponsors/mirshahreza)**
 
 Thank you for your support!
+-->
 
 ## 📄 License
 
