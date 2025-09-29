@@ -155,7 +155,7 @@ Notes:
      EXEC dbo.Zync 'ls <YourPackage>';
      EXEC dbo.Zync 'lo';
      ```
-   - Optionally run `MsSql/Test/syntax_test.sql` or `MsSql/Test/comprehensive_test.sql`
+   - Optionally run `MsSql/Test/zync_check_syntax.sql` or `MsSql/Test/zync_test_comprehensive.sql`
 5) Commit with clear messages and open a PR that explains changes, rationale, and usage samples.
 
 Note: Zync currently defaults to `master` in the GitHub Raw URL. If the default branch changes in the future, this may be updated internally; you normally do not need to modify it. Mentioning branch considerations in your PR is welcome.
@@ -259,7 +259,7 @@ EXEC DBO.Zync 'i Text/ZzToTitleCase.sql';
   - `EXEC dbo.Zync 'i <PkgOrFile>'`
   - `EXEC dbo.Zync 'lo'`
   - `EXEC dbo.Zync 'rm <PkgOrFile>'` then `lo` again
-- You can use helper scripts under `MsSql/Test/` (e.g., `syntax_test.sql`, `comprehensive_test.sql`).
+- You can use helper scripts under `MsSql/Test/` (e.g., `zync_check_syntax.sql`, `zync_test_comprehensive.sql`).
 - Watch for error messages and SQL Server compatibility.
 - Brackets `[ ]` in names are used consistently; Zync's internal parser expects patterns like `CREATE OR ALTER ... [dbo].[Name]`.
 

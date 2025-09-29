@@ -15,7 +15,7 @@ Parameters:
 - `-Database` (default: `ZyncTest`)
 - `-Auth` (`Windows` or `Sql`)
 - `-User`, `-Password` (when `-Auth Sql`)
-- `-TestFilter` (e.g., `comprehensive_test.sql`)
+- `-TestFilter` (e.g., `zync_test_comprehensive.sql`)
 - `-ContinueOnError`
 - `-NoOleAutomation` (skip enabling OLE Automation)
 

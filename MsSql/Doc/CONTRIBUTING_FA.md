@@ -155,7 +155,7 @@ EXEC DBO.Zync 'i Math/ZzSafeDivide.sql';
      EXEC dbo.Zync 'ls <YourPackage>';      -- بررسی نمایش توضیح آیتم‌ها
      EXEC dbo.Zync 'lo';                    -- بررسی آبجکت‌های Zz*
      ```
-   - اجرای اسکریپت‌های تست موجود مانند `MsSql/Test/syntax_test.sql` یا `MsSql/Test/comprehensive_test.sql` (در صورت نیاز)
+   - اجرای اسکریپت‌های تست موجود مانند `MsSql/Test/zync_check_syntax.sql` یا `MsSql/Test/zync_test_comprehensive.sql` (در صورت نیاز)
 5) Commit مرتب با پیام‌های واضح و Pull Request با توضیح تغییرات، دلیل و نمونه استفاده.
 
 نکته: Zync داخل کد به‌صورت پیش‌فرض از شاخه‌ی `master` در GitHub Raw استفاده می‌کند. اگر شاخه‌ی پیش‌فرض ریپوی اصلی تغییر کند، این مقدار در آینده ممکن است به‌روزرسانی شود؛ شما لازم نیست آن را تغییر دهید، اما در PR اشاره به این نکته خالی از لطف نیست.
@@ -259,7 +259,7 @@ EXEC DBO.Zync 'i Text/ZzToTitleCase.sql';
   - `EXEC dbo.Zync 'i <PkgOrFile>'`
   - `EXEC dbo.Zync 'lo'`
   - `EXEC dbo.Zync 'rm <PkgOrFile>'` و مجدداً `lo`
-- اسکریپت‌های کمکی در `MsSql/Test/` وجود دارند؛ در صورت نیاز استفاده کنید (مثل `syntax_test.sql`، `comprehensive_test.sql`).
+- اسکریپت‌های کمکی در `MsSql/Test/` وجود دارند؛ در صورت نیاز استفاده کنید (مثل `zync_check_syntax.sql`، `zync_test_comprehensive.sql`).
 - به پیام‌های خطا و سازگاری با SQL Server دقت کنید.
 - از کاراکترهای براکت `[ ]` در نام‌گذاری استفاده شده است؛ Parser داخلی Zync با الگوهای «CREATE OR ALTER ... [dbo].[Name]» سازگار است.
 

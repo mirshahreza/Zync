@@ -155,19 +155,24 @@ if (-not $NoOleAutomation) {
 
 # Test ordering: start with syntax/diagnostics, then install/remove flows, then cleanups
 $preferredOrder = @(
-    'syntax_test.sql',
-    'debug_object_parsing.sql',
-    'debug_existence_check.sql',
-    'diagnostic_check.sql',
-    'comprehensive_test.sql',
-    'exact_simulation_test.sql',
-    'test_clean.sql',
-    'quick_clean_test.sql',
-    'simple_cleanup.sql',
-    'test_removal.sql',
-    'test_remove_fix.sql',
-    'remove_all_dbman.sql',
-    'manual_cleanup.sql'
+    'zync_check_syntax.sql',
+    'zync_debug_parsing.sql',
+    'zync_debug_existence.sql',
+    'zync_debug_diagnostic.sql',
+    'zync_test_comprehensive.sql',
+    'zync_debug_simulation.sql',
+    'zync_test_cleanup.sql',
+    'zync_test_cleanup_quick.sql',
+    'zync_cleanup_simple.sql',
+    'zync_test_removal.sql',
+    'zync_test_removal_fix.sql',
+    'zync_cleanup_dbman_complete.sql',
+    'zync_cleanup_manual.sql',
+    # DateTime function tests
+    'zync_check_datetime_existence.sql',
+    'zync_test_datetime_simple.sql',
+    'zync_test_datetime_advanced.sql',
+    'zync_test_datetime_comprehensive.sql'
 )
 
 $allTests = Get-ChildItem -Path $testsDir -Filter $TestFilter -File | Sort-Object Name
