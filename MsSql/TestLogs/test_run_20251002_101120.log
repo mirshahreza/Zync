@@ -1,0 +1,32 @@
+ZYNC TEST SUITE EXECUTION REPORT
+=================================
+Date: 2025-10-02 10:11:20
+Server: localhost
+Database: master
+
+RESULTS:
+--------
+Total Tests: 11
+Passed: 10
+Warnings: 1
+Errors: 0
+Success Rate: 90.91%
+
+DETAILED RESULTS:
+-----------------
+
+Test                     Status Message               Duration
+----                     ------ -------               --------
+zync_test_backup.sql     DONE   Executed successfully 0.0535377s
+zync_test_base.sql       DONE   Executed successfully 0.0665988s
+zync_test_dbman.sql      DONE   Executed successfully 0.0812257s
+zync_test_dbmon.sql      DONE   Executed successfully 0.0620473s
+zync_test_financial.sql  DONE   Executed successfully 0.0588191s
+zync_test_geographic.sql DONE   Executed successfully 0.0639066s
+zync_test_json.sql       DONE   Executed successfully 0.0643325s
+zync_test_math.sql       DONE   Executed successfully 0.0743277s
+zync_test_security.sql   DONE   Executed successfully 0.0573959s
+zync_test_string.sql     WARN   Some tests failed     0.1103769s
+zync_test_validation.sql DONE   Executed successfully 0.0550029s
+
+
