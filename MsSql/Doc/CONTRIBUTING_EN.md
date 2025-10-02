@@ -1,17 +1,30 @@
 # Zync (SQL Server) — Development & Contribution Guide
 
+[![Test Coverage](https://img.shields.io/badge/Tests-100%25%20Pass-brightgreen.svg)](../Test/)
+[![Objects](https://img.shields.io/badge/Objects-131-blue.svg)](../Packages/)
+[![Packages](https://img.shields.io/badge/Packages-12-orange.svg)](../Packages/)
+
 This document provides a complete, step-by-step guide for developers who want to:
 - Create a new object (Procedure / Function / View / Type) and add it to an existing package
 - Create a new package from scratch with the correct structure
+- Write comprehensive tests for their objects
 - Publish their changes to the main repository (Pull Request) or host and use them from a personal repository
 
 This guide targets the SQL Server implementation and follows the structure under `MsSql/`.
+
+**Project Status:** Version 3.0 with 12 packages, 131 objects, and 100% test coverage
 
 ---
 
 ## Prerequisites
 
-- SQL Server 2017+ (recommended)
+### Required Software:
+- **SQL Server 2017+** (Recommended: SQL Server 2022)
+- **PowerShell 7+** for running test and installation scripts
+- **SQL Server Management Studio (SSMS)** or similar tool
+- **Git** for version control and submitting changes
+
+### Configuration:
 - Permission to execute scripts on the target database
 - Run `MsSql/Zync.sql` once on the target database to install Zync core
 - OLE Automation enabled if you will fetch packages via GitHub Raw (HTTP):

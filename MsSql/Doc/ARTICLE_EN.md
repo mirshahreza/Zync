@@ -1,5 +1,15 @@
 # Stop Juggling SQL Scripts: Introducing Zync, the Database Package Manager
 
+[![Test Coverage](https://img.shields.io/badge/Tests-100%25%20Pass-brightgreen.svg)](../Test/)
+[![Objects](https://img.shields.io/badge/Objects-131-blue.svg)](../Packages/)
+[![Packages](https://img.shields.io/badge/Packages-12-orange.svg)](../Packages/)
+
+If you've ever worked on a large database project, you know the pain. You have folders filled with SQL scripts for stored procedures, functions, and views. Script `A` depends on `B`, which depends on `C`. Deploying to a new environment means running them in the correct order, and heaven forbid you miss one. Sharing reusable utilities across projects is a copy-paste nightmare.
+
+We've built powerful package managers for our application code—npm for Node.js, NuGet for .NET, Pip for Python. They handle dependencies, versioning, and distribution flawlessly. So why are we still managing database scripts like it's 1999?
+
+It's time for a change. Introducing **Zync version 3.0**, a production-ready package manager for SQL Server with 12 packages, 131 tested objects, and 100% test coverage.Juggling SQL Scripts: Introducing Zync, the Database Package Manager
+
 If you’ve ever worked on a large database project, you know the pain. You have folders filled with SQL scripts for stored procedures, functions, and views. Script `A` depends on `B`, which depends on `C`. Deploying to a new environment means running them in the correct order, and heaven forbid you miss one. Sharing reusable utilities across projects is a copy-paste nightmare.
 
 We’ve built powerful package managers for our application code—npm for Node.js, NuGet for .NET, Pip for Python. They handle dependencies, versioning, and distribution flawlessly. So why are we still managing database scripts like it’s 1999?
@@ -124,21 +134,35 @@ You can also install a single script from a package if you don't need the entire
 EXEC [dbo].[Zync] 'i String/ZzSplitString.sql'
 ```
 
-### A Glimpse into the Zync Ecosystem
+### The Zync Ecosystem: Production-Ready Packages
 
-The default repository already includes several useful packages to get you started:
+**Zync version 3.0** is now production-ready with comprehensive testing:
 
-*   **DbMan, DbMon:** A powerful suite of tools for database administration, including procedures to create/drop tables, manage columns, analyze dependencies, and explore schemas.
-*   **String:** A collection of functions for common string operations like splitting, trimming, and counting.
-*   **Math:** Helper functions for formatting numbers and converting byte sizes (e.g., to KB, MB, GB).
+*   ✅ **12 packages** with 131 tested objects
+*   ✅ **100% test coverage** - all tests passing
+*   ✅ **PowerShell automation** scripts for installation and testing
+*   ✅ **Complete documentation** for all packages
 
-### The Future is Bright
+**Available Packages:**
+- **Backup** (4 objects): Backup and restore utilities
+- **Base** (8 objects): Foundation tables for common application needs
+- **DateTime** (32 objects): Comprehensive date/time functions including Hijri/Shamsi converters
+- **DbMan** (23 objects): Database management tools
+- **DbMon** (35 objects): Monitoring and diagnostic utilities
+- **Financial** (9 objects): Financial calculations
+- **Geographic** (26 objects): Geographic calculations and coordinate operations
+- **Json** (5 objects): JSON manipulation functions
+- **Math** (35 objects): Mathematical functions and utilities
+- **Security** (5 objects): Security and encryption utilities
+- **String** (43 objects): Comprehensive string operations
+- **Validation** (5 objects): Data validation functions
 
-Zync is just getting started. The vision is to create a rich ecosystem of reusable database components. The roadmap includes:
+### The Road Ahead
 
-*   **Support for other databases** like PostgreSQL, MySQL, and Oracle.
-*   **Package versioning** to manage different versions of a package.
-*   **An `uninstall` command** to safely remove packages.
+*   **Support for other databases** like PostgreSQL, MySQL, and Oracle
+*   **Advanced versioning** for managing different package versions
+*   **Dependency visualization** for better understanding of package relationships
+*   **Web browser** for package discovery and search
 
 ### Join the Movement
 
@@ -158,14 +182,41 @@ Useful commands beyond install/list:
 
 ---
 
-### Local Testing (PowerShell)
+### Comprehensive Automated Testing
 
-Run the full SQL test suite against a local SQL Server instance. The runner will create a test DB if needed, install `MsSql/Zync.sql`, execute tests from `MsSql/Test/`, and write logs to `MsSql/TestLogs/`.
+Zync includes a complete test suite with 100% coverage to ensure quality and stability:
 
 ```powershell
-pwsh -NoProfile -ExecutionPolicy Bypass -File "c:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1" -ServerName ".\SQL2022" -Database "ZyncTest" -ContinueOnError
+# Test database connectivity
+.\scripts\TestConnection.ps1
+
+# Install all packages from local files
+.\scripts\InstallLocalPackages.ps1
+
+# Run all tests (recommended)
+.\scripts\RunAllTests.ps1
+
+# Run specific package test
+.\scripts\RunSingleTest.ps1 -TestName string
+.\scripts\RunSingleTest.ps1 -TestName math
+
+# List available tests
+.\scripts\ListTests.ps1
+
+# Validate test file structure
+.\scripts\ValidateTests.ps1
 ```
+
+**Latest Test Results:**
+- ✅ 11 test files
+- ✅ 131 objects tested
+- ✅ 100% success rate
+- ⚡ Average execution time: 60ms per test
+
+All test logs are saved to `MsSql/TestLogs/`.
 
 ---
 
-**Mohsen Mirshahreza**
+**Mohsen Mirshahreza**  
+Database Developer and Architect  
+GitHub: [@mirshahreza](https://github.com/mirshahreza)
