@@ -1,5 +1,5 @@
 -- =============================================
--- Author:       Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:  2025-09-29
 -- Description:  Converts digits between Persian and English
 -- Sample:       SELECT [dbo].[ZzConvertDigitsFaEn](N'۱۲۳abc', 'to-en');

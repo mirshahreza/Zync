@@ -1,5 +1,5 @@
 -- =============================================
--- Author:		Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:	2025-09-27
 -- Description:	Calculates age in full years from birth date to today.
 -- Sample:		SELECT [dbo].[ZzAge]('1990-01-15');

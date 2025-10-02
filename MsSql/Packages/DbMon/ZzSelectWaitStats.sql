@@ -1,5 +1,5 @@
 -- =============================================
--- Author:       Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:  2025-09-29
 -- Description:  Aggregated wait statistics with categories and percentages
 -- Sample:       SELECT * FROM [dbo].[ZzSelectWaitStats];

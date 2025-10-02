@@ -36,6 +36,5 @@ EXEC DBO.Zync 'i String/ZzUrlDecode.sql';
 EXEC DBO.Zync 'i String/ZzUrlEncode.sql';
 EXEC DBO.Zync 'i String/ZzWordCount.sql';
 EXEC DBO.Zync 'i String/ZzWrapText.sql';
-
 EXEC DBO.Zync 'i String/ZzNormalizePersianText.sql';
 EXEC DBO.Zync 'i String/ZzConvertDigitsFaEn.sql';

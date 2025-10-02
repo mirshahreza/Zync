@@ -1,5 +1,5 @@
 -- =============================================
--- Author:		Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:	2025-09-27
 -- Description:	Returns number of days in specified year and month.
 -- Sample:		SELECT [dbo].[ZzDaysInMonth](2025, 2);

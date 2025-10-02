@@ -1,5 +1,5 @@
 -- =============================================
--- Author:		Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:	2025-09-27
 -- Description:	Returns the ISO-like week number of the given date.
 -- Sample:		SELECT [dbo].[ZzWeekOfYear]('2025-09-27');

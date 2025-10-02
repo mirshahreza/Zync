@@ -1,5 +1,5 @@
 -- =============================================
--- Author:		Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:	2025-09-27
 -- Description:	Returns the start date of the week for the given date.
 -- Sample:		SELECT [dbo].[ZzStartOfWeek]('2025-09-27');

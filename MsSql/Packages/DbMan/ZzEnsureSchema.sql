@@ -1,5 +1,5 @@
 -- =============================================
--- Author:       Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:  2025-09-29
 -- Description:  Ensures a schema exists; creates it if missing
 -- Sample:       EXEC [dbo].[ZzEnsureSchema] @schema = 'logs';

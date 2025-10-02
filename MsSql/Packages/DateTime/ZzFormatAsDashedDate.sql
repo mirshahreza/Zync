@@ -1,5 +1,5 @@
 -- =============================================
--- Author:		Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:	2025-09-27
 -- Description:	Formats a DATE as yyyy-MM-dd (e.g., 2025-05-04).
 -- Sample:		SELECT [dbo].[ZzFormatAsDashedDate]('2025-05-04');

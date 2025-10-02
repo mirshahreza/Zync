@@ -1,5 +1,5 @@
 -- =============================================
--- Author:      Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-28
 -- Description: Computes Effective Annual Rate (EAR) from nominal rate and compounding periods.
 -- Sample:      SELECT [dbo].[ZzEffectiveAnnualRate](18, 12);

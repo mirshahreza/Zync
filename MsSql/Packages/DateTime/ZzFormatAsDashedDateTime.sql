@@ -1,5 +1,5 @@
 -- =============================================
--- Author:		Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:	2025-09-27
 -- Description:	Formats a DATETIME as yyyy-MM-dd HH:mm (default) or yyyy-MM-dd HH:mm:ss based on @precision.
 -- Sample:		SELECT [dbo].[ZzFormatAsDashedDateTime](GETDATE());

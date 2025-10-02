@@ -1,5 +1,5 @@
 -- =============================================
--- Author:		Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:	2025-09-27
 -- Description:	Computes monthly annuity payment for a loan.
 -- Sample:		SELECT [dbo].[ZzCalculateLoanPayment](100000, 18, 36);

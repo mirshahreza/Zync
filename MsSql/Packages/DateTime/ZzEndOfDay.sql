@@ -1,5 +1,5 @@
 -- =============================================
--- Author:		Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:	2025-09-27
 -- Description:	Returns the end of the day (23:59:59.997) for the given datetime.
 -- Sample:		SELECT [dbo].[ZzEndOfDay](GETDATE());

@@ -1,5 +1,5 @@
 -- =============================================
--- Author:		Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:	2025-09-27
 -- Description:	Determines if a year is leap year (Gregorian rules).
 -- Sample:		SELECT [dbo].[ZzIsLeapYear](2024);

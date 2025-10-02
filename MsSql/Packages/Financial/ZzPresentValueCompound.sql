@@ -1,5 +1,5 @@
 -- =============================================
--- Author:      Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-28
 -- Description: Computes present value from future value with compound discounting.
 -- Sample:      SELECT [dbo].[ZzPresentValueCompound](2000, 12, 10);

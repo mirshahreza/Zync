@@ -1,5 +1,5 @@
 -- =============================================
--- Author:      Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-28
 -- Description: Computes nominal annual rate from effective annual rate and compounding frequency.
 -- Sample:      SELECT [dbo].[ZzNominalFromEffective](19.56, 12);

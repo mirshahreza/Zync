@@ -1,5 +1,5 @@
 -- =============================================
--- Author:		Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:	2025-09-27
 -- Description:	Calculates simple interest amount.
 -- Sample:		SELECT [dbo].[ZzCalculateInterest](1000, 12, 2);

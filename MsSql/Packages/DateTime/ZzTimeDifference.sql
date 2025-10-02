@@ -1,5 +1,5 @@
 -- =============================================
--- Author:		Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:	2025-09-27
 -- Description:	Returns absolute difference between two times as TIME.
 -- Sample:		SELECT [dbo].[ZzTimeDifference]('08:30','10:45');

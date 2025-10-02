@@ -1,5 +1,5 @@
 -- =============================================
--- Author:      Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-28
 -- Description: Computes future value with compound interest.
 -- Sample:      SELECT [dbo].[ZzFutureValueCompound](1000, 12, 10);

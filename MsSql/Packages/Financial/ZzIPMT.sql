@@ -1,5 +1,5 @@
 -- =============================================
--- Author:      Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date: 2025-09-28
 -- Description: Interest portion of a payment for a period in an annuity.
 -- Sample:      SELECT [dbo].[ZzIPMT](18, 36, 1, 100000);

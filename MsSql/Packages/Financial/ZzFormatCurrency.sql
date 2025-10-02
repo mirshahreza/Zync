@@ -1,5 +1,5 @@
 -- =============================================
--- Author:		Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:	2025-09-27
 -- Description:	Formats a numeric amount as localized currency.
 -- Sample:		SELECT [dbo].[ZzFormatCurrency](12345.67, 'fa-IR');

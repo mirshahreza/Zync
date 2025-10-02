@@ -1,5 +1,5 @@
 -- =============================================
--- Author:       Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:  2025-09-29
 -- Description:  Normalizes Persian text (Arabic Yeh/Kaf to Persian, trims spaces)
 -- Sample:       SELECT [dbo].[ZzNormalizePersianText](N'ك یـک 123');

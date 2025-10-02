@@ -1,5 +1,5 @@
 -- =============================================
--- Author:		Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:	2025-09-27
 -- Description:	Counts working days between two dates (excludes Sat/Sun).
 -- Sample:		SELECT [dbo].[ZzWorkingDays]('2025-09-01','2025-09-30');

@@ -1,5 +1,5 @@
 -- =============================================
--- Author:       Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:  2025-09-29
 -- Description:  Creates a nonclustered index if it doesn't exist (with INCLUDE/WHERE support)
 -- Sample:

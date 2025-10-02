@@ -1,5 +1,5 @@
 -- =============================================
--- Author:		Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:	2025-09-27
 -- Description:	Returns the first day of the month for the given date.
 -- Sample:		SELECT [dbo].[ZzStartOfMonth]('2025-09-27');

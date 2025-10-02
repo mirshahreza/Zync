@@ -1,5 +1,5 @@
 -- =============================================
--- Author:       Zync
+-- Author:		Mohsen Mirshahreza
 -- Create date:  2025-09-29
 -- Description:  TempDB space usage by session and internal objects
 -- Sample:       SELECT * FROM [dbo].[ZzSelectTempdbUsage];
