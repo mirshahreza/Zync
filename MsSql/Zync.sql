@@ -397,7 +397,7 @@ BEGIN
 		
 		-- Show all objects starting with 'Zz'
 		SELECT 
-			dbo.RPAD(CONCAT('[', SCHEMA_NAME(schema_id), '].[', name, ']'), 70, ' ') as ObjectName,
+			dbo.ZzRPad(CONCAT('[', SCHEMA_NAME(schema_id), '].[', name, ']'), 70, ' ') as ObjectName,
 			CASE type
 				WHEN 'P' THEN 'PROCEDURE'
 				WHEN 'FN' THEN 'FUNCTION'
@@ -411,7 +411,7 @@ BEGIN
 		UNION ALL
 		
 		SELECT 
-			dbo.RPAD(CONCAT('[', SCHEMA_NAME(schema_id), '].[', name, ']'), 70, ' ') as ObjectName,
+			dbo.ZzRPad(CONCAT('[', SCHEMA_NAME(schema_id), '].[', name, ']'), 70, ' ') as ObjectName,
 			'TYPE' as ObjectType
 		FROM sys.types 
 		WHERE name LIKE 'Zz%' AND is_user_defined = 1
@@ -1052,10 +1052,10 @@ BEGIN
 	
 END
 GO
--- Add RPAD function for formatting if it doesn't exist
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[RPAD]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+-- Add ZzRPad function for formatting if it doesn't exist
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ZzRPad]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 BEGIN
-EXEC('CREATE FUNCTION [dbo].[RPAD] (@string NVARCHAR(MAX), @length INT, @pad CHAR(1))
+EXEC('CREATE FUNCTION [dbo].[ZzRPad] (@string NVARCHAR(MAX), @length INT, @pad CHAR(1))
 RETURNS NVARCHAR(MAX)
 AS
 BEGIN
