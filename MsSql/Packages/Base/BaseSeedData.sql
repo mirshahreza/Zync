@@ -7,11 +7,11 @@
 -- =============================================
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
-GO
+
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ZzBaseSeedData]') AND type in (N'P', N'PC'))
 DROP PROCEDURE [dbo].[ZzBaseSeedData]
-GO
+
 
 CREATE PROCEDURE [dbo].[ZzBaseSeedData]
 AS
@@ -242,4 +242,4 @@ BEGIN
     PRINT '   ⚠️  Change password immediately after first login!';
     PRINT '';
 END
-GO
+
