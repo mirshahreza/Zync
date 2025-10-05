@@ -6,3 +6,4 @@ EXEC DBO.Zync 'i Base/BaseUserRole.sql';
 EXEC DBO.Zync 'i Base/BaseRolesAttribute.sql';
 EXEC DBO.Zync 'i Base/BasePerson.sql';
 EXEC DBO.Zync 'i Base/BaseInfo.sql';
+EXEC DBO.Zync 'i Base/BaseSeedData.sql';
