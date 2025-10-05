@@ -1051,7 +1051,8 @@ BEGIN
 	END
 	
 END
-GO
+
+
 -- Add ZzRPad function for formatting if it doesn't exist
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ZzRPad]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 BEGIN
@@ -1062,4 +1063,4 @@ BEGIN
     RETURN LEFT(CONCAT(@string, REPLICATE(@pad, @length)), @length)
 END')
 END
-GO
+
