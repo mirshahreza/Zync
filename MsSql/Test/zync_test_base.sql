@@ -35,8 +35,8 @@ BEGIN TRY
         SET @MissingTables = @MissingTables + 'BasePerson, ';
     IF OBJECT_ID('[dbo].[BaseRole]', 'U') IS NULL
         SET @MissingTables = @MissingTables + 'BaseRole, ';
-    IF OBJECT_ID('[dbo].[BaseRolesAttributes]', 'U') IS NULL
-        SET @MissingTables = @MissingTables + 'BaseRolesAttributes, ';
+    IF OBJECT_ID('[dbo].[BaseRolesAttribute]', 'U') IS NULL
+        SET @MissingTables = @MissingTables + 'BaseRolesAttribute, ';
     IF OBJECT_ID('[dbo].[BaseUser]', 'U') IS NULL
         SET @MissingTables = @MissingTables + 'BaseUser, ';
     IF OBJECT_ID('[dbo].[BaseUserAttribute]', 'U') IS NULL

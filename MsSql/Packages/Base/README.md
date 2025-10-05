@@ -24,7 +24,7 @@ EXEC dbo.Zync 'i Base/BaseUser.sql'
 - BaseRole
 - BaseActivityLog
 - BaseUserRole
-- BaseRolesAttributes
+- BaseRolesAttribute
 - BasePerson
 - BaseInfo
 
