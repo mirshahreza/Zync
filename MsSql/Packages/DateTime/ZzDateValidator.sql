@@ -71,7 +71,8 @@ BEGIN
             WHEN @month <= 6 THEN 31  -- Farvardin to Shahrivar
             WHEN @month <= 11 THEN 30 -- Mehr to Bahman
             ELSE -- Esfand
-                CASE WHEN dbo.ZzIsLeapYear(CAST(STR(@year) + '-01-01' AS DATE)) = 1
+                -- Use Gregorian leap year approximation for Esfand length
+                CASE WHEN dbo.ZzIsLeapYear(@year) = 1
                      THEN 30 ELSE 29 END
         END;
         
