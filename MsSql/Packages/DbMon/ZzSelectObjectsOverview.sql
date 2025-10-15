@@ -1,6 +1,5 @@
-/*
-DbMon/ZzSelectObjectsDetails.sql
-*/
+-- Depends on:
+--   DbMon/ZzSelectObjectsDetails.sql
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2023-05-25
@@ -11,6 +10,6 @@ DbMon/ZzSelectObjectsDetails.sql
 CREATE OR ALTER VIEW [DBO].[ZzSelectObjectsOverview]
 AS
 
-SELECT [ObjectType],COUNT(*) ObjectsCount
-  FROM [ZzSelectObjectsDetails]
-  GROUP BY [ObjectType]
+SELECT [ObjectType], COUNT(*) AS ObjectsCount
+FROM [dbo].[ZzSelectObjectsDetails]
+GROUP BY [ObjectType]
