@@ -7,7 +7,7 @@ param(
     [string]$User,
     [string]$Password,
     [switch]$ContinueOnError,
-    [string]$TestFilter = '*',
+    [string]$TestFilter = '*.sql',
     [switch]$NoOleAutomation
 )
 

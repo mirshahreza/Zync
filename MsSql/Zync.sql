@@ -154,7 +154,7 @@ BEGIN
 		ELSE SET @PackageFullURL = @PackageFullURL + @PackageName;
 		SET @PackageFullURL = REPLACE(@PackageFullURL,'//.sql','/.sql');
 
-		PRINT ('Listing package(s): '''+ @PackageName + CASE WHEN @Search IS NOT NULL THEN ''' (filter: ' + @Search + ')' ELSE '''' END + '...');
+		PRINT 'Listing package(s): ''' + @PackageName + CASE WHEN @Search IS NOT NULL THEN ''' (filter: ' + @Search + ')' ELSE '''' END + '...';
 
 		BEGIN TRY
 			EXEC SP_OACREATE 'MSXML2.ServerXMLHTTP', @res OUT;
@@ -491,13 +491,13 @@ BEGIN
 		PRINT 'Proceeding with cleanup...';
 		
 		-- Remove objects in proper order to handle dependencies
-		-- First drop all functions and procedures
+		-- First drop all views and procedures (dependents)
 		OPEN clean_cursor;
 		FETCH NEXT FROM clean_cursor INTO @CleanObjectName, @CleanObjectType;
 
 		WHILE @@FETCH_STATUS = 0
 		BEGIN
-			IF @CleanObjectType IN ('PROCEDURE', 'FUNCTION')
+			IF @CleanObjectType IN ('VIEW', 'PROCEDURE')
 			BEGIN
 				DECLARE @CleanDropStatement NVARCHAR(MAX) = 'DROP ' + @CleanObjectType + ' ' + @CleanObjectName;
 				
@@ -515,13 +515,13 @@ BEGIN
 
 		CLOSE clean_cursor;
 		
-		-- Then drop views and types
+		-- Then drop functions and types (dependencies) AFTER views/procedures
 		OPEN clean_cursor;
 		FETCH NEXT FROM clean_cursor INTO @CleanObjectName, @CleanObjectType;
 
 		WHILE @@FETCH_STATUS = 0
 		BEGIN
-			IF @CleanObjectType IN ('VIEW', 'TYPE')
+			IF @CleanObjectType IN ('FUNCTION', 'TYPE')
 			BEGIN
 				SET @CleanDropStatement = 'DROP ' + @CleanObjectType + ' ' + @CleanObjectName;
 				
@@ -550,8 +550,31 @@ BEGIN
     ELSE IF (@Command LIKE 'rm%')
     BEGIN
         SET @PackageName = TRIM(SUBSTRING(@Command, 3, LEN(@Command)));
-		PRINT ('')
-		PRINT ('Removing package group or file: '''+ @PackageName +'''...');
+        PRINT ('')
+		-- If no package specified, remove ALL installed packages one by one
+		IF (@PackageName IS NULL OR @PackageName = '')
+		BEGIN
+			PRINT 'Removing ALL installed packages...';
+			DECLARE @AllPkg NVARCHAR(128);
+			DECLARE rm_all_cursor CURSOR LOCAL FOR
+			    SELECT PackageName FROM [dbo].[ZyncPackages]
+			    WHERE Status IN ('INSTALLED','UPDATED')
+			    ORDER BY PackageName; -- deterministic order
+			OPEN rm_all_cursor;
+			FETCH NEXT FROM rm_all_cursor INTO @AllPkg;
+			WHILE @@FETCH_STATUS = 0
+			BEGIN
+			    PRINT ' -> Removing package: ' + @AllPkg;
+			    DECLARE @AllCmd VARCHAR(256) = 'rm ' + @AllPkg;
+			    EXEC [dbo].[Zync] @Command = @AllCmd;
+			    FETCH NEXT FROM rm_all_cursor INTO @AllPkg;
+			END
+			CLOSE rm_all_cursor; DEALLOCATE rm_all_cursor;
+			PRINT 'All installed packages processed.';
+			RETURN;
+		END
+
+	PRINT 'Removing package group or file: ''' + @PackageName + '''...';
 
 		-- First, check if it's a package group and remove its members
 		IF @PackageName NOT LIKE '%.sql'
@@ -632,41 +655,37 @@ BEGIN
 				DECLARE @RemoveObjectType NVARCHAR(50);
 				DECLARE @PreviousDefinition NVARCHAR(MAX);
 				DECLARE @DropStatement NVARCHAR(MAX);
-				
-				-- Remove each object
-				DECLARE remove_cursor CURSOR LOCAL FOR
-				SELECT ObjectName, ObjectType, PreviousDefinition FROM @ObjectsToRemove;
 
+				-- Helper routine: drops a single object safely and restores previous definition if any
+				-- Two passes: 1) Views & Procedures (dependents)  2) Functions & Types (dependencies)
+
+				-- Pass 1: Views and Procedures
+				DECLARE remove_cursor CURSOR LOCAL FOR
+					SELECT ObjectName, ObjectType, PreviousDefinition
+					FROM @ObjectsToRemove
+					WHERE ObjectType IN ('VIEW','PROCEDURE');
 				OPEN remove_cursor;
 				FETCH NEXT FROM remove_cursor INTO @RemoveObjectName, @RemoveObjectType, @PreviousDefinition;
-
 				WHILE @@FETCH_STATUS = 0
 				BEGIN
-					-- Check if object actually exists before trying to drop
 					DECLARE @ObjectActuallyExists BIT = 0;
 					DECLARE @RemoveCleanObjectName NVARCHAR(256) = @RemoveObjectName;
-					
-					-- Clean the object name
 					IF CHARINDEX('DBO.', UPPER(@RemoveCleanObjectName)) = 1 SET @RemoveCleanObjectName = SUBSTRING(@RemoveCleanObjectName, 5, LEN(@RemoveCleanObjectName));
 					IF CHARINDEX(' ', @RemoveCleanObjectName) > 0 SET @RemoveCleanObjectName = SUBSTRING(@RemoveCleanObjectName, 1, CHARINDEX(' ', @RemoveCleanObjectName) - 1);
 					IF CHARINDEX('@', @RemoveCleanObjectName) > 0 SET @RemoveCleanObjectName = SUBSTRING(@RemoveCleanObjectName, 1, CHARINDEX('@', @RemoveCleanObjectName) - 1);
 					SET @RemoveCleanObjectName = REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(@RemoveCleanObjectName, '[', ''), ']', ''), CHAR(10), ''), CHAR(13), ''), CHAR(9), '');
 					WHILE CHARINDEX('  ', @RemoveCleanObjectName) > 0 SET @RemoveCleanObjectName = REPLACE(@RemoveCleanObjectName, '  ', ' ');
 					SET @RemoveCleanObjectName = TRIM(@RemoveCleanObjectName);
-					
 					DECLARE @ActualObjectName NVARCHAR(256);
 					SELECT @ActualObjectName = name FROM sys.objects WHERE UPPER(name) = UPPER(@RemoveCleanObjectName) AND type IN ('P', 'FN', 'TF', 'IF', 'V');
 					IF @ActualObjectName IS NOT NULL SET @RemoveCleanObjectName = @ActualObjectName;
-					
 					IF @RemoveObjectType = 'TYPE' AND TYPE_ID('[dbo].[' + @RemoveCleanObjectName + ']') IS NOT NULL SET @ObjectActuallyExists = 1;
 					ELSE IF @RemoveObjectType != 'TYPE' AND OBJECT_ID('[dbo].[' + @RemoveCleanObjectName + ']') IS NOT NULL SET @ObjectActuallyExists = 1;
-					
 					IF @ObjectActuallyExists = 1
 					BEGIN
 						DECLARE @RemoveFullObjectName NVARCHAR(256) = '[dbo].[' + @RemoveCleanObjectName + ']';
 						SET @DropStatement = 'DROP ' + @RemoveObjectType + ' ' + @RemoveFullObjectName;
 						PRINT '  -> Dropping ' + @RemoveObjectType + ' ' + @RemoveFullObjectName + '...';
-						
 						BEGIN TRY
 							EXECUTE SP_EXECUTESQL @DropStatement;
 							PRINT '     ✓ Successfully dropped ' + @RemoveObjectType + ' ' + @RemoveFullObjectName;
@@ -674,7 +693,6 @@ BEGIN
 						BEGIN CATCH
 							PRINT '     ✗ Error dropping ' + @RemoveObjectType + ' ' + @RemoveFullObjectName + ': ' + ERROR_MESSAGE();
 						END CATCH
-						
 						IF @PreviousDefinition IS NOT NULL AND LEN(@PreviousDefinition) > 0
 						BEGIN
 							PRINT '  -> Restoring previous version of ' + @RemoveObjectName + '...';
@@ -688,15 +706,62 @@ BEGIN
 						END
 					END
 					ELSE
-					BEGIN
 						PRINT '  -> Object ' + @RemoveObjectType + ' ' + @RemoveObjectName + ' does not exist (already removed).';
-					END
-
 					FETCH NEXT FROM remove_cursor INTO @RemoveObjectName, @RemoveObjectType, @PreviousDefinition;
 				END
+				CLOSE remove_cursor; DEALLOCATE remove_cursor;
 
-				CLOSE remove_cursor;
-				DEALLOCATE remove_cursor;
+				-- Pass 2: Functions and Types
+				DECLARE remove_cursor2 CURSOR LOCAL FOR
+					SELECT ObjectName, ObjectType, PreviousDefinition
+					FROM @ObjectsToRemove
+					WHERE ObjectType IN ('FUNCTION','TYPE');
+				OPEN remove_cursor2;
+				FETCH NEXT FROM remove_cursor2 INTO @RemoveObjectName, @RemoveObjectType, @PreviousDefinition;
+				WHILE @@FETCH_STATUS = 0
+				BEGIN
+					DECLARE @ObjectActuallyExists2 BIT = 0;
+					DECLARE @RemoveCleanObjectName2 NVARCHAR(256) = @RemoveObjectName;
+					IF CHARINDEX('DBO.', UPPER(@RemoveCleanObjectName2)) = 1 SET @RemoveCleanObjectName2 = SUBSTRING(@RemoveCleanObjectName2, 5, LEN(@RemoveCleanObjectName2));
+					IF CHARINDEX(' ', @RemoveCleanObjectName2) > 0 SET @RemoveCleanObjectName2 = SUBSTRING(@RemoveCleanObjectName2, 1, CHARINDEX(' ', @RemoveCleanObjectName2) - 1);
+					IF CHARINDEX('@', @RemoveCleanObjectName2) > 0 SET @RemoveCleanObjectName2 = SUBSTRING(@RemoveCleanObjectName2, 1, CHARINDEX('@', @RemoveCleanObjectName2) - 1);
+					SET @RemoveCleanObjectName2 = REPLACE(REPLACE(REPLACE(REPLACE(REPLACE(@RemoveCleanObjectName2, '[', ''), ']', ''), CHAR(10), ''), CHAR(13), ''), CHAR(9), '');
+					WHILE CHARINDEX('  ', @RemoveCleanObjectName2) > 0 SET @RemoveCleanObjectName2 = REPLACE(@RemoveCleanObjectName2, '  ', ' ');
+					SET @RemoveCleanObjectName2 = TRIM(@RemoveCleanObjectName2);
+					DECLARE @ActualObjectName2 NVARCHAR(256);
+					SELECT @ActualObjectName2 = name FROM sys.objects WHERE UPPER(name) = UPPER(@RemoveCleanObjectName2) AND type IN ('P', 'FN', 'TF', 'IF', 'V');
+					IF @ActualObjectName2 IS NOT NULL SET @RemoveCleanObjectName2 = @ActualObjectName2;
+					IF @RemoveObjectType = 'TYPE' AND TYPE_ID('[dbo].[' + @RemoveCleanObjectName2 + ']') IS NOT NULL SET @ObjectActuallyExists2 = 1;
+					ELSE IF @RemoveObjectType != 'TYPE' AND OBJECT_ID('[dbo].[' + @RemoveCleanObjectName2 + ']') IS NOT NULL SET @ObjectActuallyExists2 = 1;
+					IF @ObjectActuallyExists2 = 1
+					BEGIN
+						DECLARE @RemoveFullObjectName2 NVARCHAR(256) = '[dbo].[' + @RemoveCleanObjectName2 + ']';
+						SET @DropStatement = 'DROP ' + @RemoveObjectType + ' ' + @RemoveFullObjectName2;
+						PRINT '  -> Dropping ' + @RemoveObjectType + ' ' + @RemoveFullObjectName2 + '...';
+						BEGIN TRY
+							EXECUTE SP_EXECUTESQL @DropStatement;
+							PRINT '     ✓ Successfully dropped ' + @RemoveObjectType + ' ' + @RemoveFullObjectName2;
+						END TRY
+						BEGIN CATCH
+							PRINT '     ✗ Error dropping ' + @RemoveObjectType + ' ' + @RemoveFullObjectName2 + ': ' + ERROR_MESSAGE();
+						END CATCH
+						IF @PreviousDefinition IS NOT NULL AND LEN(@PreviousDefinition) > 0
+						BEGIN
+							PRINT '  -> Restoring previous version of ' + @RemoveObjectName + '...';
+							BEGIN TRY
+								EXECUTE SP_EXECUTESQL @PreviousDefinition;
+								PRINT '     ✓ Successfully restored previous version';
+							END TRY
+							BEGIN CATCH
+								PRINT '     ✗ Error restoring previous version: ' + ERROR_MESSAGE();
+							END CATCH
+						END
+					END
+					ELSE
+						PRINT '  -> Object ' + @RemoveObjectType + ' ' + @RemoveObjectName + ' does not exist (already removed).';
+					FETCH NEXT FROM remove_cursor2 INTO @RemoveObjectName, @RemoveObjectType, @PreviousDefinition;
+				END
+				CLOSE remove_cursor2; DEALLOCATE remove_cursor2;
 			END
 
 			-- Mark package as removed and delete its objects from tracking
@@ -715,7 +780,7 @@ BEGIN
 		SET @PackageName = TRIM(SUBSTRING(@Command, CASE WHEN @Command LIKE 'rb%' THEN 3 ELSE 9 END, LEN(@Command)));
 
 		PRINT ('');
-		PRINT ('Rolling back package: '''+ @PackageName +'''...');
+		PRINT 'Rolling back package: ''' + @PackageName + '''...';
 
 		-- Check if package exists
 		DECLARE @RollbackPackageId UNIQUEIDENTIFIER;
@@ -819,7 +884,7 @@ BEGIN
 		SET @PackageFullURL = REPLACE(@PackageFullURL,'//.sql','/.sql');
 
 		PRINT ('')
-		PRINT ('Updating package: '''+ @PackageName +'''...');
+		PRINT 'Updating package: ''' + @PackageName + '''...';
 
 		-- Check if package exists
 		DECLARE @UpdatePackageId UNIQUEIDENTIFIER;
@@ -919,7 +984,7 @@ BEGIN
 		SET @PackageFullURL = REPLACE(@PackageFullURL,'//.sql','/.sql');
 
 		PRINT ('')
-		PRINT ('Installing package: '''+ @PackageName +'''...');
+		PRINT 'Installing package: ''' + @PackageName + '''...';
 
 		-- Check if package already exists
 		DECLARE @ExistingPackageId UNIQUEIDENTIFIER;

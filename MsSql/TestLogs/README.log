@@ -1,0 +1,12 @@
+Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
+Line |
+  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
+     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Unclosed quotation mark after the character string.
+
+Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
+Line |
+  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
+     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Unclosed quotation mark after the character string.
+

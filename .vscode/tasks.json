@@ -1,0 +1,22 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run Zync SQL tests",
+			"type": "shell",
+			"command": "pwsh",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"c:\\Workspace\\Projects\\Zync\\MsSql\\scripts\\RunZyncTests.ps1",
+				"-ServerName",
+				".\\SQL2022",
+				"-Database",
+				"ZyncTest",
+				"-ContinueOnError"
+			]
+		}
+	]
+}
