@@ -47,3 +47,24 @@ Line |
      | Cannot find either column "dbo" or the user-defined function or aggregate "dbo.ZzValidateEmail", or the name is ambiguous.   Msg 4121, Level 16,
      | State 1, Procedure , Line 63.
 
+Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
+Line |
+  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
+     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Cannot find either column "dbo" or the user-defined function or aggregate "dbo.ZzValidateEmail", or the name is ambiguous.   Msg 4121, Level 16,
+     | State 1, Procedure , Line 63.
+
+Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
+Line |
+  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
+     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Cannot find either column "dbo" or the user-defined function or aggregate "dbo.ZzValidateEmail", or the name is ambiguous.   Msg 4121, Level 16,
+     | State 1, Procedure , Line 63.
+
+Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
+Line |
+  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
+     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Cannot find either column "dbo" or the user-defined function or aggregate "dbo.ZzValidateEmail", or the name is ambiguous.   Msg 4121, Level 16,
+     | State 1, Procedure , Line 63.
+

@@ -40,3 +40,21 @@ Line |
      |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      | Invalid column name 'used_pages'.   Msg 207, Level 16, State 1, Procedure ZzSelectFileStats, Line 22.
 
+Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
+Line |
+  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
+     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Invalid column name 'used_pages'.   Msg 207, Level 16, State 1, Procedure ZzSelectFileStats, Line 22.
+
+Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
+Line |
+  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
+     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Invalid column name 'used_pages'.   Msg 207, Level 16, State 1, Procedure ZzSelectFileStats, Line 22.
+
+Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
+Line |
+  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
+     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Invalid column name 'used_pages'.   Msg 207, Level 16, State 1, Procedure ZzSelectFileStats, Line 22.
+

@@ -555,22 +555,37 @@ BEGIN
 		IF (@PackageName IS NULL OR @PackageName = '')
 		BEGIN
 			PRINT 'Removing ALL installed packages...';
+			-- Clean up any invalid tracking rows with empty/null names to avoid recursion
+			DELETE FROM [dbo].[ZyncPackages]
+			WHERE PackageName IS NULL OR LTRIM(RTRIM(PackageName)) = '';
+			DECLARE @Processed INT = 0, @Skipped INT = 0;
 			DECLARE @AllPkg NVARCHAR(128);
 			DECLARE rm_all_cursor CURSOR LOCAL FOR
 			    SELECT PackageName FROM [dbo].[ZyncPackages]
 			    WHERE Status IN ('INSTALLED','UPDATED')
+			      AND LTRIM(RTRIM(ISNULL(PackageName,''))) <> ''
 			    ORDER BY PackageName; -- deterministic order
 			OPEN rm_all_cursor;
 			FETCH NEXT FROM rm_all_cursor INTO @AllPkg;
 			WHILE @@FETCH_STATUS = 0
 			BEGIN
-			    PRINT ' -> Removing package: ' + @AllPkg;
-			    DECLARE @AllCmd VARCHAR(256) = 'rm ' + @AllPkg;
-			    EXEC [dbo].[Zync] @Command = @AllCmd;
+			    IF @AllPkg IS NOT NULL AND LTRIM(RTRIM(@AllPkg)) <> ''
+			    BEGIN
+			    	PRINT ' -> Removing package: ' + @AllPkg;
+			    	DECLARE @AllCmd VARCHAR(256) = 'rm ' + LTRIM(RTRIM(@AllPkg));
+			    	EXEC [dbo].[Zync] @Command = @AllCmd;
+			    	SET @Processed = @Processed + 1;
+			    END
+			    ELSE
+			    	BEGIN
+			    		PRINT ' -> Skipping invalid (empty) package entry.';
+			    		SET @Skipped = @Skipped + 1;
+			    	END
 			    FETCH NEXT FROM rm_all_cursor INTO @AllPkg;
 			END
 			CLOSE rm_all_cursor; DEALLOCATE rm_all_cursor;
 			PRINT 'All installed packages processed.';
+			PRINT ' -> Summary: processed=' + CAST(@Processed AS VARCHAR(10)) + ', skipped=' + CAST(@Skipped AS VARCHAR(10));
 			RETURN;
 		END
 
@@ -601,7 +616,13 @@ BEGIN
 
 				WHILE @@FETCH_STATUS = 0
 				BEGIN
-					SET @SubCommand = 'rm ' + @SubPackageName;
+					IF @SubPackageName IS NULL OR LTRIM(RTRIM(@SubPackageName)) = ''
+					BEGIN
+						PRINT ' -> Skipping invalid sub-package entry (empty name).';
+						FETCH NEXT FROM group_remove_cursor INTO @SubPackageName;
+						CONTINUE;
+					END
+					SET @SubCommand = 'rm ' + LTRIM(RTRIM(@SubPackageName));
 					-- PRINT ' -> Recursively calling remove for sub-package: ' + @SubPackageName;
 					EXEC [dbo].[Zync] @Command = @SubCommand;
 					FETCH NEXT FROM group_remove_cursor INTO @SubPackageName;

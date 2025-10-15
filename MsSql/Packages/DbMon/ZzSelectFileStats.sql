@@ -18,8 +18,13 @@ SELECT
     (vfs.io_stall_write_ms) AS write_stall_ms,
     CASE WHEN vfs.num_of_reads > 0 THEN vfs.io_stall_read_ms * 1.0 / vfs.num_of_reads ELSE NULL END AS avg_read_ms,
     CASE WHEN vfs.num_of_writes > 0 THEN vfs.io_stall_write_ms * 1.0 / vfs.num_of_writes ELSE NULL END AS avg_write_ms,
-    (mf.size * 8.0) AS size_kb,
-    ((mf.size - mf.used_pages) * 8.0) AS free_kb
+  (mf.size * 8.0) AS size_kb,
+  CASE 
+    -- FILEPROPERTY works only for the current database context; provide free_kb there
+    WHEN vfs.database_id = DB_ID() THEN (mf.size - FILEPROPERTY(mf.name, 'SpaceUsed')) * 8.0 
+    -- For other databases, free space can't be computed in this context without dynamic SQL; return NULL
+    ELSE NULL 
+  END AS free_kb
 FROM sys.dm_io_virtual_file_stats(NULL, NULL) AS vfs
 JOIN sys.master_files AS mf
   ON vfs.database_id = mf.database_id AND vfs.file_id = mf.file_id;
