@@ -34,3 +34,9 @@ Line |
      |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      | Incorrect syntax near ')'.   Msg 102, Level 15, State 1, Procedure , Line 100.
 
+Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
+Line |
+  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
+     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Incorrect syntax near ')'.   Msg 102, Level 15, State 1, Procedure , Line 100.
+

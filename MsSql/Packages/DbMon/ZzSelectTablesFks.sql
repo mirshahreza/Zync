@@ -12,7 +12,7 @@ SELECT	[FKs].[NAME] FkName,
 		OBJECT_NAME(FKs.PARENT_OBJECT_ID) TableName,
 		COL_NAME(FKColumns.PARENT_OBJECT_ID,FKColumns.PARENT_COLUMN_ID) ColumnName,
 		RefTables.[NAME] TargetTable,RefColumns.[NAME] TargetColumn,
-        ~[FKs].IS_DISABLED EnforceRelation
+	CASE WHEN [FKs].is_disabled = 0 THEN 1 ELSE 0 END AS EnforceRelation
 FROM 
    SYS.FOREIGN_KEYS AS FKs
 LEFT OUTER JOIN SYS.FOREIGN_KEY_COLUMNS FKColumns ON FKs.OBJECT_ID = FKColumns.CONSTRAINT_OBJECT_ID

@@ -34,3 +34,9 @@ Line |
      |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
      | Invalid object name 'dbo.ZzSelectDatabaseProperties'.   Msg 208, Level 16, State 1, Procedure , Line 90.
 
+Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
+Line |
+  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
+     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Invalid object name 'dbo.ZzSelectDatabaseProperties'.   Msg 208, Level 16, State 1, Procedure , Line 90.
+
