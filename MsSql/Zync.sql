@@ -1017,9 +1017,44 @@ BEGIN
 				-- Handle dependencies
 				IF(CHARINDEX('/*', @rv)=1 AND CHARINDEX('*/', @rv) > 1)
 				BEGIN
+					-- Treat the first block comment as a newline-delimited list of dependency scripts
+					-- Example:
+					-- /*
+					--   DbMon/ZzSelectObjectsDetails.sql
+					--   DbMon/ZzSelectTablesIndexes.sql
+					-- */
+					-- Each non-empty line will be installed via: EXEC [dbo].[Zync] 'i <line>'
 					SET @deps = TRIM(SUBSTRING(@rv, 3, CHARINDEX('*/', @rv)-3));
-					-- PRINT ' -> Installing dependencies...';
-					EXECUTE SP_EXECUTESQL @deps;
+					PRINT ' -> Resolving dependencies...';
+
+					DECLARE @pos INT = 1,
+							@len INT = LEN(@deps),
+							@line NVARCHAR(4000),
+							@nl INT,
+							@depCmd NVARCHAR(4000);
+
+					WHILE @pos <= @len
+					BEGIN
+						SET @nl = CHARINDEX(CHAR(10), @deps, @pos);
+						IF @nl = 0 SET @nl = @len + 1;
+
+						-- Extract one line and normalize CRLF/whitespace
+						SET @line = SUBSTRING(@deps, @pos, @nl - @pos);
+						SET @line = TRIM(REPLACE(@line, CHAR(13), ''));
+
+						IF (@line <> '')
+						BEGIN
+							-- Skip SQL-style line comments inside the block, if any
+							IF LEFT(@line, 2) <> '--'
+							BEGIN
+								SET @depCmd = N'i ' + @line;
+								-- Re-entrant call to install dependency; it will no-op if already installed
+								EXEC [dbo].[Zync] @depCmd;
+							END
+						END
+
+						SET @pos = @nl + 1;
+					END
 				END
 
 				-- Parse and backup existing objects before installation

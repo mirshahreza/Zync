@@ -13,7 +13,7 @@ SELECT
     t.name                  AS TableName,
     c.name                  AS ColumnName,
     dc.definition           AS DefaultExpression,
-    CASE WHEN dc.is_disabled = 0 THEN 1 ELSE 0 END AS IsEnabled,
+    CONVERT(bit, 1)         AS IsEnabled,
     o.create_date           AS CreatedOn,
     o.modify_date           AS UpdatedOn
 FROM sys.default_constraints dc
