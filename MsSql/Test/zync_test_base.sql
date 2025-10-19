@@ -31,18 +31,18 @@ BEGIN TRY
         SET @MissingTables = @MissingTables + 'BaseActivityLog, ';
     IF OBJECT_ID('[dbo].[BaseInfo]', 'U') IS NULL
         SET @MissingTables = @MissingTables + 'BaseInfo, ';
-    IF OBJECT_ID('[dbo].[BasePerson]', 'U') IS NULL
-        SET @MissingTables = @MissingTables + 'BasePerson, ';
-    IF OBJECT_ID('[dbo].[BaseRole]', 'U') IS NULL
-        SET @MissingTables = @MissingTables + 'BaseRole, ';
-    IF OBJECT_ID('[dbo].[BaseRolesAttribute]', 'U') IS NULL
-        SET @MissingTables = @MissingTables + 'BaseRolesAttribute, ';
-    IF OBJECT_ID('[dbo].[BaseUser]', 'U') IS NULL
-        SET @MissingTables = @MissingTables + 'BaseUser, ';
-    IF OBJECT_ID('[dbo].[BaseUserAttribute]', 'U') IS NULL
-        SET @MissingTables = @MissingTables + 'BaseUserAttribute, ';
-    IF OBJECT_ID('[dbo].[BaseUserRole]', 'U') IS NULL
-        SET @MissingTables = @MissingTables + 'BaseUserRole, ';
+    IF OBJECT_ID('[dbo].[BasePersons]', 'U') IS NULL
+        SET @MissingTables = @MissingTables + 'BasePersons, ';
+    IF OBJECT_ID('[dbo].[BaseRoles]', 'U') IS NULL
+        SET @MissingTables = @MissingTables + 'BaseRoles, ';
+    IF OBJECT_ID('[dbo].[BaseRolesAttributes]', 'U') IS NULL
+        SET @MissingTables = @MissingTables + 'BaseRolesAttributes, ';
+    IF OBJECT_ID('[dbo].[BaseUsers]', 'U') IS NULL
+        SET @MissingTables = @MissingTables + 'BaseUsers, ';
+    IF OBJECT_ID('[dbo].[BaseUsersAttributes]', 'U') IS NULL
+        SET @MissingTables = @MissingTables + 'BaseUsersAttributes, ';
+    IF OBJECT_ID('[dbo].[BaseUsersRoles]', 'U') IS NULL
+        SET @MissingTables = @MissingTables + 'BaseUsersRoles, ';
     
     IF LEN(@MissingTables) > 0
     BEGIN
@@ -106,11 +106,11 @@ BEGIN CATCH
     PRINT '2. ' + @TestName + ': ERROR - ' + ERROR_MESSAGE();
 END CATCH
 
--- Test 3: BasePerson - Insert and Validation
-SET @TestName = 'BasePerson - Validation';
+-- Test 3: BasePersons - Insert and Validation
+SET @TestName = 'BasePersons - Validation';
 BEGIN TRY
     DECLARE @TestPersonId INT;
-    INSERT INTO [dbo].[BasePerson] (FirstName, LastName, NationalId)
+    INSERT INTO [dbo].[BasePersons] (FirstName, LastName, NationalId)
     VALUES ('Test', 'User', '1234567890');
     
     SET @TestPersonId = SCOPE_IDENTITY();
@@ -118,12 +118,12 @@ BEGIN TRY
     -- Verify insertion
     DECLARE @PersonName NVARCHAR(200);
     SELECT @PersonName = FirstName + ' ' + LastName
-    FROM [dbo].[BasePerson]
+    FROM [dbo].[BasePersons]
     WHERE Id = @TestPersonId;
     
     -- Cleanup
-    DELETE FROM [dbo].[BasePerson] WHERE Id = @TestPersonId;
-    
+    DELETE FROM [dbo].[BasePersons] WHERE Id = @TestPersonId;
+
     IF @PersonName = 'Test User'
     BEGIN
         SET @Status = 'PASS';
@@ -143,35 +143,35 @@ BEGIN CATCH
     PRINT '3. ' + @TestName + ': ERROR - ' + ERROR_MESSAGE();
 END CATCH
 
--- Test 4: BaseRole and BaseUser - Relationship
+-- Test 4: BaseRoles and BaseUsers - Relationship
 SET @TestName = 'Role-User Relationship';
 BEGIN TRY
     -- Create test role
     DECLARE @TestRoleId INT;
-    INSERT INTO [dbo].[BaseRole] (RoleName, Description)
+    INSERT INTO [dbo].[BaseRoles] (RoleName, Description)
     VALUES ('TestRole', 'Test Role Description');
     SET @TestRoleId = SCOPE_IDENTITY();
     
     -- Create test user
     DECLARE @TestUserId INT;
-    INSERT INTO [dbo].[BaseUser] (Username, PasswordHash, Email)
+    INSERT INTO [dbo].[BaseUsers] (Username, PasswordHash, Email)
     VALUES ('testuser', 'hashedpassword', 'test@example.com');
     SET @TestUserId = SCOPE_IDENTITY();
     
     -- Create role assignment
-    INSERT INTO [dbo].[BaseUserRole] (UserId, RoleId)
+    INSERT INTO [dbo].[BaseUsersRoles] (UserId, RoleId)
     VALUES (@TestUserId, @TestRoleId);
     
     -- Verify relationship
     DECLARE @RoleCount INT;
     SELECT @RoleCount = COUNT(*)
-    FROM [dbo].[BaseUserRole]
+    FROM [dbo].[BaseUsersRoles]
     WHERE UserId = @TestUserId AND RoleId = @TestRoleId;
     
     -- Cleanup
-    DELETE FROM [dbo].[BaseUserRole] WHERE UserId = @TestUserId;
-    DELETE FROM [dbo].[BaseUser] WHERE Id = @TestUserId;
-    DELETE FROM [dbo].[BaseRole] WHERE Id = @TestRoleId;
+    DELETE FROM [dbo].[BaseUsersRoles] WHERE UserId = @TestUserId;
+    DELETE FROM [dbo].[BaseUsers] WHERE Id = @TestUserId;
+    DELETE FROM [dbo].[BaseRoles] WHERE Id = @TestRoleId;
     
     IF @RoleCount = 1
     BEGIN

@@ -1,13 +1,13 @@
 ﻿-- =============================================
 -- Author:      SMO scripted
 -- Create date: 2025-09-28
--- Description: Create table [dbo].[BaseRole] with keys, defaults, and indexes.
+-- Description: Create table [dbo].[BaseRoles] with keys, defaults, and indexes.
 -- =============================================
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BaseRole]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BaseRoles]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[BaseRole](
+CREATE TABLE [dbo].[BaseRoles](
 	[Id] [int] IDENTITY(100,1) NOT NULL,
 	[CreatedBy] [int] NOT NULL,
 	[CreatedOn] [datetime] NOT NULL,
@@ -25,12 +25,12 @@ CREATE TABLE [dbo].[BaseRole](
 END
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[AppEnd_Roles_IsBuiltIn_Default]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[BaseRole] ADD  CONSTRAINT [AppEnd_Roles_IsBuiltIn_Default]  DEFAULT ('0') FOR [IsBuiltIn]
+ALTER TABLE [dbo].[BaseRoles] ADD  CONSTRAINT [AppEnd_Roles_IsBuiltIn_Default]  DEFAULT ('0') FOR [IsBuiltIn]
 END
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[DF_AAA_Roles_IsActive]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[BaseRole] ADD  CONSTRAINT [DF_AAA_Roles_IsActive]  DEFAULT ('1') FOR [IsActive]
+ALTER TABLE [dbo].[BaseRoles] ADD  CONSTRAINT [DF_AAA_Roles_IsActive]  DEFAULT ('1') FOR [IsActive]
 END
 
 

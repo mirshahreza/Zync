@@ -1,13 +1,13 @@
 ﻿-- =============================================
 -- Author:      SMO scripted
 -- Create date: 2025-09-28
--- Description: Create table [dbo].[BaseUser] with keys, defaults, and indexes.
+-- Description: Create table [dbo].[BaseUsers] with keys, defaults, and indexes.
 -- =============================================
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BaseUser]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BaseUsers]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[BaseUser](
+CREATE TABLE [dbo].[BaseUsers](
 	[Id] [int] IDENTITY(100000,1) NOT NULL,
 	[CreatedBy] [int] NOT NULL,
 	[CreatedOn] [datetime] NOT NULL,
@@ -43,22 +43,22 @@ CREATE TABLE [dbo].[BaseUser](
 END
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[IsBuiltIn_Default]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[BaseUser] ADD  CONSTRAINT [IsBuiltIn_Default]  DEFAULT ('0') FOR [IsBuiltIn]
+ALTER TABLE [dbo].[BaseUsers] ADD  CONSTRAINT [IsBuiltIn_Default]  DEFAULT ('0') FOR [IsBuiltIn]
 END
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[IsActive_Default]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[BaseUser] ADD  CONSTRAINT [IsActive_Default]  DEFAULT ('1') FOR [IsActive]
+ALTER TABLE [dbo].[BaseUsers] ADD  CONSTRAINT [IsActive_Default]  DEFAULT ('1') FOR [IsActive]
 END
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[LoginLocked_Default]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[BaseUser] ADD  CONSTRAINT [LoginLocked_Default]  DEFAULT ('0') FOR [LoginLocked]
+ALTER TABLE [dbo].[BaseUsers] ADD  CONSTRAINT [LoginLocked_Default]  DEFAULT ('0') FOR [LoginLocked]
 END
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[LoginFailed_Default]') AND type = 'D')
 BEGIN
-ALTER TABLE [dbo].[BaseUser] ADD  CONSTRAINT [LoginFailed_Default]  DEFAULT ('0') FOR [LoginTryFailsCount]
+ALTER TABLE [dbo].[BaseUsers] ADD  CONSTRAINT [LoginFailed_Default]  DEFAULT ('0') FOR [LoginTryFailsCount]
 END
 
 

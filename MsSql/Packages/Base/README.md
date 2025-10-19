@@ -15,17 +15,17 @@ EXEC dbo.Zync 'i Base/.sql'
 
 Install a single item (example):
 ```sql
-EXEC dbo.Zync 'i Base/BaseUser.sql'
+EXEC dbo.Zync 'i Base/BaseUsers.sql'
 ```
 
 ## 📜 Included Objects (Tables)
-- **BaseUser** - User accounts table
-- **BaseUserAttribute** - Custom user attributes
-- **BaseRole** - Roles/permissions table
+- **BaseUsers** - User accounts table
+- **BaseUsersAttributes** - Custom user attributes
+- **BaseRoles** - Roles/permissions table
 - **BaseActivityLog** - Activity logging
-- **BaseUserRole** - User-Role mapping
-- **BaseRolesAttribute** - Role attributes
-- **BasePerson** - Person information
+- **BaseUsersRoles** - User-Role mapping
+- **BaseRolesAttributes** - Role attributes
+- **BasePersons** - Person information
 - **BaseInfo** - General information/metadata
 - **BaseSeedData** - Initial data seeding script
 

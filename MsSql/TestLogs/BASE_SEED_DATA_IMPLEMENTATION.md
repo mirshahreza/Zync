@@ -88,7 +88,7 @@ Provides default roles and an admin user for immediate system use after Base pac
 
 The script correctly maps to actual table schemas:
 
-**BaseRole:**
+**BaseRoles:**
 - `Id` (INT IDENTITY)
 - `CreatedBy` (INT)
 - `CreatedOn` (DATETIME)
@@ -97,7 +97,7 @@ The script correctly maps to actual table schemas:
 - `Note` (NVARCHAR(256))
 - `IsBuiltIn` (BIT)
 
-**BasePerson:**
+**BasePersons:**
 - `Id` (INT IDENTITY)
 - `CreatedBy` (INT)
 - `CreatedOn` (DATETIME)
@@ -107,7 +107,7 @@ The script correctly maps to actual table schemas:
 - `LastName` (NVARCHAR(64))
 - `Mobile` (VARCHAR(14))
 
-**BaseUser:**
+**BaseUsers:**
 - `Id` (INT IDENTITY)
 - `CreatedBy` (INT)
 - `CreatedOn` (DATETIME)
@@ -121,7 +121,7 @@ The script correctly maps to actual table schemas:
 - `LoginLocked` (BIT)
 - `LoginTryFailsCount` (INT)
 
-**BaseUserRole:**
+**BaseUsersRoles:**
 - `Id` (INT IDENTITY)
 - `CreatedBy` (INT)
 - `CreatedOn` (DATETIME)
@@ -177,13 +177,13 @@ sqlcmd -S ".\SQL2022" -d "master" -E -C -i "BaseSeedData.sql"
 ### Data Verification
 ```sql
 -- Verify roles
-SELECT Id, RoleName, Note, IsActive, IsBuiltIn FROM BaseRole;
+SELECT Id, RoleName, Note, IsActive, IsBuiltIn FROM BaseRoles;
 
 -- Verify users
-SELECT Id, UserName, Email, IsActive, IsBuiltIn FROM BaseUser;
+SELECT Id, UserName, Email, IsActive, IsBuiltIn FROM BaseUsers;
 
 -- Verify role assignments
-SELECT UserId, RoleId FROM BaseUserRole;
+SELECT UserId, RoleId FROM BaseUsersRoles;
 ```
 
 **Result:** ✅ All data correctly inserted

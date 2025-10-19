@@ -332,7 +332,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "c:\Workspace\Projects\Zync\
 
 ### Outputs and package layout
 
-- One file per table: e.g., `BaseUser.sql`, `BaseInfo.sql`, ... (without FKs)
+- One file per table: e.g., `BaseUsers.sql`, `BaseInfo.sql`, ... (without FKs)
 - A single file for all FKs: `MsSql/Packages/<Prefix>/_ForeignKeys.sql`
 - Package index file: `MsSql/Packages/<Prefix>/.sql` listing install lines in order:
   - All table files first

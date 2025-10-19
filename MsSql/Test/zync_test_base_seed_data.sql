@@ -34,18 +34,18 @@ PRINT ''
 PRINT '🧹 Cleaning up existing test data...'
 BEGIN TRY
     -- Remove user-role assignments for admin
-    DELETE FROM [dbo].[BaseUserRole] 
-    WHERE UserId IN (SELECT Id FROM [dbo].[BaseUser] WHERE UserName = 'admin');
+    DELETE FROM [dbo].[BaseUsersRoles] 
+    WHERE UserId IN (SELECT Id FROM [dbo].[BaseUsers] WHERE UserName = 'admin');
     
     -- Remove admin user
-    DELETE FROM [dbo].[BaseUser] WHERE UserName = 'admin';
+    DELETE FROM [dbo].[BaseUsers] WHERE UserName = 'admin';
     
     -- Remove admin person
-    DELETE FROM [dbo].[BasePerson] 
+    DELETE FROM [dbo].[BasePersons] 
     WHERE FirstName = 'System' AND LastName = 'Administrator';
     
     -- Remove test roles
-    DELETE FROM [dbo].[BaseRole] 
+    DELETE FROM [dbo].[BaseRoles] 
     WHERE RoleName IN ('Developer', 'BackOfficer');
     
     PRINT '✓ Cleanup completed'
@@ -119,7 +119,7 @@ BEGIN TRY
         @DeveloperRoleName = RoleName,
         @DeveloperIsActive = IsActive,
         @DeveloperIsBuiltIn = IsBuiltIn
-    FROM [dbo].[BaseRole]
+    FROM [dbo].[BaseRoles]
     WHERE RoleName = 'Developer';
     
     IF @DeveloperRoleId IS NOT NULL
@@ -164,7 +164,7 @@ BEGIN TRY
         @BackOfficerRoleId = Id,
         @BackOfficerIsActive = IsActive,
         @BackOfficerIsBuiltIn = IsBuiltIn
-    FROM [dbo].[BaseRole]
+    FROM [dbo].[BaseRoles]
     WHERE RoleName = 'BackOfficer';
     
     IF @BackOfficerRoleId IS NOT NULL
@@ -209,7 +209,7 @@ BEGIN TRY
         @AdminPersonFirstName = FirstName,
         @AdminPersonLastName = LastName,
         @AdminPersonUserId = UserId
-    FROM [dbo].[BasePerson]
+    FROM [dbo].[BasePersons]
     WHERE FirstName = 'System' AND LastName = 'Administrator';
     
     IF @AdminPersonId IS NOT NULL
@@ -261,7 +261,7 @@ BEGIN TRY
         @AdminIsActive = IsActive,
         @AdminIsBuiltIn = IsBuiltIn,
         @AdminLoginLocked = LoginLocked
-    FROM [dbo].[BaseUser]
+    FROM [dbo].[BaseUsers]
     WHERE UserName = 'admin';
     
     IF @AdminUserId IS NOT NULL
@@ -305,7 +305,7 @@ BEGIN TRY
     DECLARE @ActualHash NVARCHAR(500);
     
     SELECT @ActualHash = Password
-    FROM [dbo].[BaseUser]
+    FROM [dbo].[BaseUsers]
     WHERE UserName = 'admin';
     
     IF @ActualHash = @ExpectedHash
@@ -339,14 +339,14 @@ BEGIN TRY
     SELECT 
         @UserRoleCount = COUNT(*),
         @AssignedRoleId = MAX(ur.RoleId)
-    FROM [dbo].[BaseUserRole] ur
-    INNER JOIN [dbo].[BaseUser] u ON ur.UserId = u.Id
+    FROM [dbo].[BaseUsersRoles] ur
+    INNER JOIN [dbo].[BaseUsers] u ON ur.UserId = u.Id
     WHERE u.UserName = 'admin';
     
     IF @AssignedRoleId IS NOT NULL
     BEGIN
         SELECT @AssignedRoleName = RoleName
-        FROM [dbo].[BaseRole]
+        FROM [dbo].[BaseRoles]
         WHERE Id = @AssignedRoleId;
     END
     
@@ -377,27 +377,27 @@ SET @TestName = 'Data Integrity';
 BEGIN TRY
     DECLARE @IntegrityIssues NVARCHAR(MAX) = '';
     
-    -- Check if BasePerson.UserId references existing BaseUser
-    IF EXISTS (SELECT 1 FROM [dbo].[BasePerson] p
-               LEFT JOIN [dbo].[BaseUser] u ON p.UserId = u.Id
+    -- Check if BasePersons.UserId references existing BaseUsers
+    IF EXISTS (SELECT 1 FROM [dbo].[BasePersons] p
+               LEFT JOIN [dbo].[BaseUsers] u ON p.UserId = u.Id
                WHERE p.UserId IS NOT NULL AND u.Id IS NULL)
     BEGIN
-        SET @IntegrityIssues = @IntegrityIssues + 'Invalid UserId in BasePerson; ';
+        SET @IntegrityIssues = @IntegrityIssues + 'Invalid UserId in BasePersons; ';
     END
     
-    -- Check if BaseUserRole references existing users and roles
-    IF EXISTS (SELECT 1 FROM [dbo].[BaseUserRole] ur
-               LEFT JOIN [dbo].[BaseUser] u ON ur.UserId = u.Id
+    -- Check if BaseUsersRoles references existing users and roles
+    IF EXISTS (SELECT 1 FROM [dbo].[BaseUsersRoles] ur
+               LEFT JOIN [dbo].[BaseUsers] u ON ur.UserId = u.Id
                WHERE u.Id IS NULL)
     BEGIN
-        SET @IntegrityIssues = @IntegrityIssues + 'Invalid UserId in BaseUserRole; ';
+        SET @IntegrityIssues = @IntegrityIssues + 'Invalid UserId in BaseUsersRoles; ';
     END
     
-    IF EXISTS (SELECT 1 FROM [dbo].[BaseUserRole] ur
-               LEFT JOIN [dbo].[BaseRole] r ON ur.RoleId = r.Id
+    IF EXISTS (SELECT 1 FROM [dbo].[BaseUsersRoles] ur
+               LEFT JOIN [dbo].[BaseRoles] r ON ur.RoleId = r.Id
                WHERE r.Id IS NULL)
     BEGIN
-        SET @IntegrityIssues = @IntegrityIssues + 'Invalid RoleId in BaseUserRole; ';
+        SET @IntegrityIssues = @IntegrityIssues + 'Invalid RoleId in BaseUsersRoles; ';
     END
     
     IF LEN(@IntegrityIssues) = 0
@@ -429,18 +429,18 @@ BEGIN TRY
     
     -- Count records before re-run
     DECLARE @RoleCountBefore INT, @UserCountBefore INT, @PersonCountBefore INT;
-    SELECT @RoleCountBefore = COUNT(*) FROM [dbo].[BaseRole] WHERE RoleName IN ('Developer', 'BackOfficer');
-    SELECT @UserCountBefore = COUNT(*) FROM [dbo].[BaseUser] WHERE UserName = 'admin';
-    SELECT @PersonCountBefore = COUNT(*) FROM [dbo].[BasePerson] WHERE FirstName = 'System' AND LastName = 'Administrator';
+    SELECT @RoleCountBefore = COUNT(*) FROM [dbo].[BaseRoles] WHERE RoleName IN ('Developer', 'BackOfficer');
+    SELECT @UserCountBefore = COUNT(*) FROM [dbo].[BaseUsers] WHERE UserName = 'admin';
+    SELECT @PersonCountBefore = COUNT(*) FROM [dbo].[BasePersons] WHERE FirstName = 'System' AND LastName = 'Administrator';
     
     -- Re-execute
     EXEC [dbo].[ZzBaseSeedData];
     
     -- Count records after re-run
     DECLARE @RoleCountAfter INT, @UserCountAfter INT, @PersonCountAfter INT;
-    SELECT @RoleCountAfter = COUNT(*) FROM [dbo].[BaseRole] WHERE RoleName IN ('Developer', 'BackOfficer');
-    SELECT @UserCountAfter = COUNT(*) FROM [dbo].[BaseUser] WHERE UserName = 'admin';
-    SELECT @PersonCountAfter = COUNT(*) FROM [dbo].[BasePerson] WHERE FirstName = 'System' AND LastName = 'Administrator';
+    SELECT @RoleCountAfter = COUNT(*) FROM [dbo].[BaseRoles] WHERE RoleName IN ('Developer', 'BackOfficer');
+    SELECT @UserCountAfter = COUNT(*) FROM [dbo].[BaseUsers] WHERE UserName = 'admin';
+    SELECT @PersonCountAfter = COUNT(*) FROM [dbo].[BasePersons] WHERE FirstName = 'System' AND LastName = 'Administrator';
     
     PRINT '--- Re-execution Complete ---'
     PRINT ''
@@ -528,7 +528,7 @@ PRINT '============================'
 PRINT ''
 PRINT 'Roles:'
 SELECT Id, RoleName, IsActive, IsBuiltIn, Note
-FROM [dbo].[BaseRole]
+FROM [dbo].[BaseRoles]
 WHERE RoleName IN ('Developer', 'BackOfficer');
 
 PRINT ''
@@ -540,7 +540,7 @@ WHERE UserName = 'admin';
 PRINT ''
 PRINT 'Admin Person:'
 SELECT Id, FirstName, LastName, UserId, Mobile, CreatedOn
-FROM [dbo].[BasePerson]
+FROM [dbo].[BasePersons]
 WHERE FirstName = 'System' AND LastName = 'Administrator';
 
 PRINT ''
@@ -551,8 +551,8 @@ SELECT
     r.RoleName,
     ur.CreatedOn
 FROM [dbo].[BaseUserRole] ur
-INNER JOIN [dbo].[BaseUser] u ON ur.UserId = u.Id
-INNER JOIN [dbo].[BaseRole] r ON ur.RoleId = r.Id
+INNER JOIN [dbo].[BaseUsers] u ON ur.UserId = u.Id
+INNER JOIN [dbo].[BaseRoles] r ON ur.RoleId = r.Id
 WHERE u.UserName = 'admin';
 
 PRINT ''

@@ -97,9 +97,9 @@ EXEC dbo.Zync 'i Backup'
 
 ### 🏗️ Base (8 objects)
 Foundation tables for common application needs:
-- BaseInfo, BasePerson, BaseUser
-- BaseRole, BaseUserRole
-- BaseActivityLog, BaseUserAttribute
+- BaseInfo, BasePersons, BaseUsers
+- BaseRoles, BaseUsersRoles
+- BaseActivityLog, BaseUsersAttributes
 - Role-based permissions system
 
 ```sql

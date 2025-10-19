@@ -1,13 +1,13 @@
 ﻿-- =============================================
 -- Author:      SMO scripted
 -- Create date: 2025-09-28
--- Description: Create table [dbo].[BaseUserRole] with keys, defaults, and indexes.
+-- Description: Create table [dbo].[BaseUsersRoles] with keys, defaults, and indexes.
 -- =============================================
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BaseUserRole]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BaseUsersRoles]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[BaseUserRole](
+CREATE TABLE [dbo].[BaseUsersRoles](
 	[Id] [int] IDENTITY(1000000,1) NOT NULL,
 	[CreatedBy] [int] NOT NULL,
 	[CreatedOn] [datetime] NOT NULL,

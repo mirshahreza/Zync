@@ -1,13 +1,13 @@
 ﻿-- =============================================
 -- Author:      SMO scripted
 -- Create date: 2025-09-28
--- Description: Create table [dbo].[BasePerson] with keys, defaults, and indexes.
+-- Description: Create table [dbo].[BasePersons] with keys, defaults, and indexes.
 -- =============================================
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BasePerson]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BasePersons]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[BasePerson](
+CREATE TABLE [dbo].[BasePersons](
 	[Id] [int] IDENTITY(1000000,1) NOT NULL,
 	[CreatedBy] [int] NOT NULL,
 	[CreatedOn] [datetime] NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE [dbo].[BasePerson](
 	[Mobile] [varchar](14) NOT NULL,
 	[Picture_FileBody] [image] NULL,
 	[Picture_FileBody_xs] [image] NULL,
- CONSTRAINT [PK_BasePerson] PRIMARY KEY CLUSTERED 
+ CONSTRAINT [PK_BasePersons] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]

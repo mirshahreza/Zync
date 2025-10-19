@@ -332,7 +332,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File "c:\Workspace\Projects\Zync\
 
 ### خروجی‌ها و ساختار پکیج تولیدی
 
-- یک فایل برای هر جدول: مانند `BaseUser.sql`, `BaseInfo.sql`, ... (بدون FK)
+- یک فایل برای هر جدول: مانند `BaseUsers.sql`, `BaseInfo.sql`, ... (بدون FK)
 - یک فایل مجزا برای همه‌ی FKها: `MsSql/Packages/<Prefix>/_ForeignKeys.sql`
 - فایل شاخص پکیج: `MsSql/Packages/<Prefix>/.sql` که خطوط نصب را به ترتیب زیر دارد:
   - ابتدا تمام فایل‌های جدول
