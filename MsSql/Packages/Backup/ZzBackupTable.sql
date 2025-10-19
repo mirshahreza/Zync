@@ -2,7 +2,7 @@
 -- Author:		Mohsen Mirshahreza
 -- Create date:	2025-10-02
 -- Description:	Create backup copy of a table with timestamp
--- Sample:		EXEC [dbo].[ZzBackupTable] 'Users', 'UserBackups';
+-- Sample:		EXEC [dbo].[ZzBackupTable] 'Users', 'UsersBackup';
 -- =============================================
 CREATE OR ALTER PROCEDURE dbo.ZzBackupTable
     @source_table NVARCHAR(128),
