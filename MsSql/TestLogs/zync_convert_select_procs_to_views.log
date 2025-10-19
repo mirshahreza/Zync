@@ -1,60 +1,40 @@
-Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
-Line |
-  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
-     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     | Incorrect syntax near '/'.   Msg 102, Level 15, State 1, Procedure , Line 2.
 
-Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
-Line |
-  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
-     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     | Incorrect syntax near '/'.   Msg 102, Level 15, State 1, Procedure , Line 2.
-
-Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
-Line |
-  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
-     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     | Incorrect syntax near '/'.   Msg 102, Level 15, State 1, Procedure , Line 2.
-
-Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
-Line |
-  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
-     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     | Incorrect syntax near '/'.   Msg 102, Level 15, State 1, Procedure , Line 2.
-
-Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
-Line |
-  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
-     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     | Invalid column name 'is_disabled'.   Msg 207, Level 16, State 1, Procedure ZzSelectDefaultConstraints, Line 16.
-
-Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
-Line |
-  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
-     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     | Invalid column name 'is_disabled'.   Msg 207, Level 16, State 1, Procedure ZzSelectDefaultConstraints, Line 16.
-
-Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
-Line |
-  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
-     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     | Invalid column name 'used_pages'.   Msg 207, Level 16, State 1, Procedure ZzSelectFileStats, Line 22.
-
-Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
-Line |
-  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
-     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     | Invalid column name 'used_pages'.   Msg 207, Level 16, State 1, Procedure ZzSelectFileStats, Line 22.
-
-Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
-Line |
-  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
-     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     | Invalid column name 'used_pages'.   Msg 207, Level 16, State 1, Procedure ZzSelectFileStats, Line 22.
-
-Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
-Line |
-  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
-     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-     | Invalid column name 'used_pages'.   Msg 207, Level 16, State 1, Procedure ZzSelectFileStats, Line 22.
+name                                  type_desc
+----                                  ---------
+ZzSelectActiveSessions                VIEW
+ZzSelectAgentJobsStatus               VIEW
+ZzSelectBackupHistory                 VIEW
+ZzSelectBlockingProcesses             VIEW
+ZzSelectCheckConstraints              VIEW
+ZzSelectColumnDependencies            VIEW
+ZzSelectDatabaseGrowth                VIEW
+ZzSelectDatabasePermissions           VIEW
+ZzSelectDatabaseProperties            VIEW
+ZzSelectDefaultConstraints            VIEW
+ZzSelectExpensiveQueries              VIEW
+ZzSelectExtendedProperties            VIEW
+ZzSelectFailedLogins                  VIEW
+ZzSelectFileStats                     VIEW
+ZzSelectFragmentedIndexes             VIEW
+ZzSelectIdentityColumns               VIEW
+ZzSelectIndexUsage                    VIEW
+ZzSelectLogFileUsage                  VIEW
+ZzSelectLongRunningQueries            VIEW
+ZzSelectMissingIndexes                VIEW
+ZzSelectObjectDependencies            VIEW
+ZzSelectObjectsDetails                VIEW
+ZzSelectObjectsOverview               VIEW
+ZzSelectOrphanedUsers                 VIEW
+ZzSelectProceduresFunctionsParameters VIEW
+ZzSelectServerConfiguration           VIEW
+ZzSelectTablesFks                     VIEW
+ZzSelectTablesIndexes                 VIEW
+ZzSelectTableSizes                    VIEW
+ZzSelectTablesOverview                VIEW
+ZzSelectTablesViewsColumns            VIEW
+ZzSelectTempdbUsage                   VIEW
+ZzSelectTriggers                      VIEW
+ZzSelectUniqueAndPKConstraints        VIEW
+ZzSelectUnusedIndexes                 VIEW
+ZzSelectWaitStats                     VIEW
 
