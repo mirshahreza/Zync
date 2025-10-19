@@ -24,12 +24,12 @@ Notes:
 - `ls DateTime` shows each item with its short description taken from a `-- Description:` line at the top of the script.
 
 ### New (2025-09-29)
-- ZzISOWeekNumber — شماره هفته به‌صورت ISO-8601
+- ZzISOWeekNumber — Week number in ISO-8601 format
 
 ### Advanced Functions (2025-09-30)
-- ZzConvertToLunar — تبدیل تاریخ میلادی به قمری اسلامی
-- ZzHolidayChecker — بررسی تعطیلات رسمی ایران و سایر کشورها
-- ZzBusinessDaysCalculator — محاسبه روزهای کاری با در نظر گیری تعطیلات
-- ZzTimeZoneConverter — تبدیل زمان بین مناطق زمانی مختلف
-- ZzScheduleGenerator — تولید برنامه‌های کاری با الگوهای مختلف
-- ZzDateValidator — اعتبارسنجی تاریخ در تقویم‌های مختلف
+- ZzConvertToLunar — Convert Gregorian date to Islamic lunar
+- ZzHolidayChecker — Check official holidays in Iran and other countries
+- ZzBusinessDaysCalculator — Calculate business days considering holidays
+- ZzTimeZoneConverter — Convert time across time zones
+- ZzScheduleGenerator — Generate work schedules with various patterns
+- ZzDateValidator — Validate dates across different calendars

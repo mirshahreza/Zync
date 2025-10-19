@@ -1,5 +1,5 @@
--- Step 1: بررسی آبجکت‌های موجود
-PRINT '=== فهرست آبجکت‌های موجود ==='
+-- Step 1: Inspect existing objects
+PRINT '=== List of existing objects ==='
 SELECT 
     name as ObjectName,
     CASE type
@@ -15,7 +15,7 @@ WHERE name LIKE 'Zz%' AND type IN ('P', 'FN', 'TF', 'IF', 'V')
 ORDER BY name
 
 PRINT ''
-PRINT '=== فهرست TYPE‌های موجود ==='
+PRINT '=== List of existing TYPEs ==='
 SELECT 
     name as TypeName,
     'TYPE' as ObjectType
@@ -24,7 +24,7 @@ WHERE name LIKE 'Zz%' AND is_user_defined = 1
 ORDER BY name
 
 PRINT ''
-PRINT '=== بررسی جداول tracking ==='
+PRINT '=== Check tracking tables ==='
 IF OBJECT_ID('[dbo].[ZyncPackages]') IS NOT NULL
 BEGIN
     PRINT 'ZyncPackages table exists:'

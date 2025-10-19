@@ -45,7 +45,7 @@ EXEC dbo.Zync 'i Geographic/.sql'
 
 ### 🏙️ Iranian Geographic Data
 - ZzGetProvinceFromCity: Get province name from Iranian city name
-	- Example: `SELECT [dbo].[ZzGetProvinceFromCity](N'تهران');`
+	- Example: `SELECT [dbo].[ZzGetProvinceFromCity](N'Tehran');`
 
 Notes:
 - `ls Geographic` shows each item with its short description taken from a `-- Description:` line at the top of the script.

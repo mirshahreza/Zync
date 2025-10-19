@@ -26,5 +26,5 @@ Notes:
 - `ls DbMan` shows each item with its short description taken from a `-- Description:` line at the top of the script.
 
 ### New (2025-09-29)
-- ZzEnsureSchema — ایجاد خودکار اسکیمایی که وجود ندارد
-- ZzEnsureIndex — ایجاد ایندکس Nonclustered در صورت عدم وجود (Include/Filter)
+- ZzEnsureSchema — Automatically create a schema if it doesn't exist
+- ZzEnsureIndex — Create a Nonclustered index if missing (Include/Filter)

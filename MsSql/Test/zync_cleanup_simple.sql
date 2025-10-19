@@ -1,11 +1,11 @@
--- راه حل ساده و مستقیم برای پاک کردن همه آبجکت‌های Zz*
--- این اسکریپت بدون وابستگی به Zync کار می‌کند
+-- Simple and direct solution to remove all Zz* objects
+-- This script works independently of Zync
 
-PRINT '=== شروع پاک‌سازی دستی آبجکت‌های Zz* ==='
+PRINT '=== Starting manual cleanup of Zz* objects ==='
 PRINT ''
 
--- Step 1: پاک کردن همه PROCEDURE ها
-PRINT '--- پاک کردن PROCEDUREها ---'
+-- Step 1: Drop all PROCEDUREs
+PRINT '--- Dropping PROCEDUREs ---'
 DECLARE @sql NVARCHAR(MAX) = ''
 SELECT @sql = @sql + 'DROP PROCEDURE [dbo].[' + name + ']' + CHAR(13) + CHAR(10)
 FROM sys.objects 
@@ -13,18 +13,18 @@ WHERE name LIKE 'Zz%' AND type = 'P'
 
 IF LEN(@sql) > 0
 BEGIN
-    PRINT 'PROCEDUREهای پیدا شده:'
+    PRINT 'Found PROCEDUREs:'
     PRINT @sql
     EXEC sp_executesql @sql
-    PRINT 'همه PROCEDUREها پاک شدند.'
+    PRINT 'All PROCEDUREs were dropped.'
 END
 ELSE
-    PRINT 'هیچ PROCEDUREای پیدا نشد.'
+    PRINT 'No PROCEDUREs were found.'
 
 PRINT ''
 
--- Step 2: پاک کردن همه FUNCTIONها
-PRINT '--- پاک کردن FUNCTIONها ---'
+-- Step 2: Drop all FUNCTIONs
+PRINT '--- Dropping FUNCTIONs ---'
 SET @sql = ''
 SELECT @sql = @sql + 'DROP FUNCTION [dbo].[' + name + ']' + CHAR(13) + CHAR(10)
 FROM sys.objects 
@@ -32,18 +32,18 @@ WHERE name LIKE 'Zz%' AND type IN ('FN', 'TF', 'IF')
 
 IF LEN(@sql) > 0
 BEGIN
-    PRINT 'FUNCTIONهای پیدا شده:'
+    PRINT 'Found FUNCTIONs:'
     PRINT @sql
     EXEC sp_executesql @sql
-    PRINT 'همه FUNCTIONها پاک شدند.'
+    PRINT 'All FUNCTIONs were dropped.'
 END
 ELSE
-    PRINT 'هیچ FUNCTIONای پیدا نشد.'
+    PRINT 'No FUNCTIONs were found.'
 
 PRINT ''
 
--- Step 3: پاک کردن همه VIEWها
-PRINT '--- پاک کردن VIEWها ---'
+-- Step 3: Drop all VIEWs
+PRINT '--- Dropping VIEWs ---'
 SET @sql = ''
 SELECT @sql = @sql + 'DROP VIEW [dbo].[' + name + ']' + CHAR(13) + CHAR(10)
 FROM sys.objects 
@@ -51,18 +51,18 @@ WHERE name LIKE 'Zz%' AND type = 'V'
 
 IF LEN(@sql) > 0
 BEGIN
-    PRINT 'VIEWهای پیدا شده:'
+    PRINT 'Found VIEWs:'
     PRINT @sql
     EXEC sp_executesql @sql
-    PRINT 'همه VIEWها پاک شدند.'
+    PRINT 'All VIEWs were dropped.'
 END
 ELSE
-    PRINT 'هیچ VIEWای پیدا نشد.'
+    PRINT 'No VIEWs were found.'
 
 PRINT ''
 
--- Step 4: پاک کردن همه TYPEها
-PRINT '--- پاک کردن TYPEها ---'
+-- Step 4: Drop all TYPEs
+PRINT '--- Dropping TYPEs ---'
 SET @sql = ''
 SELECT @sql = @sql + 'DROP TYPE [dbo].[' + name + ']' + CHAR(13) + CHAR(10)
 FROM sys.types 
@@ -70,30 +70,30 @@ WHERE name LIKE 'Zz%' AND is_user_defined = 1
 
 IF LEN(@sql) > 0
 BEGIN
-    PRINT 'TYPEهای پیدا شده:'
+    PRINT 'Found TYPEs:'
     PRINT @sql
     EXEC sp_executesql @sql
-    PRINT 'همه TYPEها پاک شدند.'
+    PRINT 'All TYPEs were dropped.'
 END
 ELSE
-    PRINT 'هیچ TYPEای پیدا نشد.'
+    PRINT 'No TYPEs were found.'
 
 PRINT ''
 
--- Step 5: پاکسازی جداول tracking
-PRINT '--- پاکسازی جداول tracking ---'
+-- Step 5: Clean up tracking tables
+PRINT '--- Cleaning tracking tables ---'
 IF OBJECT_ID('[dbo].[ZyncObjects]') IS NOT NULL
 BEGIN
     DELETE FROM [dbo].[ZyncObjects]
-    PRINT 'جدول ZyncObjects پاک شد.'
+    PRINT 'Table ZyncObjects cleared.'
 END
 
 IF OBJECT_ID('[dbo].[ZyncPackages]') IS NOT NULL
 BEGIN
     DELETE FROM [dbo].[ZyncPackages]
-    PRINT 'جدول ZyncPackages پاک شد.'
+    PRINT 'Table ZyncPackages cleared.'
 END
 
 PRINT ''
-PRINT '=== پاک‌سازی کامل شد! ==='
-PRINT 'لطفاً اسکریپت diagnostic_check.sql را اجرا کنید تا مطمئن شوید همه چیز پاک شده.'
+PRINT '=== Cleanup completed! ==='
+PRINT 'Please run diagnostic_check.sql to ensure everything is removed.'

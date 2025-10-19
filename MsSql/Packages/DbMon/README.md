@@ -67,6 +67,6 @@ Notes:
 - Full schema exploration (migrated from DbSel)
 
 ### New (2025-09-29)
-- ZzSelectWaitStats — تجمیع Wait Stats با دسته‌بندی و درصد سهم
-- ZzSelectTempdbUsage — مصرف TempDB برحسب سشن و آبجکت‌های داخلی
-- ZzSelectFileStats — آمار I/O فایل‌ها و اندازه/فضای آزاد
+- ZzSelectWaitStats — Aggregate Wait Stats with categories and percent share
+- ZzSelectTempdbUsage — TempDB usage by session and internal objects
+- ZzSelectFileStats — File I/O stats and size/free space
