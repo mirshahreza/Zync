@@ -421,8 +421,8 @@ END CATCH
 -- Test 14: ZzST_Contains
 SET @TestName = 'ST_Contains';
 BEGIN TRY
-    DECLARE @PolyContainer GEOMETRY = geometry::STGeomFromText('POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))', 0);
-    DECLARE @PointInside GEOMETRY = geometry::Point(5, 5, 0);
+    DECLARE @PolyContainer GEOMETRY = [dbo].[ZzST_GeomFromText]('POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))', 0);
+    DECLARE @PointInside GEOMETRY = [dbo].[ZzST_Point](5, 5, 0);
     DECLARE @ContainsResult BIT = [dbo].[ZzST_Contains](@PolyContainer, @PointInside);
     
     IF @ContainsResult = 1
@@ -447,8 +447,8 @@ END CATCH
 -- Test 15: ZzST_Intersects
 SET @TestName = 'ST_Intersects';
 BEGIN TRY
-    DECLARE @Line1 GEOMETRY = geometry::STGeomFromText('LINESTRING(0 0, 10 10)', 0);
-    DECLARE @Line2 GEOMETRY = geometry::STGeomFromText('LINESTRING(0 10, 10 0)', 0);
+    DECLARE @Line1 GEOMETRY = [dbo].[ZzST_GeomFromText]('LINESTRING(0 0, 10 10)', 0);
+    DECLARE @Line2 GEOMETRY = [dbo].[ZzST_GeomFromText]('LINESTRING(0 10, 10 0)', 0);
     DECLARE @IntersectsResult BIT = [dbo].[ZzST_Intersects](@Line1, @Line2);
     
     IF @IntersectsResult = 1
@@ -473,7 +473,7 @@ END CATCH
 -- Test 16: ZzST_Buffer
 SET @TestName = 'ST_Buffer';
 BEGIN TRY
-    DECLARE @PointForBuffer GEOMETRY = geometry::Point(0, 0, 0);
+    DECLARE @PointForBuffer GEOMETRY = [dbo].[ZzST_Point](0, 0, 0);
     DECLARE @Buffered GEOMETRY = [dbo].[ZzST_Buffer](@PointForBuffer, 10);
     
     IF @Buffered IS NOT NULL AND [dbo].[ZzST_GeometryType](@Buffered) = 'ST_Polygon'
