@@ -55,6 +55,54 @@ BEGIN TRY
     IF OBJECT_ID('[dbo].[ZzOptimizeRoute]', 'FN') IS NULL AND OBJECT_ID('[dbo].[ZzOptimizeRoute]', 'TF') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzOptimizeRoute, '; ELSE SET @FunctionCount = @FunctionCount + 1;
     IF OBJECT_ID('[dbo].[ZzValidateCoordinates]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzValidateCoordinates, '; ELSE SET @FunctionCount = @FunctionCount + 1;
     
+    -- PostGIS-compatible spatial functions (ZzST_*)
+    IF OBJECT_ID('[dbo].[ZzST_Point]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Point, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_MakePoint]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_MakePoint, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_AsText]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_AsText, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_GeomFromText]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_GeomFromText, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_AsBinary]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_AsBinary, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_GeomFromWKB]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_GeomFromWKB, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_X]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_X, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Y]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Y, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Distance]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Distance, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Area]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Area, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Length]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Length, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Contains]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Contains, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Within]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Within, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Intersects]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Intersects, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Buffer]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Buffer, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_SRID]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_SRID, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_SetSRID]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_SetSRID, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_GeometryType]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_GeometryType, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_IsEmpty]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_IsEmpty, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_IsValid]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_IsValid, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_MakeLine]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_MakeLine, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_MakePolygon]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_MakePolygon, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_MakeEnvelope]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_MakeEnvelope, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Envelope]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Envelope, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_ConvexHull]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_ConvexHull, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Intersection]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Intersection, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Union]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Union, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Difference]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Difference, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_SymDifference]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_SymDifference, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_NPoints]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_NPoints, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_NumGeometries]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_NumGeometries, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_GeometryN]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_GeometryN, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_PointN]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_PointN, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_StartPoint]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_StartPoint, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_EndPoint]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_EndPoint, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Centroid]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Centroid, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_PointOnSurface]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_PointOnSurface, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Equals]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Equals, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Disjoint]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Disjoint, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Touches]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Touches, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Overlaps]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Overlaps, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Crosses]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Crosses, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Covers]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Covers, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Dimension]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Dimension, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_DWithin]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_DWithin, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    IF OBJECT_ID('[dbo].[ZzST_Perimeter]', 'FN') IS NULL SET @MissingFunctions = @MissingFunctions + 'ZzST_Perimeter, '; ELSE SET @FunctionCount = @FunctionCount + 1;
+    
     IF LEN(@MissingFunctions) > 0
     BEGIN
         SET @Status = 'FAIL';
@@ -292,6 +340,159 @@ END TRY
 BEGIN CATCH
     INSERT INTO @TestResults VALUES (@TestName, 'ERROR', ERROR_MESSAGE(), SYSDATETIME());
     PRINT '10. ' + @TestName + ': ERROR - ' + ERROR_MESSAGE();
+END CATCH
+
+-- Test 11: ZzST_Point and ZzST_AsText
+SET @TestName = 'ST_Point & ST_AsText';
+BEGIN TRY
+    DECLARE @Point GEOMETRY = [dbo].[ZzST_Point](51.3890, 35.6892, 4326);
+    DECLARE @WKT NVARCHAR(MAX) = [dbo].[ZzST_AsText](@Point);
+    
+    IF @Point IS NOT NULL AND @WKT LIKE '%POINT%'
+    BEGIN
+        SET @Status = 'PASS';
+        SET @Message = 'Point created: ' + @WKT;
+    END
+    ELSE
+    BEGIN
+        SET @Status = 'FAIL';
+        SET @Message = 'Point creation failed';
+    END
+    
+    INSERT INTO @TestResults VALUES (@TestName, @Status, @Message, SYSDATETIME());
+    PRINT '11. ' + @TestName + ': ' + @Status + ' - ' + @Message;
+END TRY
+BEGIN CATCH
+    INSERT INTO @TestResults VALUES (@TestName, 'ERROR', ERROR_MESSAGE(), SYSDATETIME());
+    PRINT '11. ' + @TestName + ': ERROR - ' + ERROR_MESSAGE();
+END CATCH
+
+-- Test 12: ZzST_Distance
+SET @TestName = 'ST_Distance';
+BEGIN TRY
+    DECLARE @P1 GEOMETRY = [dbo].[ZzST_Point](0, 0, 0);
+    DECLARE @P2 GEOMETRY = [dbo].[ZzST_Point](3, 4, 0);
+    DECLARE @Dist FLOAT = [dbo].[ZzST_Distance](@P1, @P2);
+    
+    IF @Dist = 5.0 -- 3-4-5 triangle
+    BEGIN
+        SET @Status = 'PASS';
+        SET @Message = 'Distance calculated correctly: ' + CAST(@Dist AS NVARCHAR(20));
+    END
+    ELSE
+    BEGIN
+        SET @Status = 'FAIL';
+        SET @Message = 'Expected 5.0, got: ' + CAST(@Dist AS NVARCHAR(20));
+    END
+    
+    INSERT INTO @TestResults VALUES (@TestName, @Status, @Message, SYSDATETIME());
+    PRINT '12. ' + @TestName + ': ' + @Status + ' - ' + @Message;
+END TRY
+BEGIN CATCH
+    INSERT INTO @TestResults VALUES (@TestName, 'ERROR', ERROR_MESSAGE(), SYSDATETIME());
+    PRINT '12. ' + @TestName + ': ERROR - ' + ERROR_MESSAGE();
+END CATCH
+
+-- Test 13: ZzST_Area
+SET @TestName = 'ST_Area';
+BEGIN TRY
+    DECLARE @Polygon GEOMETRY = [dbo].[ZzST_MakePolygon]('0,0;0,10;10,10;10,0;0,0', 0);
+    DECLARE @AreaVal FLOAT = [dbo].[ZzST_Area](@Polygon);
+    
+    IF @AreaVal = 100.0
+    BEGIN
+        SET @Status = 'PASS';
+        SET @Message = 'Area calculated correctly: ' + CAST(@AreaVal AS NVARCHAR(20));
+    END
+    ELSE
+    BEGIN
+        SET @Status = 'FAIL';
+        SET @Message = 'Expected 100.0, got: ' + CAST(@AreaVal AS NVARCHAR(20));
+    END
+    
+    INSERT INTO @TestResults VALUES (@TestName, @Status, @Message, SYSDATETIME());
+    PRINT '13. ' + @TestName + ': ' + @Status + ' - ' + @Message;
+END TRY
+BEGIN CATCH
+    INSERT INTO @TestResults VALUES (@TestName, 'ERROR', ERROR_MESSAGE(), SYSDATETIME());
+    PRINT '13. ' + @TestName + ': ERROR - ' + ERROR_MESSAGE();
+END CATCH
+
+-- Test 14: ZzST_Contains
+SET @TestName = 'ST_Contains';
+BEGIN TRY
+    DECLARE @PolyContainer GEOMETRY = [dbo].[ZzST_GeomFromText]('POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))', 0);
+    DECLARE @PointInside GEOMETRY = [dbo].[ZzST_Point](5, 5, 0);
+    DECLARE @ContainsResult BIT = [dbo].[ZzST_Contains](@PolyContainer, @PointInside);
+    
+    IF @ContainsResult = 1
+    BEGIN
+        SET @Status = 'PASS';
+        SET @Message = 'Contains test passed';
+    END
+    ELSE
+    BEGIN
+        SET @Status = 'FAIL';
+        SET @Message = 'Contains test failed';
+    END
+    
+    INSERT INTO @TestResults VALUES (@TestName, @Status, @Message, SYSDATETIME());
+    PRINT '14. ' + @TestName + ': ' + @Status + ' - ' + @Message;
+END TRY
+BEGIN CATCH
+    INSERT INTO @TestResults VALUES (@TestName, 'ERROR', ERROR_MESSAGE(), SYSDATETIME());
+    PRINT '14. ' + @TestName + ': ERROR - ' + ERROR_MESSAGE();
+END CATCH
+
+-- Test 15: ZzST_Intersects
+SET @TestName = 'ST_Intersects';
+BEGIN TRY
+    DECLARE @Line1 GEOMETRY = [dbo].[ZzST_GeomFromText]('LINESTRING(0 0, 10 10)', 0);
+    DECLARE @Line2 GEOMETRY = [dbo].[ZzST_GeomFromText]('LINESTRING(0 10, 10 0)', 0);
+    DECLARE @IntersectsResult BIT = [dbo].[ZzST_Intersects](@Line1, @Line2);
+    
+    IF @IntersectsResult = 1
+    BEGIN
+        SET @Status = 'PASS';
+        SET @Message = 'Intersects test passed';
+    END
+    ELSE
+    BEGIN
+        SET @Status = 'FAIL';
+        SET @Message = 'Intersects test failed';
+    END
+    
+    INSERT INTO @TestResults VALUES (@TestName, @Status, @Message, SYSDATETIME());
+    PRINT '15. ' + @TestName + ': ' + @Status + ' - ' + @Message;
+END TRY
+BEGIN CATCH
+    INSERT INTO @TestResults VALUES (@TestName, 'ERROR', ERROR_MESSAGE(), SYSDATETIME());
+    PRINT '15. ' + @TestName + ': ERROR - ' + ERROR_MESSAGE();
+END CATCH
+
+-- Test 16: ZzST_Buffer
+SET @TestName = 'ST_Buffer';
+BEGIN TRY
+    DECLARE @PointForBuffer GEOMETRY = [dbo].[ZzST_Point](0, 0, 0);
+    DECLARE @Buffered GEOMETRY = [dbo].[ZzST_Buffer](@PointForBuffer, 10);
+    
+    IF @Buffered IS NOT NULL AND [dbo].[ZzST_GeometryType](@Buffered) = 'ST_Polygon'
+    BEGIN
+        SET @Status = 'PASS';
+        SET @Message = 'Buffer created successfully';
+    END
+    ELSE
+    BEGIN
+        SET @Status = 'FAIL';
+        SET @Message = 'Buffer creation failed';
+    END
+    
+    INSERT INTO @TestResults VALUES (@TestName, @Status, @Message, SYSDATETIME());
+    PRINT '16. ' + @TestName + ': ' + @Status + ' - ' + @Message;
+END TRY
+BEGIN CATCH
+    INSERT INTO @TestResults VALUES (@TestName, 'ERROR', ERROR_MESSAGE(), SYSDATETIME());
+    PRINT '16. ' + @TestName + ': ERROR - ' + ERROR_MESSAGE();
 END CATCH
 
 -- Test Summary
