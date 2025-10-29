@@ -2,6 +2,10 @@
 
 The `Geographic` package provides a collection of functions for geographic calculations, location validation, and address operations.
 
+For a higher-level overview of the design and PostGIS alignment, see: `MsSql/Doc/ARTICLE_GEOGRAPHIC_EN.md`.
+
+نسخهٔ فارسی مقالهٔ مروری: `MsSql/Doc/ARTICLE_GEOGRAPHIC_FA.md`
+
 ## 🚀 Deployment
 
 To deploy all scripts in the `Geographic` package:
