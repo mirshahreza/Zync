@@ -897,9 +897,34 @@ BEGIN
 			THROW;
 		END CATCH
     END
-    ELSE IF (@Command LIKE 'u%')
+	ELSE IF (@Command LIKE 'u%')
     BEGIN
 		SET @PackageName = TRIM(SUBSTRING(@Command, 2, LEN(@Command)));
+
+		-- Update ALL installed packages if no name provided (or wildcard keywords)
+		IF (@PackageName = '' OR LOWER(@PackageName) IN ('all','*'))
+		BEGIN
+			PRINT ('');
+			PRINT 'Updating ALL installed packages...';
+			DECLARE @UpdName NVARCHAR(128);
+			DECLARE upd_all_cursor CURSOR LOCAL FOR
+				SELECT PackageName FROM [dbo].[ZyncPackages]
+				WHERE Status IN ('INSTALLED','UPDATED') AND LTRIM(RTRIM(ISNULL(PackageName,''))) <> ''
+				ORDER BY PackageName;
+			OPEN upd_all_cursor;
+			FETCH NEXT FROM upd_all_cursor INTO @UpdName;
+			WHILE @@FETCH_STATUS = 0
+			BEGIN
+				PRINT ' -> Updating: ' + @UpdName;
+				DECLARE @UpdCmd VARCHAR(256) = 'u ' + @UpdName;
+				EXEC [dbo].[Zync] @Command = @UpdCmd;
+				FETCH NEXT FROM upd_all_cursor INTO @UpdName;
+			END
+			CLOSE upd_all_cursor; DEALLOCATE upd_all_cursor;
+			PRINT 'All installed packages processed.';
+			RETURN;
+		END
+
 		IF(@PackageName NOT LIKE N'%.sql') SET @PackageFullURL = @PackageFullURL + @PackageName + '/' + '.sql'
 		ELSE SET @PackageFullURL = @PackageFullURL + @PackageName;
 		SET @PackageFullURL = REPLACE(@PackageFullURL,'//.sql','/.sql');
@@ -910,7 +935,7 @@ BEGIN
 		-- Check if package exists
 		DECLARE @UpdatePackageId UNIQUEIDENTIFIER;
 		SELECT @UpdatePackageId = PackageId FROM [dbo].[ZyncPackages] 
-		WHERE PackageName = @PackageName AND Status = 'INSTALLED';
+		WHERE PackageName = @PackageName AND Status IN ('INSTALLED','UPDATED');
 
 		IF @UpdatePackageId IS NULL
 		BEGIN
@@ -997,11 +1022,20 @@ BEGIN
 			THROW;
 		END CATCH
     END
-    ELSE IF (@Command LIKE 'i%')
+	ELSE IF (@Command LIKE 'i%')
     BEGIN
 		SET @PackageName = TRIM(SUBSTRING(@Command, 2, LEN(@Command)));
-		IF(@PackageName NOT LIKE N'%.sql') SET @PackageFullURL = @PackageFullURL + @PackageName + '/' + '.sql'
-		ELSE SET @PackageFullURL = @PackageFullURL + @PackageName;
+
+		-- Support install-all via empty, 'all' or '*' keyword
+		IF (@PackageName = '' OR LOWER(@PackageName) IN ('all','*'))
+		BEGIN
+			SET @PackageFullURL = @Repo + '.sql';
+		END
+		ELSE
+		BEGIN
+			IF(@PackageName NOT LIKE N'%.sql') SET @PackageFullURL = @PackageFullURL + @PackageName + '/' + '.sql'
+			ELSE SET @PackageFullURL = @PackageFullURL + @PackageName;
+		END
 		SET @PackageFullURL = REPLACE(@PackageFullURL,'//.sql','/.sql');
 
 		PRINT ('')
@@ -1126,7 +1160,7 @@ BEGIN
     END
 	ELSE
 	BEGIN
-		PRINT ('Zync - Database Package Manager v3.0');
+	PRINT ('Zync - Database Package Manager v3.0');
 		PRINT ('================================================');
 		PRINT ('');
 		PRINT ('Usage: EXEC [dbo].[Zync] ''<command> [package_name]''');
@@ -1134,17 +1168,19 @@ BEGIN
 		PRINT ('Commands:');
 		PRINT ('  ?                      Displays this help message.');
 		PRINT ('');
-		PRINT ('  ls                               Lists all packages and their scripts (names only).');
-		PRINT ('  ls <package-name>                Lists scripts of a package with descriptions.');
-		PRINT ('  ls ?<term>                        Search all packages (case-insensitive; use % or * as wildcard).');
-		PRINT ('  ls <package-name> ?<term>         Search inside a package (matches name or description).');
+	PRINT ('  ls                               Lists all packages and their scripts (names only).');
+	PRINT ('  ls <package-name>                Lists scripts of a package with descriptions.');
+	PRINT ('  ls ?<term>                       Search all packages (case-insensitive; use % or * as wildcard).');
+	PRINT ('  ls <package-name> ?<term>        Search inside a package (matches name or description).');
 		PRINT ('');
-		PRINT ('  i                      Installs all available packages.');
-		PRINT ('  i <package-name>       Installs a package (with backup of existing objects).');
-		PRINT ('  i <pkg/script.sql>     Installs a specific script from a package.');
+	PRINT ('  i                      Installs all available packages (from Packages/.sql).');
+	PRINT ('  i all                  Alias for installing all packages.');
+	PRINT ('  i <package-name>       Installs a package (with backup of existing objects).');
+	PRINT ('  i <pkg/script.sql>     Installs a specific script from a package.');
 		PRINT ('');
-		PRINT ('  u                      Updates all installed packages to the latest version.');
-		PRINT ('  u <package-name>       Updates an existing package to the latest version.');
+	PRINT ('  u                      Updates all installed packages to the latest version.');
+	PRINT ('  u all                  Alias for updating all installed packages.');
+	PRINT ('  u <package-name>       Updates an existing package to the latest version.');
 		PRINT ('');
 		PRINT ('  rm                     Removes all installed packages.');
 		PRINT ('  rm <package-name>      Removes a package (restores previous versions).');
