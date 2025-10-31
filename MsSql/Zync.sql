@@ -210,8 +210,8 @@ BEGIN
 					   OPEN pkg_cursor; FETCH NEXT FROM pkg_cursor INTO @CurPkg;
 					   WHILE @@FETCH_STATUS = 0
 					   BEGIN
-						   -- In root ls mode print package heading unless filtering; with filtering, print when first match is found
-						   IF @Search IS NULL PRINT '    ' + QUOTENAME(@CurPkg) + ':';
+							   -- In root ls mode print package heading unless filtering; with filtering, print when first match is found
+							   IF @Search IS NULL PRINT '    ' + QUOTENAME(@CurPkg) + ':    ' + 'EXEC dbo.Zync ''i ' + @CurPkg + '''';
 						   DECLARE @PkgUrl NVARCHAR(4000) = @Repo + @CurPkg + '/.sql';
 						   SET @PkgUrl = REPLACE(@PkgUrl,'//.sql','/.sql');
 
@@ -238,20 +238,20 @@ BEGIN
 									   IF @token LIKE @CurPkg + '/%'
 									   BEGIN
 										   DECLARE @Item NVARCHAR(512) = SUBSTRING(@token, LEN(@CurPkg) + 2, 512);
-										   -- Root ls mode: show only filenames, no descriptions
-						   	   	   	   	   IF @Search IS NULL
-						   	   	   	   	   	   PRINT '        - ' + @Item;
+										   -- Root ls mode: show only filenames, plus copy-paste install command
+											   IF @Search IS NULL
+												   PRINT '        - ' + @Item + '    ' + 'EXEC dbo.Zync ''i ' + @CurPkg + '/' + @Item + '''';
 						   	   	   	   	   ELSE
 						   	   	   	   	   	   BEGIN
 						   	   	   	   	   	   	   DECLARE @ItemLower NVARCHAR(512) = LOWER(@Item);
 						   	   	   	   	   	   	   IF PATINDEX(@SearchPattern, @ItemLower) > 0
 						   	   	   	   	   	   	   BEGIN
-						   	   	   	   	   	   	   	   IF @GroupPrinted = 0
+														   IF @GroupPrinted = 0
 						   	   	   	   	   	   	   	   BEGIN
-						   	   	   	   	   	   	   	   	   PRINT '    ' + QUOTENAME(@CurPkg) + ':';
+															   PRINT '    ' + QUOTENAME(@CurPkg) + ':    ' + 'EXEC dbo.Zync ''i ' + @CurPkg + '''';
 						   	   	   	   	   	   	   	   	   SET @GroupPrinted = 1;
 						   	   	   	   	   	   	   	   END
-						   	   	   	   	   	   	   	   PRINT '        - ' + @Item;
+														   PRINT '        - ' + @Item + '    ' + 'EXEC dbo.Zync ''i ' + @CurPkg + '/' + @Item + '''';
 						   	   	   	   	   	   	   END
 						   	   	   	   	   	   END
 									   END
@@ -308,9 +308,12 @@ BEGIN
 						   IF @res IS NOT NULL EXEC SP_OADESTROY @res;
 					   END CATCH
 					   IF @Search IS NULL
-					   	   PRINT ' -> Objects inside package ' + QUOTENAME(@PackageName) + CASE WHEN @PkgDesc2 IS NOT NULL AND @PkgDesc2<>'' THEN ' — ' + @PkgDesc2 ELSE ':' END;
+						   PRINT ' -> Objects inside package ' + QUOTENAME(@PackageName) + CASE WHEN @PkgDesc2 IS NOT NULL AND @PkgDesc2<>'' THEN ' — ' + @PkgDesc2 ELSE ':' END;
 					   ELSE
-					   	   PRINT ' -> Searching inside package ' + QUOTENAME(@PackageName) + CASE WHEN @PkgDesc2 IS NOT NULL AND @PkgDesc2<>'' THEN ' — ' + @PkgDesc2 ELSE '' END + ' (filter: ' + @Search + ')';
+						   PRINT ' -> Searching inside package ' + QUOTENAME(@PackageName) + CASE WHEN @PkgDesc2 IS NOT NULL AND @PkgDesc2<>'' THEN ' — ' + @PkgDesc2 ELSE '' END + ' (filter: ' + @Search + ')';
+
+					   -- Show copy-paste command to install the whole package
+					   PRINT '    Install package: ' + 'EXEC dbo.Zync ''i ' + @PackageName + '''';
 					   -- Use the preserved package index source (not README content)
 					   DECLARE @PkgSrc2 NVARCHAR(MAX) = @IndexSrc;
 					   SET @p = CHARINDEX('''i ', @PkgSrc2);
@@ -363,14 +366,14 @@ BEGIN
 							   END CATCH
 						   	   IF @ItemDesc2 IS NULL SET @ItemDesc2 = '';
 						   	   -- Apply search filter if provided: match on file name or description
-						   	   IF (@Search IS NULL)
-						   	   	   PRINT '    - ' + @Item2 + CASE WHEN @ItemDesc2<>'' THEN ' — ' + @ItemDesc2 ELSE '' END;
+							   IF (@Search IS NULL)
+								   PRINT '    - ' + @Item2 + CASE WHEN @ItemDesc2<>'' THEN ' — ' + @ItemDesc2 ELSE '' END + ' — ' + 'EXEC dbo.Zync ''i ' + @PackageName + '/' + @Item2 + '''';
 						   	   ELSE
 						   	   	   BEGIN
 						   	   	   	   DECLARE @Item2Lower NVARCHAR(512) = LOWER(@Item2);
 						   	   	   	   DECLARE @Desc2Lower NVARCHAR(4000) = LOWER(@ItemDesc2);
 						   	   	   	   IF PATINDEX(@SearchPattern, @Item2Lower) > 0 OR PATINDEX(@SearchPattern, @Desc2Lower) > 0
-						   	   	   	   	   PRINT '    - ' + @Item2 + CASE WHEN @ItemDesc2<>'' THEN ' — ' + @ItemDesc2 ELSE '' END;
+										   PRINT '    - ' + @Item2 + CASE WHEN @ItemDesc2<>'' THEN ' — ' + @ItemDesc2 ELSE '' END + ' — ' + 'EXEC dbo.Zync ''i ' + @PackageName + '/' + @Item2 + '''';
 						   	   	   END
 							   END
 						   END
