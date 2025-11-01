@@ -91,3 +91,9 @@ Line |
      | Invalid column name 'Description'. Invalid column name 'Category'. Invalid column name 'Description'.   Msg 207, Level 16, State 1, Procedure ,
      | Line 71.
 
+Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
+Line |
+  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
+     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Invalid column name 'Description'. Invalid column name 'Category'. Invalid column name 'Description'.   Msg 207, Level 16, State 1, Procedure , Line 71.
+

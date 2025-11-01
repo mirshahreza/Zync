@@ -90,11 +90,16 @@ BEGIN
         SET @ObjectType = 'VIEW';
         SET @start = CHARINDEX('CREATE OR ALTER VIEW', @CleanScript) + LEN('CREATE OR ALTER VIEW');
     END
-    ELSE IF CHARINDEX('CREATE TYPE', @CleanScript) > 0 
+	ELSE IF CHARINDEX('CREATE TYPE', @CleanScript) > 0 
     BEGIN
         SET @ObjectType = 'TYPE';
         SET @start = CHARINDEX('CREATE TYPE', @CleanScript) + LEN('CREATE TYPE');
     END
+	ELSE IF CHARINDEX('CREATE TABLE', @CleanScript) > 0
+	BEGIN
+		SET @ObjectType = 'TABLE';
+		SET @start = CHARINDEX('CREATE TABLE', @CleanScript) + LEN('CREATE TABLE');
+	END
 
     IF @ObjectType IS NOT NULL AND @start > 0
     BEGIN
@@ -995,9 +1000,10 @@ BEGIN
 					IF @ObjectExists = 1
 					BEGIN
 						-- Get current definition for backup
-						DECLARE @CurrentDefinition NVARCHAR(MAX);
+					DECLARE @CurrentDefinition NVARCHAR(MAX);
 						SELECT @CurrentDefinition = OBJECT_DEFINITION(OBJECT_ID(@UpdateObjectName));
-						IF @UpdateObjectType = 'TYPE' SET @CurrentDefinition = 'TYPE_DEFINITION_BACKUP'; -- Types need special handling
+					IF @UpdateObjectType = 'TYPE' SET @CurrentDefinition = 'TYPE_DEFINITION_BACKUP'; -- Types need special handling
+					ELSE IF @UpdateObjectType = 'TABLE' SET @CurrentDefinition = 'TABLE_DEFINITION_BACKUP'; -- Tables don't have OBJECT_DEFINITION
 						
 						-- Update object record with new version
 						UPDATE [dbo].[ZyncObjects] 
@@ -1148,6 +1154,7 @@ BEGIN
 				IF @ObjectName IS NOT NULL AND @ObjectType IS NOT NULL
 				BEGIN
 					SELECT @ExistingDefinition = OBJECT_DEFINITION(OBJECT_ID(@ObjectName));
+					IF @ObjectType = 'TABLE' SET @ExistingDefinition = 'TABLE_DEFINITION_BACKUP'; -- Tables don't have OBJECT_DEFINITION
 					
 					-- Insert package record
 					INSERT INTO [dbo].[ZyncPackages] (PackageId, PackageName, Dependencies, BackupData)
