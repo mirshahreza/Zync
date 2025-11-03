@@ -16,7 +16,7 @@ CREATE TABLE [dbo].[BaseActivityLog](
 	[IsSucceeded] [bit] NULL,
 	[FromCache] [bit] NULL,
 	[Inputs] [ntext] NULL,
-	[Message] [varchar](128) NULL,
+	[Response] [varchar](128) NULL,
 	[Duration] [int] NULL,
 	[ClientIp] [varchar](32) NULL,
 	[ClientInfo] [varchar](256) NULL,
