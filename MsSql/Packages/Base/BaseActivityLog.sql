@@ -19,7 +19,7 @@ CREATE TABLE [dbo].[BaseActivityLog](
 	[Response] [varchar](128) NULL,
 	[Duration] [int] NULL,
 	[ClientIp] [varchar](32) NULL,
-	[ClientInfo] [varchar](256) NULL,
+	[ClientAgent] [varchar](256) NULL,
 	[EventById] [int] NULL,
 	[EventByName] [nvarchar](64) NULL,
 	[EventOn] [datetime] NULL,
