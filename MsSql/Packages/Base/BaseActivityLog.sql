@@ -9,6 +9,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[Ba
 BEGIN
 CREATE TABLE [dbo].[BaseActivityLog](
 	[Id] [bigint] IDENTITY(1,1) NOT NULL,
+	[Namespace] [varchar](64) NULL,
 	[Controller] [varchar](64) NULL,
 	[Method] [varchar](64) NULL,
 	[RecordId] [varchar](64) NULL,
