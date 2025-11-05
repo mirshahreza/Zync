@@ -24,6 +24,25 @@ EXEC dbo.Zync 'i Geographic/.sql'
 	- Example: `SELECT [dbo].[ZzCalculateDistance](35.6892, 51.3890, 40.7128, -74.0060, 'KM');`
 - ZzConvertDistance: Convert distance between different units
 	- Example: `SELECT [dbo].[ZzConvertDistance](100, 'KM', 'MILE');`
+- ZzST_Distance_Meters: Geodesic distance between two GEOGRAPHY values (meters)
+	- Example:
+	  ```sql
+	  DECLARE @g1 geography = geography::Point(35.6892, 51.3890, 4326);
+	  DECLARE @g2 geography = geography::Point(35.7000, 51.4000, 4326);
+	  SELECT [dbo].[ZzST_Distance_Meters](@g1, @g2);
+	  ```
+- ZzST_Distance_Meters_LatLon: Distance in meters from lat/lon inputs (uses GEOGRAPHY)
+	- Example: `SELECT [dbo].[ZzST_Distance_Meters_LatLon](35.6892, 51.3890, 35.7000, 51.4000, 4326);`
+- ZzST_Distance_Meters_Proc: Stored procedure returning both meters and kilometers
+	- Example:
+	  ```sql
+	  DECLARE @m FLOAT, @km DECIMAL(15,5);
+	  EXEC [dbo].[ZzST_Distance_Meters_Proc]
+	       @Lat1=35.6892, @Lon1=51.3890,
+	       @Lat2=35.7000, @Lon2=51.4000,
+	       @Meters=@m OUTPUT, @Kilometers=@km OUTPUT;
+	  SELECT @m AS Meters, @km AS Kilometers;
+	  ```
 - ZzGetBearing: Calculate bearing (direction) between two geographic points
 	- Example: `SELECT [dbo].[ZzGetBearing](35.6892, 51.3890, 40.7128, -74.0060);`
 - ZzGetMidpoint: Calculate midpoint between two geographic points
@@ -86,6 +105,14 @@ The Geographic package now includes 45+ PostGIS-compatible spatial functions usi
 #### Measurement Functions
 - ZzST_Distance: Calculates minimum distance between geometries
 	- Example: `SELECT [dbo].[ZzST_Distance](geometry::Point(51.3890, 35.6892, 4326), geometry::Point(51.4000, 35.7000, 4326));`
+- ZzST_Distance_Meters: Geodesic distance between GEOGRAPHY inputs in meters
+	- Note: `geography::Point(Latitude, Longitude, SRID)` (order differs from geometry)
+	- Example:
+	  ```sql
+	  DECLARE @g1 geography = geography::Point(35.6892, 51.3890, 4326);
+	  DECLARE @g2 geography = geography::Point(35.7000, 51.4000, 4326);
+	  SELECT [dbo].[ZzST_Distance_Meters](@g1, @g2);
+	  ```
 - ZzST_Area: Calculates 2D area of polygon
 	- Example: `SELECT [dbo].[ZzST_Area](geometry::STGeomFromText('POLYGON((0 0, 0 10, 10 10, 10 0, 0 0))', 0));`
 - ZzST_Length: Calculates 2D length of LineString

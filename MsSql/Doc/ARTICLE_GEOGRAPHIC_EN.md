@@ -81,6 +81,31 @@ DECLARE @b geometry = [dbo].[ZzST_GeomFromText]('POINT(51.4000 35.7000)', 4326);
 SELECT [dbo].[ZzST_DWithin](@a, @b, 1000.0) AS IsNearby;
 ```
 
+Geodesic distance in meters (geography):
+
+```sql
+-- For earth-accurate distances in meters, use the GEOGRAPHY variant
+-- Note: geography::Point takes (Latitude, Longitude, SRID)
+DECLARE @g1 geography = geography::Point(35.6892, 51.3890, 4326); -- Tehran
+DECLARE @g2 geography = geography::Point(35.7000, 51.4000, 4326);
+SELECT [dbo].[ZzST_Distance_Meters](@g1, @g2) AS DistanceMeters; -- meters
+```
+
+Lat/Lon convenience (function and stored procedure):
+
+```sql
+-- Function: input lat/lon, returns meters
+SELECT [dbo].[ZzST_Distance_Meters_LatLon](35.6892, 51.3890, 35.7000, 51.4000, 4326) AS DistanceMeters;
+
+-- Procedure: returns both meters and kilometers as OUTPUT params
+DECLARE @m FLOAT, @km DECIMAL(15,5);
+EXEC [dbo].[ZzST_Distance_Meters_Proc]
+  @Lat1=35.6892, @Lon1=51.3890,
+  @Lat2=35.7000, @Lon2=51.4000,
+  @Meters=@m OUTPUT, @Kilometers=@km OUTPUT;
+SELECT @m AS Meters, @km AS Kilometers;
+```
+
 4) Buffering:
 
 ```sql
@@ -125,6 +150,10 @@ Caveats and tips:
 - Be explicit about SRIDs when mixing data from multiple sources.
 - Geography vs geometry: choose geography for long‑distance geodetic calculations; use geometry for planar operations and most predicates.
 - Tolerance and units: buffer radii and distances depend on the coordinate system—prefer consistent SRIDs (WGS 84 for GPS).
+
+Units and SRID quick note:
+- ZzST_Distance (geometry) returns values in the coordinate system units (e.g., degrees for SRID 4326), suitable for planar math and small extents.
+- ZzST_Distance_Meters (geography) returns geodesic distance in meters on the spheroid—recommended for real-world lat/lon distances.
 
 ## Installation
 

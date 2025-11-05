@@ -82,6 +82,31 @@ DECLARE @b geometry = [dbo].[ZzST_GeomFromText]('POINT(51.4000 35.7000)', 4326);
 SELECT [dbo].[ZzST_DWithin](@a, @b, 1000.0) AS IsNearby;
 ```
 
+محاسبهٔ فاصلهٔ ژئودتیک برحسب متر (geography):
+
+```sql
+-- برای فاصلهٔ دقیق روی کرهٔ زمین و برحسب متر از نسخهٔ GEOGRAPHY استفاده کنید
+-- نکته: geography::Point به‌شکل (Latitude, Longitude, SRID) است
+DECLARE @g1 geography = geography::Point(35.6892, 51.3890, 4326); -- تهران
+DECLARE @g2 geography = geography::Point(35.7000, 51.4000, 4326);
+SELECT [dbo].[ZzST_Distance_Meters](@g1, @g2) AS DistanceMeters; -- متر
+```
+
+راحتی استفاده با lat/lon (تابع و stored procedure):
+
+```sql
+-- تابع: ورودی lat/lon، خروجی برحسب متر
+SELECT [dbo].[ZzST_Distance_Meters_LatLon](35.6892, 51.3890, 35.7000, 51.4000, 4326) AS DistanceMeters;
+
+-- پروسیجر: خروجی هم‌زمان متر و کیلومتر (پارامترهای OUTPUT)
+DECLARE @m FLOAT, @km DECIMAL(15,5);
+EXEC [dbo].[ZzST_Distance_Meters_Proc]
+  @Lat1=35.6892, @Lon1=51.3890,
+  @Lat2=35.7000, @Lon2=51.4000,
+  @Meters=@m OUTPUT, @Kilometers=@km OUTPUT;
+SELECT @m AS Meters, @km AS Kilometers;
+```
+
 4) بافر کردن:
 
 ```sql
@@ -126,6 +151,10 @@ SELECT [dbo].[ZzIsPointInRadius](35.6892, 51.3890, 35.7000, 51.4000, 10, 'KM') A
 - هنگام ترکیب داده از منابع گوناگون، SRID را صریح تعیین کنید.
 - geography در برابر geometry: برای محاسبات ژئودتیک مسافت‌های بلند از geography استفاده کنید؛ برای عملیات صفحه‌ای و اکثر گزاره‌ها geometry کفایت می‌کند.
 - تولرانس و واحد: شعاع بافر و فاصله‌ها به سیستم مختصات وابسته‌اند—SRIDهای همسان (مثل WGS 84 برای GPS) را ترجیح دهید.
+
+یادداشت سریع دربارهٔ واحد و SRID:
+- ZzST_Distance (geometry) نتیجه را در واحد سیستم مختصات برمی‌گرداند (مثلاً درجه برای SRID=4326) و برای محاسبات صفحه‌ای و فواصل کوتاه مناسب است.
+- ZzST_Distance_Meters (geography) فاصلهٔ ژئودتیک را برحسب متر روی بیضوی مرجع برمی‌گرداند—برای سناریوهای واقعی lat/lon توصیه می‌شود.
 
 ## نصب
 

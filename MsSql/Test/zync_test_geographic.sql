@@ -495,6 +495,114 @@ BEGIN CATCH
     PRINT '16. ' + @TestName + ': ERROR - ' + ERROR_MESSAGE();
 END CATCH
 
+    -- Test 17: ZzST_Distance_Meters - Zero distance (geography)
+    SET @TestName = 'ST_Distance_Meters (zero)';
+    BEGIN TRY
+        DECLARE @g1 GEOGRAPHY = geography::Point(35.6892, 51.3890, 4326); -- (lat, lon)
+        DECLARE @g2 GEOGRAPHY = geography::Point(35.6892, 51.3890, 4326);
+        DECLARE @gZero FLOAT = [dbo].[ZzST_Distance_Meters](@g1, @g2);
+    
+        IF @gZero = 0.0
+        BEGIN
+            SET @Status = 'PASS';
+            SET @Message = 'Zero distance returned 0 meters';
+        END
+        ELSE
+        BEGIN
+            SET @Status = 'FAIL';
+            SET @Message = 'Expected 0, got: ' + CAST(@gZero AS NVARCHAR(50));
+        END
+    
+        INSERT INTO @TestResults VALUES (@TestName, @Status, @Message, SYSDATETIME());
+        PRINT '17. ' + @TestName + ': ' + @Status + ' - ' + @Message;
+    END TRY
+    BEGIN CATCH
+        INSERT INTO @TestResults VALUES (@TestName, 'ERROR', ERROR_MESSAGE(), SYSDATETIME());
+        PRINT '17. ' + @TestName + ': ERROR - ' + ERROR_MESSAGE();
+    END CATCH
+
+    -- Test 18: ZzST_Distance_Meters - Approximate distance (geography)
+    SET @TestName = 'ST_Distance_Meters (approximate)';
+    BEGIN TRY
+        -- Tehran to Isfahan (approx ~340 km)
+        DECLARE @t GEOGRAPHY = geography::Point(35.6892, 51.3890, 4326);
+        DECLARE @i GEOGRAPHY = geography::Point(32.6539, 51.6660, 4326);
+        DECLARE @meters FLOAT = [dbo].[ZzST_Distance_Meters](@t, @i);
+    
+        IF @meters > 300000 AND @meters < 500000
+        BEGIN
+            SET @Status = 'PASS';
+            SET @Message = 'Distance ≈ ' + CAST(CAST(@meters/1000.0 AS DECIMAL(12,1)) AS NVARCHAR(20)) + ' km';
+        END
+        ELSE
+        BEGIN
+            SET @Status = 'WARN';
+            SET @Message = 'Meters: ' + CAST(@meters AS NVARCHAR(30)) + ' (expected ~340,000 m)';
+        END
+    
+        INSERT INTO @TestResults VALUES (@TestName, @Status, @Message, SYSDATETIME());
+        PRINT '18. ' + @TestName + ': ' + @Status + ' - ' + @Message;
+    END TRY
+    BEGIN CATCH
+        INSERT INTO @TestResults VALUES (@TestName, 'ERROR', ERROR_MESSAGE(), SYSDATETIME());
+        PRINT '18. ' + @TestName + ': ERROR - ' + ERROR_MESSAGE();
+    END CATCH
+
+    -- Test 19: ZzST_Distance_Meters_LatLon - zero and approx
+    SET @TestName = 'ST_Distance_Meters_LatLon';
+    BEGIN TRY
+        DECLARE @d0 FLOAT = [dbo].[ZzST_Distance_Meters_LatLon](35.6892, 51.3890, 35.6892, 51.3890, 4326);
+        DECLARE @d1 FLOAT = [dbo].[ZzST_Distance_Meters_LatLon](35.6892, 51.3890, 35.7000, 51.4000, 4326);
+    
+        IF @d0 = 0.0 AND @d1 > 0
+        BEGIN
+            SET @Status = 'PASS';
+            SET @Message = 'Zero OK; Sample ≈ ' + CAST(CAST(@d1/1000.0 AS DECIMAL(12,1)) AS NVARCHAR(20)) + ' km';
+        END
+        ELSE
+        BEGIN
+            SET @Status = 'FAIL';
+            SET @Message = 'Unexpected values: d0=' + CAST(@d0 AS NVARCHAR(30)) + ', d1=' + CAST(@d1 AS NVARCHAR(30));
+        END
+    
+        INSERT INTO @TestResults VALUES (@TestName, @Status, @Message, SYSDATETIME());
+        PRINT '19. ' + @TestName + ': ' + @Status + ' - ' + @Message;
+    END TRY
+    BEGIN CATCH
+        INSERT INTO @TestResults VALUES (@TestName, 'ERROR', ERROR_MESSAGE(), SYSDATETIME());
+        PRINT '19. ' + @TestName + ': ERROR - ' + ERROR_MESSAGE();
+    END CATCH
+
+    -- Test 20: ZzST_Distance_Meters_Proc - outputs
+    SET @TestName = 'ST_Distance_Meters_Proc';
+    BEGIN TRY
+        DECLARE @MetersOut FLOAT, @KmOut DECIMAL(15,5);
+        EXEC [dbo].[ZzST_Distance_Meters_Proc]
+            @Lat1 = 35.6892, @Lon1 = 51.3890,
+            @Lat2 = 35.6892, @Lon2 = 51.3890,
+            @SRID = 4326,
+            @Meters = @MetersOut OUTPUT,
+            @Kilometers = @KmOut OUTPUT;
+    
+        IF @MetersOut = 0 AND @KmOut = 0
+        BEGIN
+            SET @Status = 'PASS';
+            SET @Message = 'Proc outputs OK (0 m, 0 km)';
+        END
+        ELSE
+        BEGIN
+            SET @Status = 'FAIL';
+            SET @Message = 'Expected 0/0, got m=' + CAST(@MetersOut AS NVARCHAR(50)) + ', km=' + CAST(@KmOut AS NVARCHAR(50));
+        END
+    
+        INSERT INTO @TestResults VALUES (@TestName, @Status, @Message, SYSDATETIME());
+        PRINT '20. ' + @TestName + ': ' + @Status + ' - ' + @Message;
+    END TRY
+    BEGIN CATCH
+        INSERT INTO @TestResults VALUES (@TestName, 'ERROR', ERROR_MESSAGE(), SYSDATETIME());
+        PRINT '20. ' + @TestName + ': ERROR - ' + ERROR_MESSAGE();
+    END CATCH
+
 -- Test Summary
 PRINT ''
 PRINT '📊 TEST SUMMARY'
