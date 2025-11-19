@@ -427,9 +427,38 @@ BEGIN
 			END
 		END TRY
 		BEGIN CATCH
-			PRINT 'An error occurred during package listing.';
-			IF @res IS NOT NULL EXEC SP_OADESTROY @res;
-			THROW;
+			-- Check if error is related to Ole Automation Procedures
+			IF ERROR_NUMBER() = 15281 OR ERROR_MESSAGE() LIKE '%Ole Automation Procedures%' OR ERROR_MESSAGE() LIKE '%sp_OACreate%'
+			BEGIN
+				PRINT '';
+				PRINT '========================================';
+				PRINT 'CONFIGURATION REQUIRED';
+				PRINT '========================================';
+				PRINT 'Zync requires ''Ole Automation Procedures'' to fetch packages from remote repositories.';
+				PRINT 'This component is disabled by default for security reasons.';
+				PRINT '';
+				PRINT 'To enable it, execute the following commands as a database administrator:';
+				PRINT '';
+				PRINT '    -- Enable advanced options';
+				PRINT '    EXEC sp_configure ''show advanced options'', 1;';
+				PRINT '    RECONFIGURE;';
+				PRINT '';
+				PRINT '    -- Enable Ole Automation Procedures';
+				PRINT '    EXEC sp_configure ''Ole Automation Procedures'', 1;';
+				PRINT '    RECONFIGURE;';
+				PRINT '';
+				PRINT 'After enabling, run your Zync command again.';
+				PRINT '';
+				PRINT 'Security Note: Only enable this feature if you trust the package sources.';
+				PRINT 'For more information, see SQL Server Books Online.';
+				PRINT '========================================';
+			END
+			ELSE
+			BEGIN
+				PRINT 'An error occurred during package listing.';
+				IF @res IS NOT NULL EXEC SP_OADESTROY @res;
+				THROW;
+			END
 		END CATCH
 
 	END
@@ -1061,9 +1090,38 @@ BEGIN
 			END
 		END TRY
 		BEGIN CATCH
-			PRINT 'ERROR: An error occurred during update.';
-			IF @res IS NOT NULL EXEC SP_OADESTROY @res;
-			THROW;
+			-- Check if error is related to Ole Automation Procedures
+			IF ERROR_NUMBER() = 15281 OR ERROR_MESSAGE() LIKE '%Ole Automation Procedures%' OR ERROR_MESSAGE() LIKE '%sp_OACreate%'
+			BEGIN
+				PRINT '';
+				PRINT '========================================';
+				PRINT 'CONFIGURATION REQUIRED';
+				PRINT '========================================';
+				PRINT 'Zync requires ''Ole Automation Procedures'' to fetch packages from remote repositories.';
+				PRINT 'This component is disabled by default for security reasons.';
+				PRINT '';
+				PRINT 'To enable it, execute the following commands as a database administrator:';
+				PRINT '';
+				PRINT '    -- Enable advanced options';
+				PRINT '    EXEC sp_configure ''show advanced options'', 1;';
+				PRINT '    RECONFIGURE;';
+				PRINT '';
+				PRINT '    -- Enable Ole Automation Procedures';
+				PRINT '    EXEC sp_configure ''Ole Automation Procedures'', 1;';
+				PRINT '    RECONFIGURE;';
+				PRINT '';
+				PRINT 'After enabling, run your Zync command again.';
+				PRINT '';
+				PRINT 'Security Note: Only enable this feature if you trust the package sources.';
+				PRINT 'For more information, see SQL Server Books Online.';
+				PRINT '========================================';
+			END
+			ELSE
+			BEGIN
+				PRINT 'ERROR: An error occurred during update.';
+				IF @res IS NOT NULL EXEC SP_OADESTROY @res;
+				THROW;
+			END
 		END CATCH
     END
 	ELSE IF (@Command LIKE 'i%')
@@ -1198,9 +1256,38 @@ BEGIN
 			END
 		END TRY
 		BEGIN CATCH
-			PRINT 'ERROR: An error occurred during installation of package ''' + @PackageName + '''.';
-			IF @res IS NOT NULL EXEC SP_OADESTROY @res;
-			THROW;
+			-- Check if error is related to Ole Automation Procedures
+			IF ERROR_NUMBER() = 15281 OR ERROR_MESSAGE() LIKE '%Ole Automation Procedures%' OR ERROR_MESSAGE() LIKE '%sp_OACreate%'
+			BEGIN
+				PRINT '';
+				PRINT '========================================';
+				PRINT 'CONFIGURATION REQUIRED';
+				PRINT '========================================';
+				PRINT 'Zync requires ''Ole Automation Procedures'' to fetch packages from remote repositories.';
+				PRINT 'This component is disabled by default for security reasons.';
+				PRINT '';
+				PRINT 'To enable it, execute the following commands as a database administrator:';
+				PRINT '';
+				PRINT '    -- Enable advanced options';
+				PRINT '    EXEC sp_configure ''show advanced options'', 1;';
+				PRINT '    RECONFIGURE;';
+				PRINT '';
+				PRINT '    -- Enable Ole Automation Procedures';
+				PRINT '    EXEC sp_configure ''Ole Automation Procedures'', 1;';
+				PRINT '    RECONFIGURE;';
+				PRINT '';
+				PRINT 'After enabling, run your Zync command again.';
+				PRINT '';
+				PRINT 'Security Note: Only enable this feature if you trust the package sources.';
+				PRINT 'For more information, see SQL Server Books Online.';
+				PRINT '========================================';
+			END
+			ELSE
+			BEGIN
+				PRINT 'ERROR: An error occurred during installation of package ''' + @PackageName + '''.';
+				IF @res IS NOT NULL EXEC SP_OADESTROY @res;
+				THROW;
+			END
 		END CATCH
     END
 	ELSE

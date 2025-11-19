@@ -7,6 +7,28 @@
 
 Complete SQL Server implementation of Zync database package manager. Install and manage database objects with automatic dependency resolution and comprehensive test coverage.
 
+## ⚙️ Prerequisites
+
+Zync requires **Ole Automation Procedures** to be enabled for fetching packages from remote repositories. This SQL Server component is disabled by default for security reasons.
+
+### Enable Ole Automation Procedures
+
+Execute the following commands as a database administrator (DBA):
+
+```sql
+-- Enable advanced options
+EXEC sp_configure 'show advanced options', 1;
+RECONFIGURE;
+
+-- Enable Ole Automation Procedures
+EXEC sp_configure 'Ole Automation Procedures', 1;
+RECONFIGURE;
+```
+
+**Security Note:** Only enable this feature if you trust the package sources you're installing from.
+
+For more information, refer to [SQL Server Books Online](https://learn.microsoft.com/en-us/sql/database-engine/configure-windows/ole-automation-procedures-server-configuration-option).
+
 ## 🚀 Quick Start
 
 ### 1. Setup Database
