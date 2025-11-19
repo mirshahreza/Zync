@@ -114,6 +114,19 @@ BEGIN
 END
 GO
 
+-- Add ZzRPad function for formatting if it doesn't exist (must precede procedure that uses it)
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ZzRPad]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
+BEGIN
+EXEC('CREATE FUNCTION [dbo].[ZzRPad] (@string NVARCHAR(MAX), @length INT, @pad CHAR(1))
+RETURNS NVARCHAR(MAX)
+AS
+BEGIN
+    RETURN LEFT(CONCAT(@string, REPLICATE(@pad, @length)), @length)
+END')
+END
+
+GO
+
 CREATE OR ALTER PROCEDURE [dbo].[Zync] 
 	@Command VARCHAR(128)='?',@Repo VARCHAR(256)='https://raw.githubusercontent.com/mirshahreza/Zync/master/MsSql/Packages/'
 AS
@@ -418,9 +431,10 @@ BEGIN
 			IF @res IS NOT NULL EXEC SP_OADESTROY @res;
 			THROW;
 		END CATCH
-    END
-    ELSE IF (@Command LIKE 'list-objects%' OR @Command LIKE 'lo%')
-    BEGIN
+
+	END
+	ELSE IF (@Command LIKE 'list-objects%' OR @Command LIKE 'lo%')
+	BEGIN
 		PRINT ('')
 		PRINT ('Listing all Zync-managed objects...');
 		
@@ -456,7 +470,7 @@ BEGIN
 		
 		PRINT '---------------------------------------------------------------------------'
 		PRINT 'Total Zync-managed objects found: ' + CAST(@TotalObjectCount AS VARCHAR)
-    END
+	END
     ELSE IF (@Command LIKE 'clean%')
     BEGIN
 		PRINT ('')
@@ -1240,15 +1254,4 @@ BEGIN
 	
 END
 
-
--- Add ZzRPad function for formatting if it doesn't exist
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ZzRPad]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
-BEGIN
-EXEC('CREATE FUNCTION [dbo].[ZzRPad] (@string NVARCHAR(MAX), @length INT, @pad CHAR(1))
-RETURNS NVARCHAR(MAX)
-AS
-BEGIN
-    RETURN LEFT(CONCAT(@string, REPLICATE(@pad, @length)), @length)
-END')
-END
 
