@@ -13,6 +13,6 @@ VALUES (0, GETDATE(), 'BackOfficer', 1, 'Admin access', 1);
 
 -- Password: 'P@ssw0rd' (you should change this after first login)
 INSERT INTO BaseUsers (CreatedBy, CreatedOn, IsBuiltIn, UserName, Email, Password, PasswordUpdatedBy, PasswordUpdatedOn, IsActive, LoginLocked, LoginTryFailsCount)
-VALUES (0, GETDATE(), 1, 'admin', 'admin@system.local', '8BE3C943B1609FFFBFC51AAD666D0A04ADF83C9D7A54592EA634F5DD196AF4F1', 0, GETDATE(), 1, 0, 0);
+VALUES (0, GETDATE(), 1, 'admin', 'admin@system.local', '161EBD7D45089B3446EE4E0D86DBCF92', 0, GETDATE(), 1, 0, 0);
 
 
