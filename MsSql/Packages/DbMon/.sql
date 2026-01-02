@@ -34,3 +34,4 @@ EXEC DBO.Zync 'i DbMon/ZzSelectFailedLogins.sql';
 EXEC DBO.Zync 'i DbMon/ZzSelectWaitStats.sql';
 EXEC DBO.Zync 'i DbMon/ZzSelectTempdbUsage.sql';
 EXEC DBO.Zync 'i DbMon/ZzSelectFileStats.sql';
+EXEC DBO.Zync 'i DbMon/ZzSelectObjectsAll.sql';

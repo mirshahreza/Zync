@@ -9,8 +9,10 @@ CREATE OR ALTER VIEW [DBO].[ZzSelectTablesViewsColumns]
 AS
 
 SELECT 
+	OBJS.object_id ObjectId,
 	OBJS.NAME ParentObjectName,
 	C.NAME ColumnName,
+	C.column_id ColumnId,
     UPPER(T.NAME) ColumnType,
     ISNULL((
 		SELECT CAST(COUNT(*) AS BIT)
