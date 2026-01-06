@@ -114,6 +114,138 @@ BEGIN
 END
 GO
 
+-- Helper procedure to smart update tables (add missing columns without data loss)
+CREATE OR ALTER PROCEDURE [dbo].[ZyncSmartTableUpdate]
+    @TableName NVARCHAR(256),
+    @CreateTableScript NVARCHAR(MAX)
+AS
+BEGIN
+    SET NOCOUNT ON;
+    DECLARE @ColumnsAdded INT = 0;
+    
+    -- Check if table exists
+    IF OBJECT_ID(@TableName, 'U') IS NULL
+    BEGIN
+        PRINT '       Table doesn''t exist, will be created.';
+        RETURN; -- Let the original CREATE TABLE script handle it
+    END
+    
+    -- Find CREATE TABLE statement (may be inside IF block)
+    DECLARE @CreatePos INT = CHARINDEX('CREATE TABLE', UPPER(@CreateTableScript));
+    IF @CreatePos = 0
+    BEGIN
+        PRINT '       Could not find CREATE TABLE statement.';
+        RETURN;
+    END
+    
+    -- Extract column definitions: find first '(' after CREATE TABLE
+    DECLARE @StartPos INT = CHARINDEX('(', @CreateTableScript, @CreatePos);
+    DECLARE @EndPos INT;
+    DECLARE @ParenCount INT = 1;
+    DECLARE @i INT = @StartPos + 1;
+    
+    -- Find matching closing parenthesis
+    WHILE @i <= LEN(@CreateTableScript) AND @ParenCount > 0
+    BEGIN
+        IF SUBSTRING(@CreateTableScript, @i, 1) = '(' SET @ParenCount = @ParenCount + 1;
+        IF SUBSTRING(@CreateTableScript, @i, 1) = ')' SET @ParenCount = @ParenCount - 1;
+        SET @i = @i + 1;
+    END
+    SET @EndPos = @i - 1;
+    
+    IF @StartPos = 0 OR @EndPos <= @StartPos
+    BEGIN
+        PRINT '       Could not parse table structure.';
+        RETURN;
+    END
+    
+    -- Extract column definitions
+    DECLARE @ColumnDefs NVARCHAR(MAX) = SUBSTRING(@CreateTableScript, @StartPos + 1, @EndPos - @StartPos - 1);
+    
+    -- Parse each line to extract column definitions
+    DECLARE @Lines TABLE (LineText NVARCHAR(MAX));
+    DECLARE @Line NVARCHAR(MAX), @LinePos INT = 1, @NextPos INT, @EndPos2 INT;
+    
+    -- Split by commas at the root level (not inside parentheses)
+    SET @ParenCount = 0;
+    DECLARE @SegmentStart INT = 1;
+    SET @i = 1;
+    WHILE @i <= LEN(@ColumnDefs)
+    BEGIN
+        DECLARE @Char CHAR(1) = SUBSTRING(@ColumnDefs, @i, 1);
+        IF @Char = '(' SET @ParenCount = @ParenCount + 1;
+        ELSE IF @Char = ')' SET @ParenCount = @ParenCount - 1;
+        ELSE IF @Char = ',' AND @ParenCount = 0
+        BEGIN
+            SET @Line = TRIM(SUBSTRING(@ColumnDefs, @SegmentStart, @i - @SegmentStart));
+            IF LEN(@Line) > 0 INSERT INTO @Lines(LineText) VALUES(@Line);
+            SET @SegmentStart = @i + 1;
+        END
+        SET @i = @i + 1;
+    END
+    -- Add last segment
+    SET @Line = TRIM(SUBSTRING(@ColumnDefs, @SegmentStart, LEN(@ColumnDefs) - @SegmentStart + 1));
+    IF LEN(@Line) > 0 INSERT INTO @Lines(LineText) VALUES(@Line);
+    
+    -- Process each definition
+    DECLARE @CurrentLine NVARCHAR(MAX), @ColumnName NVARCHAR(256), @ColumnDef NVARCHAR(MAX);
+    DECLARE line_cursor CURSOR LOCAL FOR SELECT LineText FROM @Lines;
+    OPEN line_cursor; FETCH NEXT FROM line_cursor INTO @CurrentLine;
+    
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        -- Skip constraints
+        IF UPPER(@CurrentLine) NOT LIKE 'CONSTRAINT%' 
+           AND UPPER(@CurrentLine) NOT LIKE 'PRIMARY KEY%'
+           AND UPPER(@CurrentLine) NOT LIKE 'UNIQUE%'
+           AND UPPER(@CurrentLine) NOT LIKE 'FOREIGN KEY%'
+           AND UPPER(@CurrentLine) NOT LIKE 'CHECK%'
+           AND UPPER(@CurrentLine) NOT LIKE 'INDEX%'
+           AND @CurrentLine LIKE '[[]%'
+        BEGIN
+            -- Extract column name
+            DECLARE @BracketStart INT = CHARINDEX('[', @CurrentLine);
+            DECLARE @BracketEnd INT = CHARINDEX(']', @CurrentLine, @BracketStart);
+            
+            IF @BracketStart > 0 AND @BracketEnd > @BracketStart
+            BEGIN
+                SET @ColumnName = SUBSTRING(@CurrentLine, @BracketStart + 1, @BracketEnd - @BracketStart - 1);
+                
+                -- Check if column exists
+                IF NOT EXISTS (
+                    SELECT 1 FROM sys.columns 
+                    WHERE object_id = OBJECT_ID(@TableName) 
+                    AND name = @ColumnName
+                )
+                BEGIN
+                    -- Add column
+                    SET @ColumnDef = @CurrentLine;
+                    DECLARE @AlterSQL NVARCHAR(MAX) = 'ALTER TABLE ' + @TableName + ' ADD ' + @ColumnDef;
+                    
+                    BEGIN TRY
+                        EXEC sp_executesql @AlterSQL;
+                        PRINT '       Added column: ' + @ColumnName;
+                        SET @ColumnsAdded = @ColumnsAdded + 1;
+                    END TRY
+                    BEGIN CATCH
+                        PRINT '       Warning: Could not add column ' + @ColumnName + ': ' + ERROR_MESSAGE();
+                    END CATCH
+                END
+            END
+        END
+        
+        FETCH NEXT FROM line_cursor INTO @CurrentLine;
+    END
+    
+    CLOSE line_cursor; DEALLOCATE line_cursor;
+    
+    IF @ColumnsAdded > 0
+        PRINT '       Total columns added: ' + CAST(@ColumnsAdded AS VARCHAR);
+    ELSE
+        PRINT '       No new columns to add.';
+END
+GO
+
 -- Add ZzRPad function for formatting if it doesn't exist (must precede procedure that uses it)
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ZzRPad]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 BEGIN
@@ -1004,16 +1136,10 @@ BEGIN
 		PRINT ('')
 		PRINT 'Updating package: ''' + @PackageName + '''...';
 
-		-- Check if package exists
+		-- Check if package exists (will be validated later for composite vs single)
 		DECLARE @UpdatePackageId UNIQUEIDENTIFIER;
 		SELECT @UpdatePackageId = PackageId FROM [dbo].[ZyncPackages] 
 		WHERE PackageName = @PackageName AND Status IN ('INSTALLED','UPDATED');
-
-		IF @UpdatePackageId IS NULL
-		BEGIN
-			PRINT ' -> Package ''' + @PackageName + ''' is not installed. Use ''i'' command to install first.';
-			RETURN;
-		END
 
 		BEGIN TRY
 			EXEC SP_OACREATE 'MSXML2.ServerXMLHTTP', @res OUT;
@@ -1029,58 +1155,189 @@ BEGIN
 				PRINT ' -> Fetched latest version of ''' + @PackageName + ''' successfully.'
 				SET @rv = TRIM(@rv);
 				
-				-- Parse object information
-				DECLARE @UpdateObjectType NVARCHAR(128), @UpdateObjectName NVARCHAR(256);
-				EXEC [dbo].[ZyncParseObject] @rv, @UpdateObjectType OUTPUT, @UpdateObjectName OUTPUT;
+				-- Check if this is a composite package (contains only EXEC DBO.Zync commands)
+				DECLARE @IsComposite BIT = 0;
+				DECLARE @CleanContent NVARCHAR(MAX) = REPLACE(REPLACE(REPLACE(@rv, CHAR(13), ''), CHAR(10), ''), CHAR(9), '');
+				DECLARE @NonExecContent NVARCHAR(MAX) = @CleanContent;
 				
-				IF @UpdateObjectName IS NOT NULL AND @UpdateObjectType IS NOT NULL
+				-- Remove all EXEC DBO.Zync lines and see what's left
+				WHILE CHARINDEX('EXEC DBO.Zync', UPPER(@NonExecContent)) > 0
 				BEGIN
-					-- Check if object exists in database
-					DECLARE @ObjectExists BIT = 0;
-					IF @UpdateObjectType = 'TYPE' AND TYPE_ID(@UpdateObjectName) IS NOT NULL SET @ObjectExists = 1;
-					ELSE IF OBJECT_ID(@UpdateObjectName) IS NOT NULL SET @ObjectExists = 1;
+					DECLARE @ExecPos INT = CHARINDEX('EXEC DBO.Zync', UPPER(@NonExecContent));
+					DECLARE @SemiPos INT = CHARINDEX(';', @NonExecContent, @ExecPos);
+					IF @SemiPos = 0 SET @SemiPos = LEN(@NonExecContent) + 1;
+					SET @NonExecContent = STUFF(@NonExecContent, @ExecPos, @SemiPos - @ExecPos + 1, '');
+				END
+				
+				-- If nothing significant left, it's a composite package
+				SET @NonExecContent = REPLACE(REPLACE(REPLACE(TRIM(@NonExecContent), ' ', ''), ';', ''), '/*', '');
+				IF LEN(@NonExecContent) < 10 SET @IsComposite = 1;
+				
+				IF @IsComposite = 1
+				BEGIN
+					-- This is a composite package, update all sub-packages
+					PRINT ' -> Detected composite package. Updating all sub-packages...';
 					
-					IF @ObjectExists = 1
+					-- If composite package itself is not registered, create it
+					IF @UpdatePackageId IS NULL
 					BEGIN
-						-- Get current definition for backup
-					DECLARE @CurrentDefinition NVARCHAR(MAX);
-						SELECT @CurrentDefinition = OBJECT_DEFINITION(OBJECT_ID(@UpdateObjectName));
-					IF @UpdateObjectType = 'TYPE' SET @CurrentDefinition = 'TYPE_DEFINITION_BACKUP'; -- Types need special handling
-					ELSE IF @UpdateObjectType = 'TABLE' SET @CurrentDefinition = 'TABLE_DEFINITION_BACKUP'; -- Tables don't have OBJECT_DEFINITION
-						
-						-- Update object record with new version
-						UPDATE [dbo].[ZyncObjects] 
-						SET PreviousDefinition = ObjectDefinition,
-							ObjectDefinition = @rv,
-							ModifyDate = GETDATE()
-						WHERE PackageId = @UpdatePackageId AND ObjectName = @UpdateObjectName;
-						
-						-- Update package version
-						UPDATE [dbo].[ZyncPackages] 
-						SET Version = Version + 1,
-							Status = 'UPDATED',
-							InstallDate = GETDATE()
-						WHERE PackageId = @UpdatePackageId;
-						
-						-- Execute the update
-						EXECUTE SP_EXECUTESQL @rv;
-						
-						-- Get version info for display
-						DECLARE @OldVersion INT, @NewVersion INT;
-						SELECT @NewVersion = Version FROM [dbo].[ZyncPackages] WHERE PackageId = @UpdatePackageId;
-						SET @OldVersion = @NewVersion - 1;
-						
-						PRINT ' -> Object ''' + @UpdateObjectName + ''' updated successfully from version ' + 
-							  CAST(@OldVersion AS VARCHAR) + ' to ' + CAST(@NewVersion AS VARCHAR) + '.';
+						DECLARE @TempPackageId UNIQUEIDENTIFIER = NEWID();
+						INSERT INTO [dbo].[ZyncPackages] (PackageId, PackageName, Version, Status, InstallDate)
+						VALUES (@TempPackageId, @PackageName, 1, 'INSTALLED', GETDATE());
+						SET @UpdatePackageId = @TempPackageId;
+						PRINT ' -> Registered composite package in tracking system.';
 					END
+					
+					DECLARE @SubPackages TABLE (SubPackageName NVARCHAR(256));
+					DECLARE @SubPkgPos INT = CHARINDEX('''i ', @rv);
+					DECLARE @SubPkgEnd INT, @SubPkgName NVARCHAR(256);
+					
+					-- Extract all sub-package names
+					WHILE @SubPkgPos > 0
+					BEGIN
+						SET @SubPkgEnd = CHARINDEX('''', @rv, @SubPkgPos + 3);
+						IF @SubPkgEnd = 0 BREAK;
+						SET @SubPkgName = TRIM(SUBSTRING(@rv, @SubPkgPos + 3, @SubPkgEnd - (@SubPkgPos + 3)));
+						IF LEN(@SubPkgName) > 0
+							INSERT INTO @SubPackages (SubPackageName) VALUES (@SubPkgName);
+						SET @SubPkgPos = CHARINDEX('''i ', @rv, @SubPkgEnd + 1);
+					END
+					
+					-- Update or install each sub-package
+					DECLARE @SubPkg NVARCHAR(256), @UpdateCount INT = 0, @InstallCount INT = 0;
+					DECLARE sub_cursor CURSOR LOCAL FOR SELECT SubPackageName FROM @SubPackages;
+					OPEN sub_cursor; FETCH NEXT FROM sub_cursor INTO @SubPkg;
+					WHILE @@FETCH_STATUS = 0
+					BEGIN
+						-- Check if sub-package is already installed
+						DECLARE @SubPkgExists UNIQUEIDENTIFIER;
+						SELECT @SubPkgExists = PackageId FROM [dbo].[ZyncPackages] 
+						WHERE PackageName = @SubPkg AND Status IN ('INSTALLED','UPDATED');
+						
+						IF @SubPkgExists IS NOT NULL
+						BEGIN
+							-- Sub-package exists, update it
+							PRINT '    -> Updating sub-package: ' + @SubPkg;
+							DECLARE @SubCmdUpdate VARCHAR(256) = 'u ' + @SubPkg;
+							EXEC [dbo].[Zync] @Command = @SubCmdUpdate;
+							SET @UpdateCount = @UpdateCount + 1;
+						END
+						ELSE
+						BEGIN
+							-- Sub-package doesn't exist in tracking, but object might exist in DB
+							-- Try install, which will handle existing objects gracefully
+							PRINT '    -> Installing new sub-package: ' + @SubPkg;
+							DECLARE @SubCmdInstall VARCHAR(256) = 'i ' + @SubPkg;
+							
+							BEGIN TRY
+								EXEC [dbo].[Zync] @Command = @SubCmdInstall;
+								SET @InstallCount = @InstallCount + 1;
+							END TRY
+							BEGIN CATCH
+								-- If install fails (e.g., because object already exists), try to track it
+								PRINT '       (Object may already exist, attempting to register...)';
+								-- Let it continue, the install command handles this internally
+							END CATCH
+						END
+						
+						FETCH NEXT FROM sub_cursor INTO @SubPkg;
+					END
+					CLOSE sub_cursor; DEALLOCATE sub_cursor;
+					
+					-- Update composite package version
+					UPDATE [dbo].[ZyncPackages] 
+					SET Version = Version + 1,
+						Status = 'UPDATED',
+						InstallDate = GETDATE()
+					WHERE PackageId = @UpdatePackageId;
+					
+					DECLARE @SummaryMsg NVARCHAR(256) = ' -> Composite package ''' + @PackageName + ''' processed successfully';
+					IF @UpdateCount > 0 AND @InstallCount > 0
+						SET @SummaryMsg = @SummaryMsg + ' (' + CAST(@UpdateCount AS VARCHAR) + ' updated, ' + CAST(@InstallCount AS VARCHAR) + ' installed).';
+					ELSE IF @UpdateCount > 0
+						SET @SummaryMsg = @SummaryMsg + ' (' + CAST(@UpdateCount AS VARCHAR) + ' sub-packages updated).';
+					ELSE IF @InstallCount > 0
+						SET @SummaryMsg = @SummaryMsg + ' (' + CAST(@InstallCount AS VARCHAR) + ' sub-packages installed).';
 					ELSE
-					BEGIN
-						PRINT ' -> Object ''' + @UpdateObjectName + ''' does not exist in database. Use ''i'' command to install first.';
-					END
+						SET @SummaryMsg = @SummaryMsg + '.';
+					PRINT @SummaryMsg;
 				END
 				ELSE
 				BEGIN
-					PRINT ' -> Could not parse object information from package script.';
+					-- This is a single object package, check if parent package exists first
+					IF @UpdatePackageId IS NULL
+					BEGIN
+						PRINT ' -> Package ''' + @PackageName + ''' is not installed. Use ''i'' command to install first.';
+						RETURN;
+					END
+					
+					-- Parse and update normally
+					DECLARE @UpdateObjectType NVARCHAR(128), @UpdateObjectName NVARCHAR(256);
+					EXEC [dbo].[ZyncParseObject] @rv, @UpdateObjectType OUTPUT, @UpdateObjectName OUTPUT;
+					
+					IF @UpdateObjectName IS NOT NULL AND @UpdateObjectType IS NOT NULL
+					BEGIN
+						-- Check if object exists in database
+						DECLARE @ObjectExists BIT = 0;
+						IF @UpdateObjectType = 'TYPE' AND TYPE_ID(@UpdateObjectName) IS NOT NULL SET @ObjectExists = 1;
+						ELSE IF OBJECT_ID(@UpdateObjectName) IS NOT NULL SET @ObjectExists = 1;
+						
+						IF @ObjectExists = 1
+						BEGIN
+							-- Get current definition for backup
+						DECLARE @CurrentDefinition NVARCHAR(MAX);
+							SELECT @CurrentDefinition = OBJECT_DEFINITION(OBJECT_ID(@UpdateObjectName));
+						IF @UpdateObjectType = 'TYPE' SET @CurrentDefinition = 'TYPE_DEFINITION_BACKUP'; -- Types need special handling
+						ELSE IF @UpdateObjectType = 'TABLE' SET @CurrentDefinition = 'TABLE_DEFINITION_BACKUP'; -- Tables don't have OBJECT_DEFINITION
+							
+							-- Update object record with new version
+							UPDATE [dbo].[ZyncObjects] 
+							SET PreviousDefinition = ObjectDefinition,
+								ObjectDefinition = @rv,
+								ModifyDate = GETDATE()
+							WHERE PackageId = @UpdatePackageId AND ObjectName = @UpdateObjectName;
+							
+							-- Update package version
+							UPDATE [dbo].[ZyncPackages] 
+							SET Version = Version + 1,
+								Status = 'UPDATED',
+								InstallDate = GETDATE()
+							WHERE PackageId = @UpdatePackageId;
+							
+							-- Special handling for tables: add missing columns without data loss
+							IF @UpdateObjectType = 'TABLE'
+							BEGIN
+								PRINT ' -> Analyzing table structure for updates...';
+								EXEC [dbo].[ZyncSmartTableUpdate] @UpdateObjectName, @rv;
+							END
+							
+							-- Execute the update (for non-tables, or for tables to handle other changes)
+							BEGIN TRY
+								EXECUTE SP_EXECUTESQL @rv;
+							END TRY
+							BEGIN CATCH
+								-- For tables, IF NOT EXISTS will prevent errors, so this is okay
+								IF @UpdateObjectType != 'TABLE'
+									THROW;
+							END CATCH
+							
+							-- Get version info for display
+							DECLARE @OldVersion INT, @NewVersion INT;
+							SELECT @NewVersion = Version FROM [dbo].[ZyncPackages] WHERE PackageId = @UpdatePackageId;
+							SET @OldVersion = @NewVersion - 1;
+							
+							PRINT ' -> Object ''' + @UpdateObjectName + ''' updated successfully from version ' + 
+								  CAST(@OldVersion AS VARCHAR) + ' to ' + CAST(@NewVersion AS VARCHAR) + '.';
+						END
+						ELSE
+						BEGIN
+							PRINT ' -> Object ''' + @UpdateObjectName + ''' does not exist in database. Use ''i'' command to install first.';
+						END
+					END
+					ELSE
+					BEGIN
+						PRINT ' -> Could not parse object information from package script.';
+					END
 				END
 			END
 			ELSE
@@ -1143,14 +1400,14 @@ BEGIN
 		PRINT ('')
 		PRINT 'Installing package: ''' + @PackageName + '''...';
 
-		-- Check if package already exists
+		-- Check if package already exists in tracking
 		DECLARE @ExistingPackageId UNIQUEIDENTIFIER;
 		SELECT @ExistingPackageId = PackageId FROM [dbo].[ZyncPackages] 
 		WHERE PackageName = @PackageName AND Status IN ('INSTALLED', 'UPDATED');
 
 		IF @ExistingPackageId IS NOT NULL
 		BEGIN
-			-- PRINT ' -> Package ''' + @PackageName + ''' is already installed. Use ''u'' command to update.';
+			PRINT ' -> Package ''' + @PackageName + ''' is already tracked. Use ''u'' command to update.';
 			RETURN;
 		END
 
