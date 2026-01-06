@@ -6,8 +6,8 @@ GO
 -- =============================================
 -- Author:		Mohsen Mirshahreza
 -- Create date: 2024-07-29
--- Description:	Enhanced Database Package Manager with backup/rollback capabilities
--- Version:		3.0
+-- Description:	Enhanced Database Package Manager with auto-update and backup/rollback capabilities
+-- Version:		3.10
 -- =============================================
 
 -- Create helper procedure first to avoid dependency issues
@@ -388,6 +388,130 @@ CREATE OR ALTER PROCEDURE [dbo].[Zync]
 AS
 BEGIN
 	SET NOCOUNT ON;
+
+	-- =============================================
+	-- ZYNC AUTO-UPDATE MECHANISM
+	-- =============================================
+	DECLARE @ZYNC_VERSION DECIMAL(5,2) = 3.10;
+	DECLARE @ZYNC_BASE_URL NVARCHAR(512) = 'https://raw.githubusercontent.com/mirshahreza/Zync/master/MsSql/Zync.sql';
+	
+	-- Check if auto-update already performed in this session
+	IF SESSION_CONTEXT(N'ZyncAutoUpdateChecked') IS NULL
+	BEGIN
+		BEGIN TRY
+			-- Ensure Ole Automation is enabled
+			DECLARE @OleEnabled INT;
+			SELECT @OleEnabled = CAST(value AS INT) 
+			FROM sys.configurations 
+			WHERE name = 'Ole Automation Procedures';
+			
+			IF @OleEnabled = 0
+			BEGIN
+				PRINT '>>> Enabling Ole Automation Procedures for Zync operations...';
+				EXEC sp_configure 'show advanced options', 1;
+				RECONFIGURE;
+				EXEC sp_configure 'Ole Automation Procedures', 1;
+				RECONFIGURE;
+				PRINT '>>> Ole Automation Procedures enabled successfully.';
+			END
+			
+			-- Check for Zync updates
+			PRINT '>>> Checking for Zync updates...';
+			DECLARE @UpdateRes INT, @UpdateStatus INT, @UpdateContent NVARCHAR(MAX);
+			DECLARE @UpdateResponse TABLE(responseText NVARCHAR(MAX));
+			
+			EXEC SP_OACREATE 'MSXML2.ServerXMLHTTP', @UpdateRes OUT;
+			EXEC SP_OAMETHOD @UpdateRes, 'open', NULL, 'GET', @ZYNC_BASE_URL, 'false';
+			EXEC SP_OAMETHOD @UpdateRes, 'send';
+			EXEC SP_OAGETPROPERTY @UpdateRes, 'status', @UpdateStatus OUT;
+			INSERT INTO @UpdateResponse (responseText) EXEC SP_OAGETPROPERTY @UpdateRes, 'responseText';
+			EXEC SP_OADESTROY @UpdateRes;
+			
+			SELECT @UpdateContent = responseText FROM @UpdateResponse;
+			
+			IF @UpdateStatus = 200 AND @UpdateContent IS NOT NULL
+			BEGIN
+				-- Extract version from downloaded content
+				DECLARE @RemoteVersion DECIMAL(5,2) = NULL;
+				DECLARE @VersionPos INT = CHARINDEX('DECLARE @ZYNC_VERSION DECIMAL(5,2) = ', @UpdateContent);
+				IF @VersionPos > 0
+				BEGIN
+					DECLARE @VersionStart INT = @VersionPos + LEN('DECLARE @ZYNC_VERSION DECIMAL(5,2) = ');
+					DECLARE @VersionEnd INT = CHARINDEX(';', @UpdateContent, @VersionStart);
+					IF @VersionEnd > @VersionStart
+					BEGIN
+						DECLARE @VersionStr NVARCHAR(20) = SUBSTRING(@UpdateContent, @VersionStart, @VersionEnd - @VersionStart);
+						SET @RemoteVersion = TRY_CAST(TRIM(@VersionStr) AS DECIMAL(5,2));
+					END
+				END
+				
+				-- Compare versions and update if needed
+				IF @RemoteVersion IS NOT NULL AND @RemoteVersion > @ZYNC_VERSION
+				BEGIN
+					PRINT '>>> New Zync version available: ' + CAST(@RemoteVersion AS VARCHAR(10)) + ' (current: ' + CAST(@ZYNC_VERSION AS VARCHAR(10)) + ')';
+					PRINT '>>> Applying Zync update...';
+					
+					-- Execute the update
+					BEGIN TRY
+						EXEC sp_executesql @UpdateContent;
+						
+						-- Record the update in ZyncPackages
+						IF NOT EXISTS (SELECT 1 FROM [dbo].[ZyncPackages] WHERE PackageName = 'ZYNC_CORE')
+						BEGIN
+							INSERT INTO [dbo].[ZyncPackages] (PackageName, Version, Status)
+							VALUES ('ZYNC_CORE', CAST(@RemoteVersion * 100 AS INT), 'UPDATED');
+						END
+						ELSE
+						BEGIN
+							UPDATE [dbo].[ZyncPackages]
+							SET Version = CAST(@RemoteVersion * 100 AS INT),
+								InstallDate = GETDATE(),
+								Status = 'UPDATED'
+							WHERE PackageName = 'ZYNC_CORE';
+						END
+						
+						PRINT '>>> Zync updated successfully to version ' + CAST(@RemoteVersion AS VARCHAR(10)) + '!';
+						PRINT '>>> Re-executing command with updated Zync...';
+						PRINT '';
+						
+						-- Re-execute the original command with updated version
+						EXEC [dbo].[Zync] @Command, @Repo;
+						RETURN; -- Exit current execution
+					END TRY
+					BEGIN CATCH
+						PRINT '>>> Warning: Failed to apply Zync update: ' + ERROR_MESSAGE();
+						PRINT '>>> Continuing with current version...';
+					END CATCH
+				END
+				ELSE IF @RemoteVersion IS NOT NULL
+				BEGIN
+					PRINT '>>> Zync is up to date (version ' + CAST(@ZYNC_VERSION AS VARCHAR(10)) + ').';
+				END
+				ELSE
+				BEGIN
+					PRINT '>>> Could not determine remote Zync version. Continuing with current version...';
+				END
+			END
+			ELSE
+			BEGIN
+				PRINT '>>> Could not check for Zync updates (HTTP ' + CAST(@UpdateStatus AS VARCHAR(10)) + '). Continuing...';
+			END
+			
+			-- Mark that we've checked for updates in this session
+			EXEC sp_set_session_context @key = N'ZyncAutoUpdateChecked', @value = 1;
+			PRINT '';
+		END TRY
+		BEGIN CATCH
+			PRINT '>>> Auto-update check failed: ' + ERROR_MESSAGE();
+			PRINT '>>> Continuing with current Zync version...';
+			PRINT '';
+			-- Still mark as checked to avoid repeated failures
+			EXEC sp_set_session_context @key = N'ZyncAutoUpdateChecked', @value = 1;
+		END CATCH
+	END
+	-- =============================================
+	-- END AUTO-UPDATE MECHANISM
+	-- =============================================
 
 	DECLARE	@rr				INT;
 	DECLARE @rv				NVARCHAR(MAX);

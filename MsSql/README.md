@@ -11,9 +11,11 @@ Complete SQL Server implementation of Zync database package manager. Install and
 
 Zync requires **Ole Automation Procedures** to be enabled for fetching packages from remote repositories. This SQL Server component is disabled by default for security reasons.
 
-### Enable Ole Automation Procedures
+**Good News:** Starting from version 3.10, Zync **automatically enables** Ole Automation Procedures when needed, so you don't need to configure it manually!
 
-Execute the following commands as a database administrator (DBA):
+### Manual Configuration (Optional)
+
+If you prefer to enable it manually, execute the following commands as a database administrator (DBA):
 
 ```sql
 -- Enable advanced options
@@ -103,6 +105,57 @@ Install all available packages listed by the index (Packages/.sql):
 ```sql
 EXEC dbo.Zync 'i'
 ```
+
+## 🔄 Auto-Update Feature
+
+**New in Version 3.10!** Zync now automatically checks for updates on every execution within a session.
+
+### How It Works
+
+1. **First Execution in Session:** Zync checks GitHub for the latest version
+2. **Version Comparison:** If a newer version exists, it's automatically downloaded and installed
+3. **Seamless Update:** Your command continues execution with the updated version
+4. **Session Caching:** Subsequent calls in the same session skip the check for performance
+
+### What Gets Updated
+
+- ✅ Core Zync procedure
+- ✅ Helper functions and procedures
+- ✅ Database schema if needed
+- ✅ Version tracking in `ZyncPackages`
+
+### Example Output
+
+```sql
+EXEC dbo.Zync 'ls'
+```
+
+```text
+>>> Checking for Zync updates...
+>>> New Zync version available: 3.20 (current: 3.10)
+>>> Applying Zync update...
+>>> Zync updated successfully to version 3.20!
+>>> Re-executing command with updated Zync...
+
+Listing package(s): ''...
+...
+```
+
+### Manual Version Check
+
+To force a version check in the same session:
+
+```sql
+-- Clear session context
+EXEC sp_set_session_context @key = N'ZyncAutoUpdateChecked', @value = NULL;
+
+-- Next Zync call will check for updates
+EXEC dbo.Zync '?'
+```
+
+### Disable Auto-Update
+
+Auto-update requires Ole Automation Procedures. If you prefer manual updates, simply keep Ole Automation disabled and run `Zync.sql` manually when needed.
 
 ## 📚 Available Packages
 

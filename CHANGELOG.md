@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file.
 
+## 2026-01-06
+
+### Added
+- **Auto-Update Mechanism (v3.10):** Zync now automatically checks for updates on every first execution per session
+  - Checks GitHub for the latest version and compares with current version
+  - Automatically downloads and applies updates if a newer version is available
+  - Session-based caching to avoid repeated checks within the same session
+  - Automatic Ole Automation Procedures enablement when needed
+  - Version tracking in `ZyncPackages` table with `ZYNC_CORE` entry
+- New test file: `zync_test_autoupdate.sql` for testing auto-update functionality
+
+### Changed
+- Version bumped to 3.10
+- Updated README with Auto-Update documentation section
+- Updated Prerequisites section to reflect automatic Ole Automation enablement
+
+### Technical Details
+- Uses `SESSION_CONTEXT` to track update checks per session
+- Extracts version number from remote Zync.sql via string parsing
+- Re-executes original command after successful update
+- Graceful fallback if update check fails or GitHub is unreachable
+
 ## 2025-09-28
 
 ### Documentation
