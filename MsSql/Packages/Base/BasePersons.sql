@@ -22,8 +22,16 @@ CREATE TABLE [dbo].[BasePersons](
 	[BirthMonth] [tinyint] NULL,
 	[BirthDay] [tinyint] NULL,
 	[Mobile] [varchar](14) NOT NULL,
+
 	[Picture_FileBody] [image] NULL,
 	[Picture_FileBody_xs] [image] NULL,
+	[Picture_FileName] [nvarchar](128) NULL,
+	[Picture_FileSize] [int] NULL,
+	[Picture_FileMime] [varchar](16) NULL,
+
+	[EntityTypeId] [int] NULL,
+	[RecordState] [int] NULL,
+	
  CONSTRAINT [PK_BasePersons] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
