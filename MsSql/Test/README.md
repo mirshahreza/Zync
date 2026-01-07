@@ -1,21 +1,27 @@
 # Zync Test Suite
 
 [![Test Coverage](https://img.shields.io/badge/Tests-100%25%20Pass-brightgreen.svg)](./)
-[![Test Files](https://img.shields.io/badge/Test%20Files-11-blue.svg)](./)
+[![Test Files](https://img.shields.io/badge/Test%20Files-21-blue.svg)](./)
 [![Objects Tested](https://img.shields.io/badge/Objects%20Tested-131-orange.svg)](./)
+[![Scenario Tests](https://img.shields.io/badge/Scenario%20Tests-10-purple.svg)](./Scenarios/)
 
 Comprehensive test suite for all Zync SQL Server packages with **100% pass rate**.
 
 ## 📈 Test Status
 
-- **Total Test Files:** 11
+- **Functional Test Files:** 11
+- **Scenario Test Files:** 10
 - **Total Objects Tested:** 131
 - **Success Rate:** 100%
 - **Average Execution Time:** ~60ms per test
 - **Last Run:** October 2, 2025
 - **Status:** ✅ All Tests Passing
 
-## 📋 Available Tests
+## 📋 Test Categories
+
+### 1. Functional Tests (Package-Specific)
+
+Tests individual package functionality and object behavior:
 
 1. **zync_test_backup.sql** - Tests for Backup package (4 procedures)
 2. **zync_test_base.sql** - Tests for Base package (8 tables)
@@ -28,6 +34,25 @@ Comprehensive test suite for all Zync SQL Server packages with **100% pass rate*
 9. **zync_test_security.sql** - Tests for Security package (5 functions)
 10. **zync_test_string.sql** - Tests for String package (43 functions)
 11. **zync_test_validation.sql** - Tests for Validation package (5 functions)
+
+### 2. Scenario Tests (Integration & E2E) 🆕
+
+**Location:** [`Scenarios/`](Scenarios/)
+
+End-to-end tests for Zync lifecycle operations and workflows:
+
+1. **[zync_scenario_01_fresh_install.sql](Scenarios/zync_scenario_01_fresh_install.sql)** - Fresh installation scenarios
+2. **[zync_scenario_02_update.sql](Scenarios/zync_scenario_02_update.sql)** - Package update operations
+3. **[zync_scenario_03_tables.sql](Scenarios/zync_scenario_03_tables.sql)** - Table schema evolution
+4. **[zync_scenario_04_removal_rollback.sql](Scenarios/zync_scenario_04_removal_rollback.sql)** - Removal & rollback operations
+5. **[zync_scenario_05_dependencies.sql](Scenarios/zync_scenario_05_dependencies.sql)** - Package dependency management
+6. **[zync_scenario_06_errors.sql](Scenarios/zync_scenario_06_errors.sql)** - Error handling & recovery
+7. **[zync_scenario_07_combined_ops.sql](Scenarios/zync_scenario_07_combined_ops.sql)** - Complex multi-step workflows
+8. **[zync_scenario_08_query_list.sql](Scenarios/zync_scenario_08_query_list.sql)** - Information retrieval & listing
+9. **[zync_scenario_09_base_package.sql](Scenarios/zync_scenario_09_base_package.sql)** - Base package special features
+10. **[zync_scenario_10_performance.sql](Scenarios/zync_scenario_10_performance.sql)** - Performance & scalability
+
+📚 **See [Scenarios/README.md](Scenarios/README.md) for detailed scenario documentation**
 
 ## 🚀 Running Tests
 
@@ -65,13 +90,31 @@ With SQL authentication:
 
 ### Option 2: Run Individual Tests
 
-Using sqlcmd:
+Using sqlcmd for **functional tests**:
 
 ```bash
 sqlcmd -S localhost -d YourDatabase -E -i "c:\Workspace\Projects\Zync\MsSql\Test\zync_test_backup.sql"
 ```
 
-### Option 3: List All Available Tests
+Using sqlcmd for **scenario tests**:
+
+```bash
+sqlcmd -S localhost -d YourDatabase -E -i "c:\Workspace\Projects\Zync\MsSql\Test\Scenarios\zync_scenario_01_fresh_install.sql"
+```
+
+### Option 3: Run All Scenario Tests
+
+```powershell
+cd c:\Workspace\Projects\Zync\MsSql\scripts
+
+# Run all scenario tests
+Get-ChildItem "..\Test\Scenarios\*.sql" | ForEach-Object {
+    Write-Host "Running $($_.Name)..." -ForegroundColor Cyan
+    sqlcmd -S localhost -d YourDatabase -E -i $_.FullName
+}
+```
+
+### Option 4: List All Available Tests
 
 ```powershell
 cd c:\Workspace\Projects\Zync\MsSql\scripts
@@ -139,6 +182,30 @@ c:\Workspace\Projects\Zync\MsSql\TestLogs\test_run_YYYYMMDD_HHMMSS.log
 2. **After updates** - Verify changes don't break existing functionality
 3. **Regular checks** - Include in CI/CD pipeline
 4. **Review logs** - Check TestLogs for historical results
+5. **Scenario testing** - Run scenario tests for integration and E2E validation
+
+## 🎯 Test Workflow
+
+### For Developers
+1. **Unit Testing**: Run functional tests for modified packages
+2. **Integration Testing**: Run relevant scenario tests
+3. **Full Suite**: Run all tests before commit
+
+### For QA/Testers
+1. **Scenario Tests First**: Validate real-world workflows
+2. **Functional Tests**: Verify individual package behavior
+3. **Performance Tests**: Run scenario 10 for scalability checks
+
+### For CI/CD
+```powershell
+# Example CI/CD test sequence
+.\RunAllTests.ps1 -ServerInstance $CI_SERVER -Database $CI_DB
+
+# Run scenario tests
+Get-ChildItem "..\Test\Scenarios\*.sql" | ForEach-Object {
+    sqlcmd -S $CI_SERVER -d $CI_DB -E -i $_.FullName
+}
+```
 
 ## 🛠️ Troubleshooting
 
@@ -160,12 +227,22 @@ FAIL: Missing functions: ZzFunctionName
 ```
 **Solution**: Install missing Zync packages first.
 
+### Scenario Test Failures
+```
+FAIL: Package installation failed
+```
+**Solution**: 
+- Ensure Ole Automation Procedures is enabled
+- Check network/repository access
+- Verify Zync core is properly installed
+
 ## 📞 Support
 
 For issues or questions:
-- Check individual test files for specific validation logic
-- Review TestLogs for detailed error messages
-- Ensure all Zync packages are properly installed
+- **Functional Tests**: Check individual test files for specific validation logic
+- **Scenario Tests**: See [Scenarios/README.md](Scenarios/README.md) for detailed documentation
+- **Logs**: Review TestLogs for detailed error messages
+- **Installation**: Ensure all Zync packages are properly installed
 
 ## 🔄 Configuration Management
 

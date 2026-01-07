@@ -1,0 +1,85 @@
+=========================================
+ZYNC SCENARIO 03: TABLE OPERATIONS
+=========================================
+Test Date: 2026-01-07 10:00:51
+ 
+✓ Prerequisite: Zync core is installed
+ 
+----------------------------------------
+Setup: Preparing Test Environment
+----------------------------------------
+>>> Checking for Zync updates...
+>>> Could not determine remote Zync version. Continuing with current version...
+ 
+ 
+Cleaning all Zync-managed objects...
+No Zync-managed objects found to clean.
+✓ Environment cleaned
+ 
+----------------------------------------
+Scenario 3.1: Creating New Tables
+----------------------------------------
+✓ PASS: Table ZzTestProducts created successfully
+✓ PASS: Table exists in database
+ 
+----------------------------------------
+Scenario 3.2: Adding Columns to Table
+----------------------------------------
+✓ PASS: Column Description added
+✓ PASS: Description column verified
+ 
+----------------------------------------
+Scenario 3.3: Data Preservation During Changes
+----------------------------------------
+✓ PASS: Test data inserted (3 rows)
+✓ PASS: Data verified (3 rows)
+ 
+----------------------------------------
+Scenario 3.4: Add Column (Preserve Data)
+----------------------------------------
+✓ PASS: Category column added
+✓ PASS: Data preserved after column addition
+ 
+----------------------------------------
+Scenario 3.5: Foreign Key Constraints
+----------------------------------------
+✓ PASS: Categories table created with data
+✓ PASS: CategoryId column added to Products
+✓ PASS: Foreign Key constraint added
+ 
+----------------------------------------
+Scenario 3.6: Adding Indexes
+----------------------------------------
+✓ PASS: Index on CategoryId created
+✓ PASS: Index on Price created
+ 
+----------------------------------------
+Scenario 3.7: Adding Constraints
+----------------------------------------
+✓ PASS: CHECK constraint added (Price > 0)
+✓ PASS: CHECK constraint prevented invalid data
+✓ PASS: UNIQUE constraint added on ProductName
+ 
+----------------------------------------
+Scenario 3.8: Final Data Integrity Check
+----------------------------------------
+✓ PASS: All constraints exist (4 constraints)
+✓ PASS: Indexes created (4 indexes)
+✓ PASS: Data preserved through all operations (3 rows)
+ 
+----------------------------------------
+Cleanup: Removing Test Tables
+----------------------------------------
+✓ Cleanup completed
+ 
+========================================
+TEST SUMMARY
+========================================
+Total Tests: 19
+Passed: 19
+Failed: 0
+Warnings: 0
+Duration: 1.165 seconds
+ 
+Status: ✅ ALL TESTS PASSED
+========================================

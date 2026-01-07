@@ -1,0 +1,352 @@
+=========================================
+ZYNC SCENARIO 06: ERROR HANDLING
+=========================================
+Test Date: 2026-01-07 10:01:19
+ 
+✓ Prerequisite: Zync core is installed
+ 
+----------------------------------------
+Setup: Clean Environment
+----------------------------------------
+>>> Checking for Zync updates...
+>>> Could not determine remote Zync version. Continuing with current version...
+ 
+ 
+Cleaning all Zync-managed objects...
+No Zync-managed objects found to clean.
+✓ Environment cleaned
+ 
+----------------------------------------
+Scenario 6.1: Installing Non-Existent Package
+----------------------------------------
+ 
+Installing package: 'NonExistentPackage123'...
+ERROR: Could not fetch package from URL: https://raw.githubusercontent.com/mirshahreza/Zync/master/MsSql/Packages/NonExistentPackage123/.sql
+HTTP Status: 404
+⚠ WARN: Command did not throw error for non-existent package
+ 
+----------------------------------------
+Scenario 6.2: Invalid Command Syntax
+----------------------------------------
+Zync - Database Package Manager v3.0
+================================================
+ 
+Usage: EXEC [dbo].[Zync] '<command> [package_name]'
+ 
+Commands:
+  ?                      Displays this help message.
+ 
+  ls                               Lists all packages and their scripts (names only).
+  ls <package-name>                Lists scripts of a package with descriptions.
+  ls ?<term>                       Search all packages (case-insensitive; use % or * as wildcard).
+  ls <package-name> ?<term>        Search inside a package (matches name or description).
+ 
+  i                      Installs all available packages (from Packages/.sql).
+  i all                  Alias for installing all packages.
+  i <package-name>       Installs a package (with backup of existing objects).
+  i <pkg/script.sql>     Installs a specific script from a package.
+ 
+  u                      Updates all installed packages to the latest version.
+  u all                  Alias for updating all installed packages.
+  u <package-name>       Updates an existing package to the latest version.
+ 
+  rm                     Removes all installed packages.
+  rm <package-name>      Removes a package (restores previous versions).
+  rm <pkg/script.sql>    Removes a specific script from a package.
+ 
+  rb <package-name>      Rolls back a package to its previous version.
+  rollback <package-name>  Alias for 'rb'.
+ 
+  clean                  Removes ALL Zync-managed objects (Zz* pattern) and tracking data.
+  lo                     Lists all Zync-managed objects in the database (Zz* pattern).
+  list-objects           Alias for 'lo'.
+ 
+Examples:
+  EXEC [dbo].[Zync] 'ls'                     -- List all packages and contained scripts (no descriptions).
+  EXEC [dbo].[Zync] 'ls DateTime'            -- List DateTime scripts with descriptions.
+  EXEC [dbo].[Zync] 'ls ?week'               -- Search across all packages for "week".
+  EXEC [dbo].[Zync] 'ls DbMon ?agent%status' -- Search in DbMon for names/descriptions like agent%status.
+  EXEC [dbo].[Zync] 'i Math'                 -- Install the "Math" package.
+  EXEC [dbo].[Zync] 'u String'               -- Update the "String" package.
+  EXEC [dbo].[Zync] 'rb DbMon'               -- Rollback the "DbMon" package.
+  EXEC [dbo].[Zync] 'rm DateTime'            -- Remove the "DateTime" package.
+  EXEC [dbo].[Zync] 'clean'                  -- Remove all Zync objects from the database.
+ 
+For more information, visit: https://github.com/mirshahreza/Zync
+⚠ WARN: Empty command accepted
+ 
+Installing package: 'nvalidCommand xyz'...
+ERROR: Could not fetch package from URL: https://raw.githubusercontent.com/mirshahreza/Zync/master/MsSql/Packages/nvalidCommand xyz/.sql
+HTTP Status: 404
+⚠ WARN: Invalid command accepted
+ 
+----------------------------------------
+Scenario 6.3: Ole Automation Procedures Check
+----------------------------------------
+✓ PASS: Ole Automation Procedures enabled
+ 
+----------------------------------------
+Scenario 6.4: Permission Requirements
+----------------------------------------
+✓ PASS: User has CREATE PROCEDURE permission
+✓ PASS: User has CREATE FUNCTION permission
+✓ PASS: User has CREATE TABLE permission
+ 
+----------------------------------------
+Scenario 6.5: Edge Cases
+----------------------------------------
+ 
+Removing package group or file: 'PackageNotInstalled'...
+ -> Input 'PackageNotInstalled' is a package group. Removing all sub-packages...
+ -> No installed sub-packages found in group 'PackageNotInstalled'.
+⚠ WARN: Removing non-installed package did not error
+ 
+Cleaning all Zync-managed objects...
+No Zync-managed objects found to clean.
+✓ PASS: Clean on already clean database works
+ 
+Installing package: 'Math'...
+ -> Fetched 'Math' successfully.
+ 
+Installing package: 'Math/ZzAverage.sql'...
+ -> Fetched 'Math/ZzAverage.sql' successfully.
+ -> Package 'Math/ZzAverage.sql' installed successfully.
+ 
+Installing package: 'Math/ZzClamp.sql'...
+ -> Fetched 'Math/ZzClamp.sql' successfully.
+ -> Package 'Math/ZzClamp.sql' installed successfully.
+ 
+Installing package: 'Math/ZzCombination.sql'...
+ -> Fetched 'Math/ZzCombination.sql' successfully.
+ -> Package 'Math/ZzCombination.sql' installed successfully.
+ 
+Installing package: 'Math/ZzRandom.sql'...
+ -> Fetched 'Math/ZzRandom.sql' successfully.
+ -> Package 'Math/ZzRandom.sql' installed successfully.
+ 
+Installing package: 'Math/ZzDistance.sql'...
+ -> Fetched 'Math/ZzDistance.sql' successfully.
+ -> Package 'Math/ZzDistance.sql' installed successfully.
+ 
+Installing package: 'Math/ZzFactorial.sql'...
+ -> Fetched 'Math/ZzFactorial.sql' successfully.
+ -> Package 'Math/ZzFactorial.sql' installed successfully.
+ 
+Installing package: 'Math/ZzFibonacci.sql'...
+ -> Fetched 'Math/ZzFibonacci.sql' successfully.
+ -> Package 'Math/ZzFibonacci.sql' installed successfully.
+ 
+Installing package: 'Math/ZzFormatBytes.sql'...
+ -> Fetched 'Math/ZzFormatBytes.sql' successfully.
+ -> Package 'Math/ZzFormatBytes.sql' installed successfully.
+ 
+Installing package: 'Math/ZzFromBinary.sql'...
+ -> Fetched 'Math/ZzFromBinary.sql' successfully.
+ -> Package 'Math/ZzFromBinary.sql' installed successfully.
+ 
+Installing package: 'Math/ZzFromHex.sql'...
+ -> Fetched 'Math/ZzFromHex.sql' successfully.
+ -> Package 'Math/ZzFromHex.sql' installed successfully.
+ 
+Installing package: 'Math/ZzFromRoman.sql'...
+ -> Fetched 'Math/ZzFromRoman.sql' successfully.
+ -> Package 'Math/ZzFromRoman.sql' installed successfully.
+ 
+Installing package: 'Math/ZzFutureValue.sql'...
+ -> Fetched 'Math/ZzFutureValue.sql' successfully.
+ -> Package 'Math/ZzFutureValue.sql' installed successfully.
+ 
+Installing package: 'Math/ZzGcd.sql'...
+ -> Fetched 'Math/ZzGcd.sql' successfully.
+ -> Package 'Math/ZzGcd.sql' installed successfully.
+ 
+Installing package: 'Math/ZzHumanizeNumber.sql'...
+ -> Fetched 'Math/ZzHumanizeNumber.sql' successfully.
+ -> Package 'Math/ZzHumanizeNumber.sql' installed successfully.
+ 
+Installing package: 'Math/ZzIsBitSet.sql'...
+ -> Fetched 'Math/ZzIsBitSet.sql' successfully.
+ -> Package 'Math/ZzIsBitSet.sql' installed successfully.
+ 
+Installing package: 'Math/ZzIsEven.sql'...
+ -> Fetched 'Math/ZzIsEven.sql' successfully.
+ -> Package 'Math/ZzIsEven.sql' installed successfully.
+ 
+Installing package: 'Math/ZzIsNumericStrict.sql'...
+ -> Fetched 'Math/ZzIsNumericStrict.sql' successfully.
+ -> Package 'Math/ZzIsNumericStrict.sql' installed successfully.
+ 
+Installing package: 'Math/ZzIsOdd.sql'...
+ -> Fetched 'Math/ZzIsOdd.sql' successfully.
+ -> Package 'Math/ZzIsOdd.sql' installed successfully.
+ 
+Installing package: 'Math/ZzIsPrime.sql'...
+ -> Fetched 'Math/ZzIsPrime.sql' successfully.
+ -> Package 'Math/ZzIsPrime.sql' installed successfully.
+ 
+Installing package: 'Math/ZzLcm.sql'...
+ -> Fetched 'Math/ZzLcm.sql' successfully.
+ -> Package 'Math/ZzLcm.sql' installed successfully.
+ 
+Installing package: 'Math/ZzMedianFromString.sql'...
+ -> Fetched 'Math/ZzMedianFromString.sql' successfully.
+ -> Package 'Math/ZzMedianFromString.sql' installed successfully.
+ 
+Installing package: 'Math/ZzMode.sql'...
+ -> Fetched 'Math/ZzMode.sql' successfully.
+ -> Package 'Math/ZzMode.sql' installed successfully.
+ 
+Installing package: 'Math/ZzPercentageChange.sql'...
+ -> Fetched 'Math/ZzPercentageChange.sql' successfully.
+ -> Package 'Math/ZzPercentageChange.sql' installed successfully.
+ 
+Installing package: 'Math/ZzPercentageOf.sql'...
+ -> Fetched 'Math/ZzPercentageOf.sql' successfully.
+ -> Package 'Math/ZzPercentageOf.sql' installed successfully.
+ 
+Installing package: 'Math/ZzPermutation.sql'...
+ -> Fetched 'Math/ZzPermutation.sql' successfully.
+ -> Package 'Math/ZzPermutation.sql' installed successfully.
+ 
+Installing package: 'Math/ZzPresentValue.sql'...
+ -> Fetched 'Math/ZzPresentValue.sql' successfully.
+ -> Package 'Math/ZzPresentValue.sql' installed successfully.
+ 
+Installing package: 'Math/ZzRandomInRange.sql'...
+ -> Fetched 'Math/ZzRandomInRange.sql' successfully.
+ -> Package 'Math/ZzRandomInRange.sql' installed successfully.
+ 
+Installing package: 'Math/ZzRoundToMultiple.sql'...
+ -> Fetched 'Math/ZzRoundToMultiple.sql' successfully.
+ -> Package 'Math/ZzRoundToMultiple.sql' installed successfully.
+ 
+Installing package: 'Math/ZzSafeDivide.sql'...
+ -> Fetched 'Math/ZzSafeDivide.sql' successfully.
+ -> Package 'Math/ZzSafeDivide.sql' installed successfully.
+ 
+Installing package: 'Math/ZzStandardDeviation.sql'...
+ -> Fetched 'Math/ZzStandardDeviation.sql' successfully.
+ -> Package 'Math/ZzStandardDeviation.sql' installed successfully.
+ 
+Installing package: 'Math/ZzToBinary.sql'...
+ -> Fetched 'Math/ZzToBinary.sql' successfully.
+ -> Package 'Math/ZzToBinary.sql' installed successfully.
+ 
+Installing package: 'Math/ZzToHex.sql'...
+ -> Fetched 'Math/ZzToHex.sql' successfully.
+ -> Package 'Math/ZzToHex.sql' installed successfully.
+ 
+Installing package: 'Math/ZzToRoman.sql'...
+ -> Fetched 'Math/ZzToRoman.sql' successfully.
+ -> Package 'Math/ZzToRoman.sql' installed successfully.
+ 
+Installing package: 'Math/ZzToWords.sql'...
+ -> Fetched 'Math/ZzToWords.sql' successfully.
+ -> Package 'Math/ZzToWords.sql' installed successfully.
+ -> Package 'Math' installed successfully.
+ 
+Installing package: 'Math'...
+ -> Fetched 'Math' successfully.
+ERROR: An error occurred during installation of package 'Math'.
+✗ FAIL: Double install caused error - Violation of UNIQUE KEY constraint 'UQ_ZyncPackages_Name'. Cannot insert duplicate key in object 'dbo.ZyncPackages'. The duplicate key value is (Math).
+ 
+----------------------------------------
+Scenario 6.6: Recovery After Errors
+----------------------------------------
+Listing package(s): ''...
+ -> Fetched '' successfully.
+ 
+ -> Expanding packages and listing contained objects:
+✗ FAIL: System not functional - Cannot find either column "dbo" or the user-defined function or aggregate "dbo.ZzRPad", or the name is ambiguous.
+ 
+----------------------------------------
+Cleanup: Final Clean
+----------------------------------------
+ 
+Cleaning all Zync-managed objects...
+Found 34 object(s) to clean:
+ -> FUNCTION [dbo].[ZzAverage]
+ -> FUNCTION [dbo].[ZzClamp]
+ -> FUNCTION [dbo].[ZzCombination]
+ -> VIEW [dbo].[ZzRandom]
+ -> FUNCTION [dbo].[ZzDistance]
+ -> FUNCTION [dbo].[ZzFactorial]
+ -> FUNCTION [dbo].[ZzFibonacci]
+ -> FUNCTION [dbo].[ZzFormatBytes]
+ -> FUNCTION [dbo].[ZzFromBinary]
+ -> FUNCTION [dbo].[ZzFromHex]
+ -> FUNCTION [dbo].[ZzFromRoman]
+ -> FUNCTION [dbo].[ZzFutureValue]
+ -> FUNCTION [dbo].[ZzGcd]
+ -> FUNCTION [dbo].[ZzHumanizeNumber]
+ -> FUNCTION [dbo].[ZzIsBitSet]
+ -> FUNCTION [dbo].[ZzIsEven]
+ -> FUNCTION [dbo].[ZzIsNumericStrict]
+ -> FUNCTION [dbo].[ZzIsOdd]
+ -> FUNCTION [dbo].[ZzIsPrime]
+ -> FUNCTION [dbo].[ZzLcm]
+ -> FUNCTION [dbo].[ZzMedianFromString]
+ -> FUNCTION [dbo].[ZzMode]
+ -> FUNCTION [dbo].[ZzPercentageChange]
+ -> FUNCTION [dbo].[ZzPercentageOf]
+ -> FUNCTION [dbo].[ZzPermutation]
+ -> FUNCTION [dbo].[ZzPresentValue]
+ -> FUNCTION [dbo].[ZzRandomInRange]
+ -> FUNCTION [dbo].[ZzRoundToMultiple]
+ -> FUNCTION [dbo].[ZzSafeDivide]
+ -> FUNCTION [dbo].[ZzStandardDeviation]
+ -> FUNCTION [dbo].[ZzToBinary]
+ -> FUNCTION [dbo].[ZzToHex]
+ -> FUNCTION [dbo].[ZzToRoman]
+ -> FUNCTION [dbo].[ZzToWords]
+ 
+Proceeding with cleanup...
+    ✓ Dropped VIEW [dbo].[ZzRandom]
+    ✓ Dropped FUNCTION [dbo].[ZzAverage]
+    ✓ Dropped FUNCTION [dbo].[ZzClamp]
+    ✓ Dropped FUNCTION [dbo].[ZzCombination]
+    ✓ Dropped FUNCTION [dbo].[ZzDistance]
+    ✓ Dropped FUNCTION [dbo].[ZzFactorial]
+    ✓ Dropped FUNCTION [dbo].[ZzFibonacci]
+    ✓ Dropped FUNCTION [dbo].[ZzFormatBytes]
+    ✓ Dropped FUNCTION [dbo].[ZzFromBinary]
+    ✓ Dropped FUNCTION [dbo].[ZzFromHex]
+    ✓ Dropped FUNCTION [dbo].[ZzFromRoman]
+    ✓ Dropped FUNCTION [dbo].[ZzFutureValue]
+    ✓ Dropped FUNCTION [dbo].[ZzGcd]
+    ✓ Dropped FUNCTION [dbo].[ZzHumanizeNumber]
+    ✓ Dropped FUNCTION [dbo].[ZzIsBitSet]
+    ✓ Dropped FUNCTION [dbo].[ZzIsEven]
+    ✓ Dropped FUNCTION [dbo].[ZzIsNumericStrict]
+    ✓ Dropped FUNCTION [dbo].[ZzIsOdd]
+    ✓ Dropped FUNCTION [dbo].[ZzIsPrime]
+    ✓ Dropped FUNCTION [dbo].[ZzLcm]
+    ✓ Dropped FUNCTION [dbo].[ZzMedianFromString]
+    ✓ Dropped FUNCTION [dbo].[ZzMode]
+    ✓ Dropped FUNCTION [dbo].[ZzPercentageChange]
+    ✓ Dropped FUNCTION [dbo].[ZzPercentageOf]
+    ✓ Dropped FUNCTION [dbo].[ZzPermutation]
+    ✓ Dropped FUNCTION [dbo].[ZzPresentValue]
+    ✓ Dropped FUNCTION [dbo].[ZzRandomInRange]
+    ✓ Dropped FUNCTION [dbo].[ZzRoundToMultiple]
+    ✓ Dropped FUNCTION [dbo].[ZzSafeDivide]
+    ✓ Dropped FUNCTION [dbo].[ZzStandardDeviation]
+    ✓ Dropped FUNCTION [dbo].[ZzToBinary]
+    ✓ Dropped FUNCTION [dbo].[ZzToHex]
+    ✓ Dropped FUNCTION [dbo].[ZzToRoman]
+    ✓ Dropped FUNCTION [dbo].[ZzToWords]
+ 
+Cleanup completed. All Zync-managed objects and tracking data removed.
+✓ Cleanup completed
+ 
+========================================
+TEST SUMMARY
+========================================
+Total Tests: 7
+Passed: 5
+Failed: 2
+Warnings: 4
+Duration: 6.712 seconds
+ 
+Status: ❌ SOME TESTS FAILED
+========================================
