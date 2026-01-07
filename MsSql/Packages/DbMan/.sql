@@ -20,3 +20,4 @@ EXEC DBO.Zync 'i DbMan/ZzRenameTable.sql';
 EXEC DBO.Zync 'i DbMan/ZzTruncateTable.sql';
 EXEC DBO.Zync 'i DbMan/ZzEnsureSchema.sql';
 EXEC DBO.Zync 'i DbMan/ZzEnsureIndex.sql';
+EXEC DBO.Zync 'i DbMan/ZzCalculateHID.sql';
