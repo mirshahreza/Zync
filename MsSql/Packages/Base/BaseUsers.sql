@@ -8,7 +8,7 @@ SET QUOTED_IDENTIFIER ON
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BaseUsers]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [dbo].[BaseUsers](
-	[Id] [int] IDENTITY(100000,1) NOT NULL,
+	[Id] [int] IDENTITY(1000000,1) NOT NULL,
 	[CreatedBy] [int] NOT NULL,
 	[CreatedOn] [datetime] NOT NULL,
 	[UpdatedBy] [int] NULL,
