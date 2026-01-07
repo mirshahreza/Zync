@@ -1472,7 +1472,7 @@ BEGIN
 						ELSE
 						BEGIN
 							-- Tracked, but verify object actually exists in DB
-							-- Fetch sub-package to check its object type
+							-- Fetch sub-package to check its object type and verify existence
 							DECLARE @SubPkgURL NVARCHAR(4000) = @Repo;
 							IF @SubPkg NOT LIKE N'%.sql' 
 								SET @SubPkgURL = @SubPkgURL + @SubPkg + '/' + '.sql';
@@ -1480,9 +1480,44 @@ BEGIN
 								SET @SubPkgURL = @SubPkgURL + @SubPkg;
 							SET @SubPkgURL = REPLACE(@SubPkgURL, '//.sql', '/.sql');
 							
-							-- We'll let update command handle the check
-							-- If object doesn't exist, update will fail and we'll catch it
-							SET @ShouldInstall = 0;
+							-- Fetch the sub-package to check if object exists
+							DECLARE @SubRes INT, @SubStatus INT;
+							DECLARE @SubPkgScript NVARCHAR(MAX);
+							DECLARE @SubResponseText TABLE (ResponseText NVARCHAR(MAX));
+							
+							BEGIN TRY
+								EXEC SP_OACREATE 'MSXML2.ServerXMLHTTP', @SubRes OUT;
+								EXEC SP_OAMETHOD @SubRes, 'open', NULL, 'GET', @SubPkgURL, 'false';
+								EXEC SP_OAMETHOD @SubRes, 'send';
+								EXEC SP_OAGETPROPERTY @SubRes, 'status', @SubStatus OUT;
+								INSERT INTO @SubResponseText (ResponseText) EXEC SP_OAGETPROPERTY @SubRes, 'responseText';
+								EXEC SP_OADESTROY @SubRes;
+								SELECT @SubPkgScript = ResponseText FROM @SubResponseText;
+							END TRY
+							BEGIN CATCH
+								SET @SubStatus = 0;
+								SET @SubPkgScript = NULL;
+							END CATCH
+							
+							IF @SubStatus = 200 AND @SubPkgScript IS NOT NULL
+							BEGIN
+								-- Parse object info
+								DECLARE @SubObjType NVARCHAR(128), @SubObjName NVARCHAR(256);
+								EXEC [dbo].[ZyncParseObject] @SubPkgScript, @SubObjType OUTPUT, @SubObjName OUTPUT;
+								
+								-- Check if object exists in database
+								DECLARE @SubObjExists BIT = 0;
+								IF @SubObjName IS NOT NULL AND @SubObjType IS NOT NULL
+									EXEC [dbo].[ZyncObjectExists] @SubObjName, @SubObjType, @SubObjExists OUTPUT;
+								
+								-- If tracked but doesn't exist in DB, install it
+								IF @SubObjExists = 0
+									SET @ShouldInstall = 1;
+								ELSE
+									SET @ShouldInstall = 0; -- Exists, so update
+							END
+							ELSE
+								SET @ShouldInstall = 0; -- Can't fetch, let update handle error
 						END
 						
 						IF @ShouldInstall = 0
