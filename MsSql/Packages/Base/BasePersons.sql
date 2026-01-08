@@ -30,7 +30,7 @@ CREATE TABLE [dbo].[BasePersons](
 	[Picture_FileMime] [varchar](16) NULL,
 
 	[EntityTypeId] [varchar](16) NULL,
-	[RecordState] [varchar](16) NULL,
+	[RecordStateId] [varchar](16) NULL,
 	
  CONSTRAINT [PK_BasePersons] PRIMARY KEY CLUSTERED 
 (
