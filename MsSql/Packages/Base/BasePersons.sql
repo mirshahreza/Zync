@@ -14,7 +14,7 @@ CREATE TABLE [dbo].[BasePersons](
 	[UpdatedBy] [int] NULL,
 	[UpdatedOn] [datetime] NULL,
 	[UserId] [int] NULL,
-	[GenderId] [int] NOT NULL,
+	[GenderId] [varchar](16) NOT NULL,
 	[NationalCode] [varchar](16) NULL,
 	[FirstName] [nvarchar](64) NOT NULL,
 	[LastName] [nvarchar](64) NOT NULL,
@@ -29,8 +29,8 @@ CREATE TABLE [dbo].[BasePersons](
 	[Picture_FileSize] [int] NULL,
 	[Picture_FileMime] [varchar](16) NULL,
 
-	[EntityTypeId] [int] NULL,
-	[RecordState] [int] NULL,
+	[EntityTypeId] [varchar](16) NULL,
+	[RecordState] [varchar](16) NULL,
 	
  CONSTRAINT [PK_BasePersons] PRIMARY KEY CLUSTERED 
 (
