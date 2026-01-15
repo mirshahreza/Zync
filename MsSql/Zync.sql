@@ -373,11 +373,11 @@ GO
 -- Add ZzRPad function for formatting if it doesn't exist (must precede procedure that uses it)
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[ZzRPad]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 BEGIN
-EXEC('CREATE FUNCTION [dbo].[ZzRPad] (@string NVARCHAR(MAX), @length INT, @pad CHAR(1))
+EXEC('CREATE FUNCTION [dbo].[ZzRPad] (@s NVARCHAR(MAX), @length INT, @pad CHAR(1))
 RETURNS NVARCHAR(MAX)
 AS
 BEGIN
-    RETURN LEFT(CONCAT(@string, REPLICATE(@pad, @length)), @length)
+    RETURN LEFT(CONCAT(@s, REPLICATE(@pad, @length)), @length)
 END')
 END
 
