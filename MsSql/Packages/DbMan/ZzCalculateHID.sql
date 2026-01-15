@@ -5,10 +5,9 @@
 -- Sample:
 -- EXEC [dbo].[ZzCalculateHID] 'MyTable', NULL, 3, 3, '.'
 -- =============================================
-CREATE OR ALTER PROCEDURE ZzCalculateHID
+CREATE OR ALTER PROCEDURE [dbo].[ZzCalculateHID]
     @TableName NVARCHAR(128) ,
     @ParentId VARCHAR(MAX),
-    @ParentDigits INT = 3,
     @ChildDigits INT = 3,
     @Delimiter VARCHAR(1) = '.'  
 AS
@@ -22,16 +21,15 @@ BEGIN
     DECLARE @EndNumber INT;
 
     IF(@ParentId = '') SET @ParentId = NULL;
+    SET @TargetDigits = @ChildDigits;
 
     IF @ParentId IS NULL
     BEGIN
-        SET @TargetDigits = @ParentDigits;
         SET @Prefix = '';
         SET @StartNumber = POWER(10, @TargetDigits - 1);
     END
     ELSE
     BEGIN
-        SET @TargetDigits = @ChildDigits;
         SET @Prefix = @ParentId + @Delimiter;
         SET @StartNumber = 1; 
     END
