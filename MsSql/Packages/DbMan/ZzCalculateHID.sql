@@ -21,7 +21,9 @@ BEGIN
     DECLARE @StartNumber INT;
     DECLARE @EndNumber INT;
 
-    IF @ParentId IS NULL OR @ParentId = ''
+    IF(@ParentId = '') SET @ParentId = NULL;
+
+    IF @ParentId IS NULL
     BEGIN
         SET @TargetDigits = @ParentDigits;
         SET @Prefix = '';
