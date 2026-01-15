@@ -3,7 +3,7 @@
 -- Create date: 2026-01-07
 -- Description:	Calculates new Id based on the new node level.
 -- Sample:
--- EXEC [dbo].[ZzCalculateHID] 'MyTable', NULL, 3, 3, '.'
+-- EXEC [dbo].[ZzCalculateHID] 'MyTable', NULL, 3, '.'
 -- =============================================
 CREATE OR ALTER PROCEDURE [dbo].[ZzCalculateHID]
     @TableName NVARCHAR(128) ,
