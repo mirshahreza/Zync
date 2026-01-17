@@ -8,29 +8,29 @@ SET QUOTED_IDENTIFIER ON
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[BasePersons]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [dbo].[BasePersons](
-	[Id] [int] IDENTITY(1000000,1) NOT NULL,
+	[Id] [int] IDENTITY(100000000,1) NOT NULL,
 	[CreatedBy] [int] NOT NULL,
 	[CreatedOn] [datetime] NOT NULL,
 	[UpdatedBy] [int] NULL,
 	[UpdatedOn] [datetime] NULL,
+	[EntityTypeId] [varchar](16) NULL,
+	[RecordStateId] [varchar](16) NULL,
 	[UserId] [int] NULL,
-	[GenderId] [varchar](16) NOT NULL,
 	[NationalCode] [varchar](16) NULL,
-	[FirstName] [nvarchar](64) NOT NULL,
-	[LastName] [nvarchar](64) NOT NULL,
+	[Title] [nvarchar](128) NULL,
+	[GenderId] [varchar](16) NULL,
+	[FirstName] [nvarchar](64) NULL,
+	[LastName] [nvarchar](64) NULL,
 	[BirthYear] [int] NULL,
 	[BirthMonth] [tinyint] NULL,
 	[BirthDay] [tinyint] NULL,
-	[Mobile] [varchar](14) NOT NULL,
-
+	[Mobile] [varchar](16) NOT NULL,
+	[LandPhone] [varchar](16) NULL,
 	[Picture_FileBody] [image] NULL,
 	[Picture_FileBody_xs] [image] NULL,
 	[Picture_FileName] [nvarchar](128) NULL,
 	[Picture_FileSize] [int] NULL,
-	[Picture_FileMime] [varchar](16) NULL,
-
-	[EntityTypeId] [varchar](16) NULL,
-	[RecordStateId] [varchar](16) NULL,
+	[Picture_FileMime] [varchar](128) NULL,
 	
  CONSTRAINT [PK_BasePersons] PRIMARY KEY CLUSTERED 
 (
