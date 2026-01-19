@@ -25,8 +25,8 @@ INSERT INTO BaseRoles (CreatedBy, CreatedOn, RoleName, IsActive, Note, IsBuiltIn
 VALUES (@ActorId, @ActOn, 'BackOfficer', 1, 'Admin access', 1);
 
 INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   NULL,  '100',  'Gender',   'Gender',   N'جنسيت',   N'جنس'  );
-INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '100', '100.1','Male',     'Male',     N'مرد',     N'ذکر'  );
-INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '100', '100.2','Female',   'Female',   N'زن',      N'انثی' );
+INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,UiIcon,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '100', '100.1','fa-solid fa-fw fa-male text-navy','Male',     'Male',     N'مرد',     N'ذکر'  );
+INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,UiIcon,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '100', '100.2','fa-solid fa-fw fa-female text-pink','Female',   'Female',   N'زن',      N'انثی' );
 
 INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   NULL,  '101',  'RecordState',     'Record State', N'وضعيت رکورد', N'حالة السجل'       );
 INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,UiIcon,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '101', '101.1','fa-solid fa-fw fa-check text-success',             'Approved',         'Approved',     N'تاييد شده',   N'مقبول'            );
