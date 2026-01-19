@@ -6,7 +6,7 @@
 -- =============================================
 
 
-DECLARE @ActOn = GETDATE();
+DECLARE @ActOn DATETIME = GETDATE();
 DECLARE @ActorId INT = (SELECT TOP 1 Id FROM BaseUsers ORDER BY Id);
 
 
