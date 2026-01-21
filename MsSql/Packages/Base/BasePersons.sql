@@ -15,6 +15,8 @@ CREATE TABLE [dbo].[BasePersons](
 	[UpdatedOn] [datetime] NULL,
 	[EntityTypeId] [varchar](16) NULL,
 	[RecordStateId] [varchar](16) NULL,
+	[RecordStateIdUpdatedBy] [int] NULL,
+	[RecordStateIdUpdatedOn] [datetime] NULL,
 	[UserId] [int] NULL,
 	[NationalCode] [varchar](16) NULL,
 	[Title] [nvarchar](128) NULL,
