@@ -9,6 +9,10 @@
 DECLARE @ActOn DATETIME = GETDATE();
 DECLARE @ActorId INT = (SELECT TOP 1 Id FROM BaseUsers ORDER BY Id);
 
+DELETE BaseInfo WHERE Id LIKE '150%';
+DELETE BaseInfo WHERE Id LIKE '151%';
+DELETE BaseInfo WHERE Id LIKE '152%';
+
 
 INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   NULL,  '150',     'ContentType',      'Content Type',     N'نوع محتوي',       N'نوع المحتوى'  );
 INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.01',  'Article',          'Article',          N'مقاله',           N'مقالة'        );
@@ -26,7 +30,6 @@ INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,Ti
 INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.23',  'Reportage',        'Reportage',        N'گزارش',           N'تقرير'		);
 INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.24',  'Interview',        'Interview',        N'گفتگو',           N'مقابلة'		);
 INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.25',  'Advertisement',    'Advertisement',    N'آگهي',            N'إعلانات'		);
-INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.26',  'RenderLayout',     'Render Layout',    N'چيدمان نمایش',    N'تخطيط العرض'  );
 
 
 INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   NULL,  '151',  'CommentsPolicy',      'Comments Policy',          N'سياست پينوشتها',			N'سياسة التعليقات'          );
