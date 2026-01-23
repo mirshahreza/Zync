@@ -17,19 +17,11 @@ DELETE BaseInfo WHERE Id LIKE '152%';
 INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   NULL,  '150',     'ContentType',      'Content Type',     N'نوع محتوي',       N'نوع المحتوى'  );
 INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.01',  'Article',          'Article',          N'مقاله',           N'مقالة'        );
 INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.02',  'News',             'News',             N'خبر',             N'خبر'          );
-INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.03',  'Picture',          'Picture',          N'تصوير',           N'صورة'			);
-INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.04',  'Video',            'Video',            N'ويديو',           N'فيديو'		);
-INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.05',  'Pdf',              'Pdf',              N'پي دي اف',        N'بي دي إف'		);
-INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.06',  'Word',             'Word',             N'وورد',            N'وورد'			);
-INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.07',  'Excel',            'Excel',            N'اکسل',            N'إكسل'			);
-INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.08',  'Text',             'Text',             N'تکست',            N'نص'			);
-INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.09',  'Csv',              'Csv',              N'سي اس وي',        N'سي إس في'		);
-INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.20',  'File',             'File',             N'فايل',            N'ملف'			);
-INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.21',  'Comment',          'Comment',          N'پينوشت',          N'تعليق'		);
-INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.22',  'ForumeTopic',      'Forume Topic',     N'موضوع گفتگو',     N'موضوع المنتدى');
-INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.23',  'Reportage',        'Reportage',        N'گزارش',           N'تقرير'		);
-INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.24',  'Interview',        'Interview',        N'گفتگو',           N'مقابلة'		);
-INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.25',  'Advertisement',    'Advertisement',    N'آگهي',            N'إعلانات'		);
+INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.03',  'Comment',          'Comment',          N'پينوشت',          N'تعليق'		);
+INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.04',  'ForumeTopic',      'Forume Topic',     N'موضوع انجمن',     N'موضوع المنتدى');
+INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.05',  'Reportage',        'Reportage',        N'گزارش',           N'تقرير'		);
+INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.06',  'Interview',        'Interview',        N'گفتگو',           N'مقابلة'		);
+INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   '150', '150.07',  'Advertisement',    'Advertisement',    N'آگهي',            N'إعلانات'		);
 
 
 INSERT INTO BaseInfo (CreatedBy, CreatedOn,IsActive,ParentId,Id,Title,TitleEn,TitleFa,TitleAr) VALUES (@ActorId, @ActOn, 1,   NULL,  '151',  'CommentsPolicy',      'Comments Policy',          N'سياست پينوشتها',			N'سياسة التعليقات'          );

@@ -28,6 +28,7 @@ CREATE TABLE [dbo].[BaseInfo](
 	[Value] [int] NULL,
 	[IsActive] [bit] NULL,
 	[UiColor] [varchar](16) NULL,
+	[UiCLass] [varchar](64) NULL,
 	[UiIcon] [varchar](64) NULL,
  CONSTRAINT [PK_AppEnd_BaseInfo] PRIMARY KEY CLUSTERED 
 (
