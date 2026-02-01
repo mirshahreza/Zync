@@ -42,22 +42,7 @@ For filtering, query the companion views directly:
 
 If you want any of the remaining items as views, we can add companion views with sensible defaults (e.g., last 30 days) and keep the procs for parameterized filtering.
 
-### 🔗 Table-Valued Function: Object Dependencies
-
-For parameterized dependency analysis by object name, use:
-
-```sql
-SELECT *
-FROM dbo.ZzFnObjectDependencies(N'MyView', N'both');
-```
-
-Parameters:
-- `@ObjectName`: target object name (optional; when NULL returns all)
-- `@Mode`: `'referenced' | 'referencing' | 'both'` (default: `both`)
-
-Examples:
-- Objects the target depends on: `SELECT * FROM dbo.ZzFnObjectDependencies(N'MyProc', N'referenced');`
-- Objects depending on the target: `SELECT * FROM dbo.ZzFnObjectDependencies(N'MyTable', N'referencing');`
+<!-- TVF for object dependencies removed: ZzFnObjectDependencies -->
 
 ## 🚀 Deployment
 

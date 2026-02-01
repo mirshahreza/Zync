@@ -6,7 +6,6 @@ EXEC DBO.Zync 'i DbMon/ZzSelectTablesViewsColumns.sql';
 EXEC DBO.Zync 'i DbMon/ZzSelectTablesFks.sql';
 EXEC DBO.Zync 'i DbMon/ZzSelectTablesOverview.sql';
 EXEC DBO.Zync 'i DbMon/ZzSelectObjectDependencies.sql';
-EXEC DBO.Zync 'i DbMon/ZzFnObjectDependencies.sql';
 EXEC DBO.Zync 'i DbMon/ZzSelectColumnDependencies.sql';
 EXEC DBO.Zync 'i DbMon/ZzSelectDefaultConstraints.sql';
 EXEC DBO.Zync 'i DbMon/ZzSelectCheckConstraints.sql';
