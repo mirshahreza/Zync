@@ -23,9 +23,28 @@ SELECT
     C.IS_NULLABLE AllowNull,
 	(
 		CASE 
-			WHEN T.NAME NOT IN ('DECIMAL','NUMERIC','DATETIME2','DATETIMEOFFSET','TIME','VARCHAR','NVARCHAR','CHAR','NCHAR','VARBINARY') THEN NULL
-			WHEN T.NAME IN ('NVARCHAR','NCHAR') THEN C.MAX_LENGTH/2
-			ELSE C.MAX_LENGTH
+			-- Character/binary types with length in parentheses
+			WHEN T.NAME IN ('VARCHAR','CHAR','VARBINARY','BINARY') THEN 
+				CASE WHEN C.MAX_LENGTH = -1 THEN NULL ELSE C.MAX_LENGTH END
+
+			-- NVARCHAR/NCHAR store length in bytes; divide by 2 for characters
+			WHEN T.NAME IN ('NVARCHAR','NCHAR') THEN 
+				CASE WHEN C.MAX_LENGTH = -1 THEN NULL ELSE C.MAX_LENGTH/2 END
+
+			-- DECIMAL/NUMERIC have (precision, scale); report precision
+			WHEN T.NAME IN ('DECIMAL','NUMERIC') THEN C.PRECISION
+
+			-- FLOAT(n) reports the mantissa precision in parentheses
+			WHEN T.NAME = 'FLOAT' THEN C.PRECISION
+
+			-- DATETIME2/TIME/DATETIMEOFFSET have fractional seconds precision in parentheses
+			WHEN T.NAME IN ('DATETIME2','TIME','DATETIMEOFFSET') THEN C.SCALE
+
+			-- VECTOR stores float32 elements (4 bytes each); derive dimension from max_length
+			WHEN T.NAME = 'VECTOR' THEN 
+				CASE WHEN C.MAX_LENGTH IS NULL OR C.MAX_LENGTH = -1 THEN NULL ELSE C.MAX_LENGTH/4 END
+
+			ELSE NULL
 		END
 	) MaxLen,
 	C.IS_IDENTITY IsIdentity,
