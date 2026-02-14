@@ -35,6 +35,10 @@ CREATE TABLE [dbo].[BaseUsers](
 	[LoginTrySuccessesCount] [int] NULL,
 	[LoginTrySuccessLastOn] [datetime] NULL,
 	[Settings] [ntext] NULL,
+	[RefreshTokenHash] [nvarchar](256) NULL,
+	[RefreshTokenExpiryDate] [datetime] NULL,
+	[RefreshTokenCreatedOn] [datetime] NULL,
+
  CONSTRAINT [PK_AppEnd_Users] PRIMARY KEY CLUSTERED 
 (
 	[Id] ASC
