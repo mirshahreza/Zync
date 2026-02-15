@@ -12,4 +12,5 @@ EXEC DBO.Zync 'i DbMan';
 EXEC DBO.Zync 'i DbMon';
 EXEC DBO.Zync 'i Backup';
 EXEC DBO.Zync 'i Geographic';
+EXEC DBO.Zync 'i Elsa';
 
