@@ -7,11 +7,11 @@ SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 GO
 
-IF OBJECT_ID(N'[dbo].[vw_ElsaWorkflowTaskStats]', N'V') IS NOT NULL
-    DROP VIEW [dbo].[vw_ElsaWorkflowTaskStats];
+IF OBJECT_ID(N'[dbo].[ElsaWorkflowTaskStats]', N'V') IS NOT NULL
+    DROP VIEW [dbo].[ElsaWorkflowTaskStats];
 GO
 
-CREATE VIEW [dbo].[vw_ElsaWorkflowTaskStats]
+CREATE VIEW [dbo].[ElsaWorkflowTaskStats]
 AS
 SELECT 
     [DefinitionId],
@@ -25,5 +25,5 @@ FROM [dbo].[ElsaWorkflowTasks]
 GROUP BY [DefinitionId];
 GO
 
-PRINT 'View vw_ElsaWorkflowTaskStats created successfully!';
+PRINT 'View ElsaWorkflowTaskStats created successfully!';
 GO
