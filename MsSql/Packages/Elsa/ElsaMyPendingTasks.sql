@@ -3,9 +3,6 @@
 -- Description: Elsa 3.5.3 View for pending workflow tasks
 -- Generated for AppEnd integration
 -- =============================================
-SET ANSI_NULLS ON
-SET QUOTED_IDENTIFIER ON
-
 CREATE OR ALTER VIEW [dbo].[ElsaMyPendingTasks]
 AS
 SELECT 
