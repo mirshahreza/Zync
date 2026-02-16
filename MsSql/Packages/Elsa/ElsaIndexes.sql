@@ -33,4 +33,34 @@ BEGIN
     CREATE NONCLUSTERED INDEX IX_ElsaWorkflowExecutionLogRecords_InstanceId ON [dbo].[ElsaWorkflowExecutionLogRecords]([InstanceId])
 END
 
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE name = 'IX_ElsaWorkflowTasks_Status' AND object_id = OBJECT_ID(N'[dbo].[ElsaWorkflowTasks]'))
+BEGIN
+    CREATE NONCLUSTERED INDEX IX_ElsaWorkflowTasks_Status ON [dbo].[ElsaWorkflowTasks]([Status])
+END
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE name = 'IX_ElsaWorkflowTasks_AssignedTo' AND object_id = OBJECT_ID(N'[dbo].[ElsaWorkflowTasks]'))
+BEGIN
+    CREATE NONCLUSTERED INDEX IX_ElsaWorkflowTasks_AssignedTo ON [dbo].[ElsaWorkflowTasks]([AssignedTo])
+END
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE name = 'IX_ElsaWorkflowTasks_AssignedRole' AND object_id = OBJECT_ID(N'[dbo].[ElsaWorkflowTasks]'))
+BEGIN
+    CREATE NONCLUSTERED INDEX IX_ElsaWorkflowTasks_AssignedRole ON [dbo].[ElsaWorkflowTasks]([AssignedRole])
+END
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE name = 'IX_ElsaWorkflowTasks_InstanceId' AND object_id = OBJECT_ID(N'[dbo].[ElsaWorkflowTasks]'))
+BEGIN
+    CREATE NONCLUSTERED INDEX IX_ElsaWorkflowTasks_InstanceId ON [dbo].[ElsaWorkflowTasks]([InstanceId])
+END
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE name = 'IX_ElsaWorkflowTasks_DueDate' AND object_id = OBJECT_ID(N'[dbo].[ElsaWorkflowTasks]'))
+BEGIN
+    CREATE NONCLUSTERED INDEX IX_ElsaWorkflowTasks_DueDate ON [dbo].[ElsaWorkflowTasks]([DueDate]) WHERE [DueDate] IS NOT NULL
+END
+
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE name = 'IX_ElsaWorkflowTasks_CreatedAt' AND object_id = OBJECT_ID(N'[dbo].[ElsaWorkflowTasks]'))
+BEGIN
+    CREATE NONCLUSTERED INDEX IX_ElsaWorkflowTasks_CreatedAt ON [dbo].[ElsaWorkflowTasks]([CreatedAt])
+END
+
 PRINT 'Elsa 3.5.3 schema created successfully in [dbo] with Elsa prefix.'
