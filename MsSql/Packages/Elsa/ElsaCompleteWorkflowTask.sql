@@ -3,9 +3,6 @@
 -- Description: Elsa 3.5.3 Stored Procedure to complete a workflow task
 -- Generated for AppEnd integration
 -- =============================================
-SET ANSI_NULLS ON
-SET QUOTED_IDENTIFIER ON
-
 CREATE OR ALTER PROCEDURE [dbo].[ElsaCompleteWorkflowTask]
     @TaskId UNIQUEIDENTIFIER,
     @UserId NVARCHAR(100),

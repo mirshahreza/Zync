@@ -3,10 +3,6 @@
 -- Description: Elsa 3.5.3 View for workflow task statistics
 -- Generated for AppEnd integration
 -- =============================================
-SET ANSI_NULLS ON
-SET QUOTED_IDENTIFIER ON
-
-
 CREATE OR ALTER VIEW [dbo].[ElsaWorkflowTaskStats]
 AS
 SELECT 

@@ -3,9 +3,6 @@
 -- Description: Elsa 3.5.3 Stored Procedure to retrieve user workflow tasks
 -- Generated for AppEnd integration
 -- =============================================
-SET ANSI_NULLS ON
-SET QUOTED_IDENTIFIER ON
-
 CREATE OR ALTER PROCEDURE [dbo].[ElsaGetMyWorkflowTasks]
     @UserId NVARCHAR(100),
     @Status NVARCHAR(50) = NULL,
