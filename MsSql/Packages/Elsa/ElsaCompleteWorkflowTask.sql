@@ -5,13 +5,8 @@
 -- =============================================
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
-GO
 
-IF OBJECT_ID(N'[dbo].[ElsaCompleteWorkflowTask]', N'P') IS NOT NULL
-    DROP PROCEDURE [dbo].[ElsaCompleteWorkflowTask];
-GO
-
-CREATE PROCEDURE [dbo].[ElsaCompleteWorkflowTask]
+CREATE OR ALTER PROCEDURE [dbo].[ElsaCompleteWorkflowTask]
     @TaskId UNIQUEIDENTIFIER,
     @UserId NVARCHAR(100),
     @Outcome NVARCHAR(100),
@@ -49,7 +44,4 @@ BEGIN
     FROM [dbo].[ElsaWorkflowTasks]
     WHERE [Id] = @TaskId;
 END;
-GO
 
-PRINT 'Stored procedure ElsaCompleteWorkflowTask created successfully!';
-GO

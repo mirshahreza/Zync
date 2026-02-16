@@ -5,13 +5,9 @@
 -- =============================================
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
-GO
 
-IF OBJECT_ID(N'[dbo].[ElsaWorkflowTaskStats]', N'V') IS NOT NULL
-    DROP VIEW [dbo].[ElsaWorkflowTaskStats];
-GO
 
-CREATE VIEW [dbo].[ElsaWorkflowTaskStats]
+CREATE OR ALTER VIEW [dbo].[ElsaWorkflowTaskStats]
 AS
 SELECT 
     [DefinitionId],
@@ -23,7 +19,4 @@ SELECT
     AVG(CASE WHEN [CompletedAt] IS NOT NULL THEN DATEDIFF(HOUR, [CreatedAt], [CompletedAt]) ELSE NULL END) AS [AvgCompletionTimeHours]
 FROM [dbo].[ElsaWorkflowTasks]
 GROUP BY [DefinitionId];
-GO
 
-PRINT 'View ElsaWorkflowTaskStats created successfully!';
-GO

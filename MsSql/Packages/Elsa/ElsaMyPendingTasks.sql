@@ -6,12 +6,7 @@
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
 
-
-IF OBJECT_ID(N'[dbo].[ElsaMyPendingTasks]', N'V') IS NOT NULL
-    DROP VIEW [dbo].[ElsaMyPendingTasks];
-
-
-CREATE VIEW [dbo].[ElsaMyPendingTasks]
+CREATE OR ALTER VIEW [dbo].[ElsaMyPendingTasks]
 AS
 SELECT 
     t.[Id],
@@ -35,5 +30,4 @@ FROM [dbo].[ElsaWorkflowTasks] t
 WHERE t.[Status] = 'Pending' AND t.[TenantId] IS NOT NULL;
 
 
-PRINT 'View ElsaMyPendingTasks created successfully!';
 
