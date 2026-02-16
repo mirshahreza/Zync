@@ -5,11 +5,11 @@
 -- =============================================
 SET ANSI_NULLS ON
 SET QUOTED_IDENTIFIER ON
-GO
+
 
 IF OBJECT_ID(N'[dbo].[ElsaMyPendingTasks]', N'V') IS NOT NULL
     DROP VIEW [dbo].[ElsaMyPendingTasks];
-GO
+
 
 CREATE VIEW [dbo].[ElsaMyPendingTasks]
 AS
@@ -33,7 +33,7 @@ SELECT
     DATEDIFF(DAY, GETUTCDATE(), t.[DueDate]) AS [DaysRemaining]
 FROM [dbo].[ElsaWorkflowTasks] t
 WHERE t.[Status] = 'Pending' AND t.[TenantId] IS NOT NULL;
-GO
+
 
 PRINT 'View ElsaMyPendingTasks created successfully!';
-GO
+
