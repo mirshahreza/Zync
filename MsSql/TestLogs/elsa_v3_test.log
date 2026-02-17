@@ -1,0 +1,62 @@
+Msg 111, Level 15, State 1, Server MohsenAsus\SQL2022, Line 426
+'CREATE VIEW' must be the first statement in a query batch.
+Msg 111, Level 15, State 1, Server MohsenAsus\SQL2022, Line 439
+'CREATE VIEW' must be the first statement in a query batch.
+Msg 111, Level 15, State 1, Server MohsenAsus\SQL2022, Line 458
+'CREATE VIEW' must be the first statement in a query batch.
+Msg 111, Level 15, State 1, Server MohsenAsus\SQL2022, Line 475
+'CREATE VIEW' must be the first statement in a query batch.
+Msg 111, Level 15, State 1, Server MohsenAsus\SQL2022, Line 493
+'CREATE VIEW' must be the first statement in a query batch.
+Msg 208, Level 16, State 1, Server MohsenAsus\SQL2022, Procedure ElsaPendingApprovals, Line 16
+Invalid object name 'dbo.ElsaApprovalInstances'.
+Msg 1033, Level 15, State 1, Server MohsenAsus\SQL2022, Procedure ElsaOverdueApprovals, Line 16
+The ORDER BY clause is invalid in views, inline functions, derived tables, subqueries, and common table expressions, unless TOP, OFFSET or FOR XML is also specified.
+Msg 1033, Level 15, State 1, Server MohsenAsus\SQL2022, Procedure ElsaSuspendedWorkflows, Line 19
+The ORDER BY clause is invalid in views, inline functions, derived tables, subqueries, and common table expressions, unless TOP, OFFSET or FOR XML is also specified.
+Msg 208, Level 16, State 1, Server MohsenAsus\SQL2022, Procedure ElsaExecutionLogsSummary, Line 11
+Invalid object name 'dbo.ElsaWorkflowExecutionLogs'.
+Msg 1033, Level 15, State 1, Server MohsenAsus\SQL2022, Procedure ElsaWorkflowDefinitionsStatus, Line 21
+The ORDER BY clause is invalid in views, inline functions, derived tables, subqueries, and common table expressions, unless TOP, OFFSET or FOR XML is also specified.
+Msg 208, Level 16, State 1, Server MohsenAsus\SQL2022, Procedure ElsaRecentlyModifiedWorkflows, Line 13
+Invalid object name 'dbo.ElsaWorkflowDefinitions'.
+Msg 1033, Level 15, State 1, Server MohsenAsus\SQL2022, Procedure ElsaDatabaseSizeInformation, Line 21
+The ORDER BY clause is invalid in views, inline functions, derived tables, subqueries, and common table expressions, unless TOP, OFFSET or FOR XML is also specified.
+Msg 208, Level 16, State 1, Server MohsenAsus\SQL2022, Procedure ElsaAuditLogRecentChanges, Line 15
+Invalid object name 'dbo.ElsaAuditLogs'.
+Msg 1033, Level 15, State 1, Server MohsenAsus\SQL2022, Procedure ElsaMultiTenantStatistics, Line 17
+The ORDER BY clause is invalid in views, inline functions, derived tables, subqueries, and common table expressions, unless TOP, OFFSET or FOR XML is also specified.
+Msg 208, Level 16, State 1, Server MohsenAsus\SQL2022, Procedure ElsaVariablesUsage, Line 12
+Invalid object name 'dbo.ElsaVariableInstances'.
+Msg 1033, Level 15, State 1, Server MohsenAsus\SQL2022, Procedure ElsaBookmarksStatus, Line 13
+The ORDER BY clause is invalid in views, inline functions, derived tables, subqueries, and common table expressions, unless TOP, OFFSET or FOR XML is also specified.
+Elsa 3.0 package installed.
+ 
+Test 1: Verifying 14 tables created...
+  ✗ Expected 14 tables, found 0
+Msg 50000, Level 16, State 1, Server MohsenAsus\SQL2022, Line 34
+Missing tables detected
+ 
+Test 2: Verifying 16 monitoring views created...
+  ✗ Expected 16 views, found 0
+Msg 50000, Level 16, State 1, Server MohsenAsus\SQL2022, Line 69
+Missing views detected
+ 
+Test 3: Verifying ElsaWorkflowDefinitions primary key...
+  ✗ Primary key not found on ElsaWorkflowDefinitions
+ 
+Test 4: Verifying foreign key relationships...
+  ✗ Fewer foreign keys than expected (2)
+ 
+Test 5: Verifying multi-tenancy support (TenantId columns)...
+  ✗ Limited multi-tenancy support (0 tables)
+ 
+Test 6: Verifying soft delete support (IsDeleted columns)...
+  ✗ Limited soft delete support (0 tables)
+ 
+Test 7: Verifying timestamp columns (CreatedAt, UpdatedAt, etc.)...
+  ✗ Timestamp columns not found
+ 
+Test 8: Verifying views are correctly defined...
+Msg 208, Level 16, State 1, Server MohsenAsus\SQL2022, Line 153
+Invalid object name 'dbo.ElsaWorkflowStatusOverview'.

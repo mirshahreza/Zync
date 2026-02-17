@@ -15,13 +15,19 @@ PRINT 'Installing Elsa tables...'
 
 -- Execute all table creation scripts directly
 :r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaWorkflowDefinitions.sql
+:r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaWorkflowDefinitionVersions.sql
 :r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaWorkflowInstances.sql
-:r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaActivityInstances.sql
+:r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaActivityExecutions.sql
 :r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaBookmarks.sql
-:r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaWorkflowExecutionLogRecords.sql
-:r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaLabels.sql
-:r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaWorkflowDefinitionLabels.sql
-:r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaStoredBookmarks.sql
+:r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaWorkflowExecutionLogs.sql
+:r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaVariableInstances.sql
+:r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaTriggeredWorkflows.sql
+:r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaWorkflowEvents.sql
+:r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaWorkflowTriggers.sql
+:r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaExecutionContexts.sql
+:r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaApprovalInstances.sql
+:r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaWorkflowSuspensions.sql
+:r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaAuditLogs.sql
 :r c:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaIndexes.sql
 
 PRINT 'Elsa package installed.'
@@ -37,17 +43,23 @@ FROM INFORMATION_SCHEMA.TABLES
 WHERE TABLE_SCHEMA = 'dbo' 
   AND TABLE_NAME IN (
     'ElsaWorkflowDefinitions',
+    'ElsaWorkflowDefinitionVersions',
     'ElsaWorkflowInstances',
-    'ElsaActivityInstances',
+    'ElsaActivityExecutions',
     'ElsaBookmarks',
-    'ElsaWorkflowExecutionLogRecords',
-    'ElsaLabels',
-    'ElsaWorkflowDefinitionLabels',
-    'ElsaStoredBookmarks'
+    'ElsaWorkflowExecutionLogs',
+    'ElsaVariableInstances',
+    'ElsaTriggeredWorkflows',
+    'ElsaWorkflowEvents',
+    'ElsaWorkflowTriggers',
+    'ElsaExecutionContexts',
+    'ElsaApprovalInstances',
+    'ElsaWorkflowSuspensions',
+    'ElsaAuditLogs'
   )
 
-IF @TableCount = 8
-  PRINT '  ✓ All 8 tables exist'
+IF @TableCount = 14
+  PRINT '  ✓ All 14 tables exist'
 ELSE
 BEGIN
   PRINT '  ✗ Expected 8 tables, found ' + CAST(@TableCount AS VARCHAR)

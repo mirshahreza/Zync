@@ -1,0 +1,8 @@
+Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
+Line |
+  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
+     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | 'CREATE VIEW' must be the first statement in a query batch. 'CREATE VIEW' must be the first statement in a query batch. 'CREATE VIEW'
+     | must be the first statement in a query batch. 'CREATE VIEW' must be the first statement in a query batch. 'CREATE VIEW' must be the
+     | first statement in a query batch.   Msg 111, Level 15, State 1, Procedure , Line 441.
+

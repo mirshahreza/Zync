@@ -18,3 +18,4 @@ LEFT JOIN [dbo].[ElsaWorkflowInstances] wi ON ap.[WorkflowInstanceId] = wi.[Id]
 WHERE ap.[Status] = 'Pending'
     AND ap.[DueDate] >= GETUTCDATE()
 ORDER BY ap.[DueDate] ASC;
+GO

@@ -2,14 +2,22 @@
 -- Elsa Database Size Information
 -- ==================================================================================
 
+GO
 CREATE OR ALTER VIEW [dbo].[ElsaDatabaseSizeInformation] AS
-SELECT 
-    OBJECT_NAME(i.object_id) AS [TableName],
-    SUM(s.row_count) AS [RowCount],
-    SUM(s.reserved_page_count * 8) / 1024 AS [SizeKB]
-FROM sys.dm_db_partition_stats s
-INNER JOIN sys.indexes i ON s.object_id = i.object_id AND s.index_id = i.index_id
-WHERE OBJECT_NAME(i.object_id) LIKE 'Elsa%'
-    AND (i.type_desc = 'HEAP' OR i.type_desc = 'CLUSTERED INDEX')
-GROUP BY OBJECT_NAME(i.object_id)
-ORDER BY [SizeKB] DESC;
+SELECT TOP 1000000
+    t.[name] AS [TableName],
+    SUM(p.[rows]) AS [RowCount],
+    (SUM(a.[total_pages]) * 8.0 / 1024.0) AS [SizeMB]
+FROM
+    sys.tables t
+    INNER JOIN sys.indexes i ON t.[object_id] = i.[object_id]
+    INNER JOIN sys.partitions p ON i.[object_id] = p.[object_id] AND i.[index_id] = p.[index_id]
+    INNER JOIN sys.allocation_units a ON p.[partition_id] = a.[container_id]
+WHERE
+    t.[name] LIKE 'Elsa%'
+    AND i.[index_id] <= 1
+GROUP BY
+    t.[name]
+ORDER BY
+    [SizeMB] DESC;
+GO

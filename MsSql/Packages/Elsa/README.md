@@ -1,8 +1,40 @@
 # Elsa 3.0 Workflow Engine - SQL Server Package
 
+**Version:** 3.0  
+**Database:** SQL Server 2019+  
+**Schema:** dbo  
+**Status:** Production Ready
+
 ## Overview
 
-This package contains the SQL Server schema for **Elsa 3.0**, a powerful workflow engine for .NET. Elsa provides a comprehensive solution for building, executing, and monitoring complex business processes.
+Elsa 3.0 Workflow Engine package provides a comprehensive SQL Server database schema for managing workflow definitions, instances, activities, approvals, and audit trails. This package implements best practices for workflow engine architecture with multi-tenancy, soft deletes, comprehensive auditing, and real-time monitoring views.
+
+**Total Package Files:** 32
+- **14 Core Tables** with complete workflow engine functionality
+- **16 Monitoring/Reporting Views** for real-time insights
+- **1 Indexes File** for performance optimization
+- **1 Orchestrator File** (Elsa.sql) for automated installation
+
+## Package Contents - Core Tables (14)
+
+| Table | Purpose | Key Features |
+|-------|---------|--------------|
+| **ElsaWorkflowDefinitions** | Workflow metadata and versions | Multi-tenancy, soft-delete, publishing |
+| **ElsaWorkflowDefinitionVersions** | Version history with JSON data | Rollback support, complete definition storage |
+| **ElsaWorkflowInstances** | Individual workflow executions | Status tracking, correlation IDs, input/output |
+| **ElsaActivityExecutions** | Activity-level execution tracking | Status, timing, outputs, performance metrics |
+| **ElsaBookmarks** | Workflow resumption points | Pause/resume capability, event handling |
+| **ElsaWorkflowExecutionLogs** | Comprehensive execution audit trail | Events, messages, severity levels, timestamps |
+| **ElsaVariableInstances** | Runtime workflow variables | JSON storage, volatile support |
+| **ElsaTriggeredWorkflows** | Event-driven workflow triggers | Timer, event, webhook configurations |
+| **ElsaWorkflowEvents** | Workflow instance events | Event names, sources, payloads |
+| **ElsaWorkflowTriggers** | Activity trigger configurations | Hashing, linking to activities |
+| **ElsaExecutionContexts** | Workflow/activity execution contexts | Scope data, expiration support |
+| **ElsaApprovalInstances** | Approval task management | Requests, due dates, escalation |
+| **ElsaWorkflowSuspensions** | Manual workflow suspensions | Suspension reasons, user tracking, resume timing |
+| **ElsaAuditLogs** | Compliance audit trail | All CRUD operations, change tracking, user/IP logging |
+
+## Monitoring & Reporting Views (16)
 
 ## Package Contents
 

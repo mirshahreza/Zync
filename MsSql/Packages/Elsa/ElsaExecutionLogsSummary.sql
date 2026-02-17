@@ -12,3 +12,4 @@ FROM [dbo].[ElsaWorkflowExecutionLogs]
 WHERE [Timestamp] >= DATEADD(DAY, -1, GETUTCDATE())
 GROUP BY [WorkflowInstanceId], [EventName]
 ORDER BY [LastOccurrence] DESC;
+GO

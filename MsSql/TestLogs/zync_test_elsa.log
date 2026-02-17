@@ -19,3 +19,9 @@ Line |
      | =========================================   Msg 50000, Level 16, State
      | 1, Procedure , Line 53.
 
+Invoke-Sqlcmd: C:\Workspace\Projects\Zync\MsSql\scripts\RunZyncTests.ps1:49:78
+Line |
+  49 |  …  $Query } else { return Invoke-Sqlcmd @params -InputFile $InputFile }
+     |                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+     | Cannot find path 'C:\Workspace\Projects\Zync\MsSql\Packages\Elsa\ElsaActivityInstances.sql' because it does not exist.
+
