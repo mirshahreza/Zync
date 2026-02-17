@@ -1,29 +1,33 @@
--- =============================================
--- Name:        ElsaWorkflowDefinitions
--- Description: Elsa 3.5.3 WorkflowDefinitions table for SQL Server
--- Generated for AppEnd integration
--- =============================================
-SET ANSI_NULLS ON
-SET QUOTED_IDENTIFIER ON
-IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'ElsaWorkflowDefinitions')
-BEGIN
-    CREATE TABLE [dbo].[ElsaWorkflowDefinitions]
-    (
-        [Id] NVARCHAR(450) NOT NULL,
-        [Name] NVARCHAR(255) NULL,
-        [Description] NVARCHAR(MAX) NULL,
-        [CreatedAt] DATETIMEOFFSET NOT NULL,
-        [UpdatedAt] DATETIMEOFFSET NULL,
-        [PublishedAt] DATETIMEOFFSET NULL,
-        [Version] INT NOT NULL,
-        [IsLatest] BIT NOT NULL,
-        [IsPublished] BIT NOT NULL,
-        [TenantId] NVARCHAR(450) NULL,
-        [Data] NVARCHAR(MAX) NULL,
-        [HashValue] NVARCHAR(MAX) NULL,
-        [IsReadonly] BIT NOT NULL,
-        [ToolVersion] INT NULL,
-        [DefinitionVersionId] NVARCHAR(450) NOT NULL,
-        PRIMARY KEY CLUSTERED ([Id] ASC)
-    )
-END
+-- ==================================================================================
+-- Elsa Workflow Definitions
+-- ==================================================================================
+
+SET NOCOUNT ON;
+
+DROP TABLE IF EXISTS [dbo].[ElsaWorkflowDefinitionVersions];
+DROP TABLE IF EXISTS [dbo].[ElsaWorkflowInstances];
+DROP TABLE IF EXISTS [dbo].[ElsaWorkflowDefinitions];
+
+CREATE TABLE [dbo].[ElsaWorkflowDefinitions]
+(
+    [Id] NVARCHAR(255) PRIMARY KEY NOT NULL,
+    [Name] NVARCHAR(255) NOT NULL,
+    [DisplayName] NVARCHAR(500),
+    [Description] NVARCHAR(MAX),
+    [Version] INT NOT NULL DEFAULT 1,
+    [PublishedVersion] INT,
+    [IsPublished] BIT NOT NULL DEFAULT 0,
+    [IsPaused] BIT NOT NULL DEFAULT 0,
+    [DefinitionFormat] NVARCHAR(50) NOT NULL DEFAULT 'Json', -- 'Json' or 'CodeFirst'
+    [CreatedAt] DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    [UpdatedAt] DATETIME2 NOT NULL DEFAULT GETUTCDATE(),
+    [CreatedBy] NVARCHAR(255),
+    [UpdatedBy] NVARCHAR(255),
+    [TenantId] NVARCHAR(255),
+    [IsDeleted] BIT NOT NULL DEFAULT 0,
+    [DeletedAt] DATETIME2,
+    INDEX [IX_WorkflowDefinitions_Name] NONCLUSTERED ([Name]),
+    INDEX [IX_WorkflowDefinitions_TenantId] NONCLUSTERED ([TenantId]),
+    INDEX [IX_WorkflowDefinitions_IsPublished] NONCLUSTERED ([IsPublished]),
+    INDEX [IX_WorkflowDefinitions_CreatedAt] NONCLUSTERED ([CreatedAt])
+);
