@@ -4,19 +4,7 @@
 
 SET NOCOUNT ON;
 
-DROP TABLE IF EXISTS [dbo].[ElsaActivityExecutions];
-DROP TABLE IF EXISTS [dbo].[ElsaBookmarks];
-DROP TABLE IF EXISTS [dbo].[ElsaWorkflowExecutionLogs];
-DROP TABLE IF EXISTS [dbo].[ElsaVariableInstances];
-DROP TABLE IF EXISTS [dbo].[ElsaTriggeredWorkflows];
-DROP TABLE IF EXISTS [dbo].[ElsaWorkflowEvents];
-DROP TABLE IF EXISTS [dbo].[ElsaWorkflowTriggers];
-DROP TABLE IF EXISTS [dbo].[ElsaExecutionContexts];
-DROP TABLE IF EXISTS [dbo].[ElsaApprovalInstances];
-DROP TABLE IF EXISTS [dbo].[ElsaWorkflowSuspensions];
-DROP TABLE IF EXISTS [dbo].[ElsaAuditLogs];
 DROP TABLE IF EXISTS [dbo].[ElsaWorkflowInstances];
-
 CREATE TABLE [dbo].[ElsaWorkflowInstances]
 (
     [Id] NVARCHAR(255) PRIMARY KEY NOT NULL,

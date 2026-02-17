@@ -1901,8 +1901,21 @@ BEGIN
 				ELSE
 				BEGIN
 					-- Insert package record without object backup
-					INSERT INTO [dbo].[ZyncPackages] (PackageId, PackageName, Dependencies)
-					VALUES (@NewPackageId, @PackageName, @deps);
+					IF NOT EXISTS (SELECT 1 FROM [dbo].[ZyncPackages] WHERE PackageName = @PackageName)
+					BEGIN
+						INSERT INTO [dbo].[ZyncPackages] (PackageId, PackageName, Dependencies)
+						VALUES (@NewPackageId, @PackageName, @deps);
+					END
+					ELSE
+					BEGIN
+						UPDATE [dbo].[ZyncPackages]
+						SET Status = 'INSTALLED',
+							InstallDate = GETDATE(),
+							Dependencies = @deps
+						WHERE PackageName = @PackageName;
+						
+						SELECT @NewPackageId = PackageId FROM [dbo].[ZyncPackages] WHERE PackageName = @PackageName;
+					END
 				END
 
 				-- Execute the installation  

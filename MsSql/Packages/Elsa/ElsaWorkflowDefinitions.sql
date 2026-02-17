@@ -1,4 +1,9 @@
+-- ==================================================================================
+-- Elsa Elsa Workflow Definitions
+-- ==================================================================================SET NOCOUNT ON;
 SET NOCOUNT ON;
+
+DROP TABLE IF EXISTS [dbo].[ElsaWorkflowDefinitions];
 CREATE TABLE [dbo].[ElsaWorkflowDefinitions]
 (
     [Id] NVARCHAR(255) PRIMARY KEY NOT NULL,
