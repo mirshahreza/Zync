@@ -15,4 +15,5 @@ FROM [dbo].[ElsaWorkflowDefinitions] wd
 LEFT JOIN [dbo].[ElsaWorkflowInstances] wi ON wd.[Id] = wi.[WorkflowDefinitionId]
 WHERE wd.[IsDeleted] = 0
 GROUP BY wd.[Name]
-ORDER BY [TotalInstances] DESC;
+ORDER BY [TotalInstances] DESC
+OFFSET 0 ROWS;

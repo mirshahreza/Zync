@@ -1429,11 +1429,20 @@ BEGIN
 					-- If composite package itself is not registered, create it
 					IF @UpdatePackageId IS NULL
 					BEGIN
-						DECLARE @TempPackageId UNIQUEIDENTIFIER = NEWID();
-						INSERT INTO [dbo].[ZyncPackages] (PackageId, PackageName, Version, Status, InstallDate)
-						VALUES (@TempPackageId, @PackageName, 1, 'INSTALLED', GETDATE());
-						SET @UpdatePackageId = @TempPackageId;
-						PRINT ' -> Registered composite package in tracking system.';
+						-- Check if package already exists to avoid duplicate key error
+						IF NOT EXISTS (SELECT 1 FROM [dbo].[ZyncPackages] WHERE PackageName = @PackageName)
+						BEGIN
+							DECLARE @TempPackageId UNIQUEIDENTIFIER = NEWID();
+							INSERT INTO [dbo].[ZyncPackages] (PackageId, PackageName, Version, Status, InstallDate)
+							VALUES (@TempPackageId, @PackageName, 1, 'INSTALLED', GETDATE());
+							SET @UpdatePackageId = @TempPackageId;
+							PRINT ' -> Registered composite package in tracking system.';
+						END
+						ELSE
+						BEGIN
+							SELECT @UpdatePackageId = PackageId FROM [dbo].[ZyncPackages] WHERE PackageName = @PackageName;
+							PRINT ' -> Package already exists, using existing record.';
+						END
 					END
 					
 					DECLARE @SubPackages TABLE (SubPackageName NVARCHAR(256));
@@ -1597,11 +1606,18 @@ BEGIN
 						IF @UpdatePackageId IS NULL
 						BEGIN
 							-- Object exists but not tracked, register it first
-							PRINT ' -> Object exists in database but not tracked. Registering...';
-							DECLARE @RegPackageId UNIQUEIDENTIFIER = NEWID();
-							INSERT INTO [dbo].[ZyncPackages] (PackageId, PackageName, Version, Status, InstallDate)
-							VALUES (@RegPackageId, @PackageName, 1, 'INSTALLED', GETDATE());
-							SET @UpdatePackageId = @RegPackageId;
+							IF NOT EXISTS (SELECT 1 FROM [dbo].[ZyncPackages] WHERE PackageName = @PackageName)
+							BEGIN
+								PRINT ' -> Object exists in database but not tracked. Registering...';
+								DECLARE @RegPackageId UNIQUEIDENTIFIER = NEWID();
+								INSERT INTO [dbo].[ZyncPackages] (PackageId, PackageName, Version, Status, InstallDate)
+								VALUES (@RegPackageId, @PackageName, 1, 'INSTALLED', GETDATE());
+								SET @UpdatePackageId = @RegPackageId;
+							END
+							ELSE
+							BEGIN
+								SELECT @UpdatePackageId = PackageId FROM [dbo].[ZyncPackages] WHERE PackageName = @PackageName;
+							END
 						END
 						
 						-- Get current definition for backup

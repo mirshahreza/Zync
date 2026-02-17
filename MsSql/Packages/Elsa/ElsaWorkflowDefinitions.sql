@@ -4,6 +4,9 @@
 
 SET NOCOUNT ON;
 
+-- Disable FK constraints temporarily
+ALTER TABLE IF EXISTS [dbo].[ElsaWorkflowInstances] NOCHECK CONSTRAINT ALL;
+
 DROP TABLE IF EXISTS [dbo].[ElsaWorkflowDefinitionVersions];
 DROP TABLE IF EXISTS [dbo].[ElsaWorkflowInstances];
 DROP TABLE IF EXISTS [dbo].[ElsaWorkflowDefinitions];
