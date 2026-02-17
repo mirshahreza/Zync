@@ -1,7 +1,6 @@
 -- ==================================================================================
 -- Elsa Workflow Execution Statistics
 -- ==================================================================================
-
 CREATE OR ALTER VIEW [dbo].[ElsaWorkflowExecutionStatistics] AS
 SELECT 
     wd.[Name] AS [WorkflowName],

@@ -1,8 +1,6 @@
 -- ==================================================================================
 -- Elsa Workflow Definitions Status
 -- ==================================================================================
-
-GO
 CREATE OR ALTER VIEW [dbo].[ElsaWorkflowDefinitionsStatus] AS
 SELECT TOP 1000000
     wd.[Id],
@@ -20,4 +18,4 @@ LEFT JOIN [dbo].[ElsaWorkflowInstances] wi ON wd.[Id] = wi.[WorkflowDefinitionId
 WHERE wd.[IsDeleted] = 0
 GROUP BY wd.[Id], wd.[Name], wd.[DisplayName], wd.[Version], wd.[IsPublished], wd.[IsPaused], wd.[UpdatedAt]
 ORDER BY wd.[UpdatedAt] DESC;
-GO
+

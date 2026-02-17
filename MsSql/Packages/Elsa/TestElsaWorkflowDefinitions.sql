@@ -1,4 +1,7 @@
 SET NOCOUNT ON;
+DROP TABLE IF EXISTS [dbo].[ElsaWorkflowDefinitionVersions];
+DROP TABLE IF EXISTS [dbo].[ElsaWorkflowInstances];
+DROP TABLE IF EXISTS [dbo].[ElsaWorkflowDefinitions];
 CREATE TABLE [dbo].[ElsaWorkflowDefinitions]
 (
     [Id] NVARCHAR(255) PRIMARY KEY NOT NULL,

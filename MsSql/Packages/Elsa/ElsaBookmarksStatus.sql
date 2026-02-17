@@ -1,8 +1,6 @@
 -- ==================================================================================
 -- Elsa Bookmarks Status
 -- ==================================================================================
-
-GO
 CREATE OR ALTER VIEW [dbo].[ElsaBookmarksStatus] AS
 SELECT TOP 1000000
     [ActivityType],
@@ -12,4 +10,4 @@ SELECT TOP 1000000
 FROM [dbo].[ElsaBookmarks]
 GROUP BY [ActivityType]
 ORDER BY [PendingBookmarks] DESC;
-GO
+

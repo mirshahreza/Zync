@@ -1,8 +1,6 @@
 -- ==================================================================================
 -- Elsa Suspended Workflows
 -- ==================================================================================
-
-GO
 CREATE OR ALTER VIEW [dbo].[ElsaSuspendedWorkflows] AS
 SELECT TOP 1000000
     ws.[Id],
@@ -18,4 +16,4 @@ LEFT JOIN [dbo].[ElsaWorkflowInstances] wi ON ws.[WorkflowInstanceId] = wi.[Id]
 LEFT JOIN [dbo].[ElsaWorkflowDefinitions] wd ON wi.[WorkflowDefinitionId] = wd.[Id]
 WHERE ws.[ResumedAt] IS NULL
 ORDER BY ws.[SuspendedAt] DESC;
-GO
+

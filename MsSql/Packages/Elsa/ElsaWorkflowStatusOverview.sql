@@ -1,8 +1,6 @@
 -- ==================================================================================
 -- Elsa Workflow Status Overview
 -- ==================================================================================
-
--- Only create view if the required table exists
 IF EXISTS (SELECT 1 FROM sys.tables WHERE name = 'ElsaWorkflowInstances')
 BEGIN
     CREATE OR ALTER VIEW [dbo].[ElsaWorkflowStatusOverview] AS

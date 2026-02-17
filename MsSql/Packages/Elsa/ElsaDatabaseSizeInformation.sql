@@ -1,8 +1,6 @@
 -- ==================================================================================
 -- Elsa Database Size Information
 -- ==================================================================================
-
-GO
 CREATE OR ALTER VIEW [dbo].[ElsaDatabaseSizeInformation] AS
 SELECT TOP 1000000
     t.[name] AS [TableName],
@@ -20,4 +18,4 @@ GROUP BY
     t.[name]
 ORDER BY
     [SizeMB] DESC;
-GO
+

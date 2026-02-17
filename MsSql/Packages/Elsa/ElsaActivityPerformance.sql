@@ -14,4 +14,4 @@ WHERE [StartedAt] IS NOT NULL
     AND [CompletedAt] IS NOT NULL
 GROUP BY [ActivityType]
 ORDER BY [ExecutionCount] DESC;
-GO
+

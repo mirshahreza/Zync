@@ -1,7 +1,6 @@
 -- ==================================================================================
 -- Elsa Variables Usage
 -- ==================================================================================
-
 CREATE OR ALTER VIEW [dbo].[ElsaVariablesUsage] AS
 SELECT TOP 100
     [Name] AS [VariableName],
@@ -12,4 +11,4 @@ SELECT TOP 100
 FROM [dbo].[ElsaVariableInstances]
 GROUP BY [Name]
 ORDER BY [UsageCount] DESC;
-GO
+

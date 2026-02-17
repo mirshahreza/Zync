@@ -1,7 +1,6 @@
 -- ==================================================================================
 -- Elsa Execution Logs Summary
 -- ==================================================================================
-
 CREATE OR ALTER VIEW [dbo].[ElsaExecutionLogsSummary] AS
 SELECT TOP 100
     [WorkflowInstanceId],
@@ -12,4 +11,4 @@ FROM [dbo].[ElsaWorkflowExecutionLogs]
 WHERE [Timestamp] >= DATEADD(DAY, -1, GETUTCDATE())
 GROUP BY [WorkflowInstanceId], [EventName]
 ORDER BY [LastOccurrence] DESC;
-GO
+

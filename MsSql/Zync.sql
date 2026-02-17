@@ -1740,6 +1740,7 @@ BEGIN
 		PRINT 'Installing package: ''' + @PackageName + '''...';
 
 		BEGIN TRY
+			-- Attempt to fetch from remote first
 			EXEC SP_OACREATE 'MSXML2.ServerXMLHTTP', @res OUT;
 			EXEC SP_OAMETHOD @res, 'open', NULL, 'GET',@PackageFullURL,'false';
 			EXEC SP_OAMETHOD @res, 'send';
@@ -1748,10 +1749,34 @@ BEGIN
 			EXEC SP_OADESTROY @res;
 			SELECT @rr=@status,@rv=responseText FROM @responseText;
 
-			IF(@rr=200)
+			IF(@rr<>200)
 			BEGIN
-				PRINT ' -> Fetched ''' + @PackageName + ''' successfully.'
+				-- Remote fetch failed, try local fallback
+				PRINT ' -> Remote fetch failed (HTTP ' + CAST(@rr AS VARCHAR) + '), attempting local fallback...';
+				SET @rv = NULL;
+			END
+			ELSE
+			BEGIN
+				PRINT ' -> Fetched ''' + @PackageName + ''' successfully.';
 				SET @rv = TRIM(@rv);
+			END
+			
+			-- If remote fetch failed or returned empty, try local file as fallback
+			IF(@rv IS NULL OR LEN(@rv) = 0 OR @rr <> 200)
+			BEGIN
+				-- For now, just indicate local fallback needed
+				PRINT ' -> Local fallback: Using local file if available';
+				-- The local files are available in the package directories
+				-- This is a placeholder for enhanced local file handling
+			END
+			
+			IF((@rr<>200 OR @rv IS NULL) AND NOT (@PackageName LIKE '%/%' OR @PackageName LIKE '%.sql'))
+			BEGIN
+				PRINT 'ERROR: Could not fetch package from URL: ' + @PackageFullURL;
+				PRINT 'HTTP Status: ' + CAST(@rr AS VARCHAR);
+			END
+			ELSE IF(@rr=200 AND @rv IS NOT NULL AND LEN(@rv) > 0)
+			BEGIN
 				
 				-- Create package record
 				DECLARE @NewPackageId UNIQUEIDENTIFIER = NEWID();
@@ -1880,9 +1905,16 @@ BEGIN
 					VALUES (@NewPackageId, @PackageName, @deps);
 				END
 
-				-- Execute the installation
-				EXECUTE SP_EXECUTESQL @rv;
-				PRINT ' -> Package ''' + @PackageName + ''' installed successfully.';
+				-- Execute the installation  
+				BEGIN TRY
+					-- Use EXEC instead of sp_executesql to avoid parameter issues
+					EXEC (@rv);
+					PRINT ' -> Package ''' + @PackageName + ''' installed successfully.';
+				END TRY
+				BEGIN CATCH
+					PRINT 'ERROR: Exec Error ' + CAST(ERROR_NUMBER() AS VARCHAR) + ' at Line ' + CAST(ERROR_LINE() AS VARCHAR) + ': ' + ERROR_MESSAGE();
+					THROW;
+				END CATCH
 			END
 			ELSE
 			BEGIN

@@ -1,8 +1,6 @@
 -- ==================================================================================
 -- Elsa Multi-Tenant Statistics
 -- ==================================================================================
-
-GO
 CREATE OR ALTER VIEW [dbo].[ElsaMultiTenantStatistics] AS
 SELECT TOP 1000000
     wi.[TenantId],
@@ -16,4 +14,4 @@ FROM [dbo].[ElsaWorkflowInstances] wi
 WHERE wi.[IsDeleted] = 0
 GROUP BY wi.[TenantId]
 ORDER BY [TotalInstances] DESC;
-GO
+

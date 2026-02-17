@@ -1,8 +1,6 @@
 -- ==================================================================================
 -- Elsa Overdue Approvals
 -- ==================================================================================
-
-GO
 CREATE OR ALTER VIEW [dbo].[ElsaOverdueApprovals] AS
 SELECT TOP 1000000
     ap.[Id],
@@ -15,4 +13,4 @@ FROM [dbo].[ElsaApprovalInstances] ap
 WHERE ap.[Status] = 'Pending'
     AND ap.[DueDate] < GETUTCDATE()
 ORDER BY [DaysOverdue] DESC;
-GO
+

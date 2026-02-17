@@ -1,7 +1,6 @@
 -- ==================================================================================
 -- Elsa Recently Modified Workflows
 -- ==================================================================================
-
 CREATE OR ALTER VIEW [dbo].[ElsaRecentlyModifiedWorkflows] AS
 SELECT TOP 20
     wd.[Id],
@@ -13,4 +12,4 @@ SELECT TOP 20
 FROM [dbo].[ElsaWorkflowDefinitions] wd
 WHERE wd.[IsDeleted] = 0
 ORDER BY wd.[UpdatedAt] DESC;
-GO
+

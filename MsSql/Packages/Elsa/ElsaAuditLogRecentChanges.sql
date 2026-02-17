@@ -15,4 +15,4 @@ SELECT TOP 100
 FROM [dbo].[ElsaAuditLogs]
 WHERE [ChangedAt] >= DATEADD(DAY, -7, GETUTCDATE())
 ORDER BY [ChangedAt] DESC;
-GO
+
